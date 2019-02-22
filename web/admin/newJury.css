@@ -1,0 +1,16 @@
+html,body{
+/*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*/
+background-image: url('teatr.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+height: 100%;
+font-family: 'Numans', sans-serif;
+}
+.centered-form{
+	margin-top: 60px;
+}
+
+.centered-form .panel{
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
