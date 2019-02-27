@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Somebody want to log in.");
+        System.out.println("Somebody want to log in1.");
         JSONObject jsonObject;
         StringBuffer jb = new StringBuffer();
         String line = null;
