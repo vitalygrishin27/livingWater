@@ -50,7 +50,7 @@ public class UserOnlineServlet extends HttpServlet {
                 resp.setContentType("application/json; charset=UTF-8");
 
                 jsonObjectResponse.append("status", "200");
-                jsonObjectResponse.append("message", "Статус - онлайн.");
+                jsonObjectResponse.append("message", "ON-LINE");
 
                 resp.getWriter().write(String.valueOf(jsonObjectResponse));
 

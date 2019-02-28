@@ -1,8 +1,10 @@
 import entity.User;
 import logical.Repository;
+import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.util.*;
 
 public class Authentication {
@@ -124,6 +126,28 @@ public class Authentication {
 
 
         return result;
+    }
+
+    public static JSONObject getJsonFromRequest(HttpServletRequest req){
+        JSONObject result;
+
+        StringBuilder jb = new StringBuilder();
+        String line;
+        try {
+            BufferedReader reader = req.getReader();
+            while ((line = reader.readLine()) != null)
+                jb.append(line);
+
+
+            result = new JSONObject(jb.toString());
+            System.out.println(result);
+
+            return result;
+        } catch (Exception e) {
+            System.out.println("Error with buffered reader in getJsonFromRequest method.");
+        }
+
+        return new JSONObject();
     }
 
 }
