@@ -55,8 +55,8 @@ public class MongoDAO extends Repository {
 
     private static Properties readPropertiesForDB(String filename) {
         Properties properties = new Properties();
-        //     File file = new File(filename);
-        //   String g = file.getAbsolutePath();
+        File file = new File(filename);
+           String g = file.getAbsolutePath();
         if (!new File(filename).exists()) {
             System.out.println("Properties file do not exist.");
             System.exit(1);

@@ -12,9 +12,11 @@ public class Authentication {
     private static List<User> listOfJuriesOnline;
     private static List<User> admins;
     private static List<Role> roles;
-
     private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
+    private static
+
+
 
     static {
         System.out.println("Starting DB with MONGO");

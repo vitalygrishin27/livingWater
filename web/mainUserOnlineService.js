@@ -23,6 +23,8 @@ function getInfo(){
 			success: function(data){
 				console.log(data);
 				document.getElementById("messageAboutOnline").innerHTML=data.message;
+			    document.getElementById("messageAboutOnline").style.backgroundColor="green";
+			    document.getElementById("connect").style.display="none";
 			/*	if(data.messageBox="ONLINE"){
 					document.getElementById("messageAboutOnline").style.backgroundColor="green";
 					document.getElementById("connect").style.display="none";
@@ -39,6 +41,8 @@ function getInfo(){
 				error: function(){
 					//alert("fewfwef");
 					document.getElementById("messageAboutOnline").innerHTML=data.message;
+					document.getElementById("messageAboutOnline").style.backgroundColor="red";
+					document.getElementById("connect").style.display="block";
 				}
 		  });
   

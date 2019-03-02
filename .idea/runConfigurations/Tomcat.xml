@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tomcat" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" singleton="true">
     <option name="DOC_BASE" value="D:\livingWater\web" />
-    <option name="CONTEXT_PATH" value="" />
+    <option name="CONTEXT_PATH" value="/" />
     <option name="TOMCAT_PORT" value="80" />
     <option name="AJP_PORT" value="8009" />
     <option name="ADMIN_PORT" value="8005" />
