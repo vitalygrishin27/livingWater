@@ -109,16 +109,21 @@ $(document).ready(function() {
 				vocal:document.getElementById("vocal-label").innerHTML,
 				repertoire:document.getElementById("repertoire-label").innerHTML,
 				artistic:document.getElementById("artistic-label").innerHTML,
-				individualy:document.getElementById("individualy-label").innerHTML}),
+				individualy:document.getElementById("individualy-label").innerHTML,
+				member:document.getElementById("member").innerHTML,
+				number:document.getElementById("number").innerHTML.substring(2),
+				category:document.getElementById("category").innerHTML.substring(11)}),
 			success: function(data){
 		console.log(data);
-		reset();
+		if(data.status=="200"){
+				reset();
+		}
+		else{
+			alert(data.message);
+		}
+		
+	
 		}
 		  });
-		  
-		  
-	//	poster.done(function(data){
-		//	 console.log(poster.status); 
-		//  });
-		  
+
 	  }

@@ -3,7 +3,6 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +50,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                             "' want to get count of juries.");
                     resp.setContentType("application/json; charset=UTF-8");
 
-                    List<User> juryList = Authentication.getJuryList();
+                    List<User> juryList = Authentication.getAllJuryFromDB();
                     jsonObjectResponse.append("countOfJuries", juryList.size());
                     System.out.println("There are " + juryList.size() + " of Users in DB. Send to WebSite.");
                     int count = 1;

@@ -6,13 +6,10 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> 
 
-
 <link rel="stylesheet" type="text/css" href="mainUser.css">
 
-<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-	<script src="coockies.js"></script>
+<script src="coockies.js"></script>
+<script src="js.cookie.js"></script>
 
 </head>
 
@@ -32,7 +29,13 @@
 		
 		<div class="container1">
   <div id="member" class="title1">Иванов Иван Иванович</div>
-  <div class="subtitle1"> Категория: АНСАМБЛИ </div>
+  <div class="sub-entry-left">
+  <div id="category" class="subtitle1">Категория: АНСАМБЛИ</div>
+  </div>
+  
+  <div class="sub-entry-right">
+  <div id="number" class="subtitle1">№ 008765</div>
+  </div>
 </div>
 		
 		
@@ -131,8 +134,8 @@
       </div>
 
     </div>
-        <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+       <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script> 
     <script>
         /*!
  * jQuery UI Touch Punch 0.2.3
@@ -320,6 +323,6 @@
 
 	
 			<script src="mainUser.js" ></script>
-			<script type="text/babel" src="mainUserOnlineService.js" ></script>
+			<script src="mainUserOnlineService.js" ></script>
 			</body>
 			</html>

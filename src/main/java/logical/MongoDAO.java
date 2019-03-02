@@ -3,6 +3,7 @@ package logical;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import entity.Role;
 import entity.User;
 import org.bson.Document;
 
@@ -13,10 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class MongoDAO extends Repository{
+public class MongoDAO extends Repository {
     private static MongoClient mongoClient;
     private static MongoDatabase database;
-    private static MongoCollection<Document> users;
+    private static MongoCollection<Document> adminMongoCollection;
+    private static MongoCollection<Document> juryMongoCollection;
+    private static MongoCollection<Document> roleMongoCollection;
+
     private static Document document;
     private static MongoDAO mongoDAO = null;
     private static boolean single;
@@ -40,30 +44,19 @@ public class MongoDAO extends Repository{
                 .valueOf(properties.getProperty("port")));
         database = mongoClient.getDatabase(properties.getProperty("database"));
 
-        boolean creation = true;
-        for (String name : database.listCollectionNames()
-        ) {
-            if (name.equals("users")) {
-                //   System.out.println(name);
-                creation = false;
-                break;
-            }
-        }
-        if (creation) {
-            database.createCollection("users");
-        } else {
-            System.out.println("users in " + database.getName() + " database already exists.");
-        }
 
-        users = database.getCollection("users");
+        juryMongoCollection = database.getCollection("jury");
+        adminMongoCollection = database.getCollection("admin");
+        roleMongoCollection = database.getCollection("role");
+
         document = new Document();
         mongoDAO = this;
     }
 
     private static Properties readPropertiesForDB(String filename) {
         Properties properties = new Properties();
-        File file = new File(filename);
-        String g = file.getAbsolutePath();
+        //     File file = new File(filename);
+        //   String g = file.getAbsolutePath();
         if (!new File(filename).exists()) {
             System.out.println("Properties file do not exist.");
             System.exit(1);
@@ -82,79 +75,39 @@ public class MongoDAO extends Repository{
 
     }
 
- /*   public boolean isUserAlreadyRegistered(String userName) {
-        boolean result = false;
-        Document d1 = users.find(new Document("userName", userName)).first();
-        if (d1 != null) {
-            result = true;
-        }
-        return result;
-    }
-*/
     public boolean isUserAlreadyRegistered(User user) {
         boolean result = false;
-        Document d1 = users.find(new Document("userName", user.getUserName())).first();
-        if (d1 != null) {
+
+
+        Document d1 = juryMongoCollection.find(new Document("userName", user.getUserName())).first();
+        Document d2 = adminMongoCollection.find(new Document("userName", user.getUserName())).first();
+
+        if (d1 != null || d2 != null) {
             result = true;
         }
         return result;
     }
 
-/*
-    public boolean isPasswordRight(String userName, String pass) {
-        boolean result = false;
-        Document d1 = users.find(new Document("userName", userName)).first();
-
-        if (d1 != null) {
-            if (d1.getString("password").equals(pass)) {
-                result = true;
-            }
-        }
-        return result;
-    }*/
 
     public boolean isPasswordRight(User user) {
         boolean result = false;
-        Document d1 = users.find(new Document("userName", user.getUserName())).first();
+        Document d1 = juryMongoCollection.find(new Document("userName", user.getUserName())).first();
+        Document d2 = adminMongoCollection.find(new Document("userName", user.getUserName())).first();
+
         if (d1 != null) {
             if (d1.getString("password").equals(user.getPassword())) {
                 result = true;
             }
+        } else if (d2 != null) {
+            if (d2.getString("password").equals(user.getPassword())) {
+                result = true;
+            }
         }
         return result;
     }
-/*
-    public boolean registerUser(String userName, String password) {
-        boolean result = false;
-        try {
-            users.insertOne(new Document("userName", userName)
-                    .append("password", password)
-                    .append("role", "USER"));
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-*/
-  /*
-    public boolean registerUser(User user) {
-        boolean result = false;
-        try {
-            users.insertOne(new Document("userName", user.getUserName())
-                    .append("password", user.getPassword())
-                    .append("role", user.getRole())
-            );
 
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-*/
     public String getROLE(User user) {
-        Document d1 = users.find(new Document("userName", user.getUserName())).first();
+        Document d1 = juryMongoCollection.find(new Document("userName", user.getUserName())).first();
         if (d1 == null) {
             return "UNKNOWN";
         }
@@ -162,35 +115,59 @@ public class MongoDAO extends Repository{
     }
 
 
-    public List<User> getAllUsersFromDB() {
+    public List<User> getAllFromDBByRole(Role role) {
         List<User> result = new ArrayList<>();
-        for (Document doc : users.find()
+        MongoCollection<Document> currentMongoCollection=null;
+        if(role.getName().equals("ADMIN")) currentMongoCollection=adminMongoCollection;
+        if(role.getName().equals("MANAGER")) currentMongoCollection=adminMongoCollection;
+        if(role.getName().equals("JURY")) currentMongoCollection=juryMongoCollection;
+
+        for (Document doc : currentMongoCollection.find()
         ) {
+
             User user = new User(doc.getString("userName"),
                     doc.getString("password"),
                     doc.getString("firstName"),
                     doc.getString("secondName"),
                     doc.getString("lastName"),
-                    doc.getString("office")
-                    );
-            user.setRole(doc.getString("role"));
-
+                    doc.getString("office"),
+                    role
+            );
             result.add(user);
         }
         return result;
 
     }
 
-    public User getUserByName(String name) {
-        Document user = users.find(new Document("userName", name)).first();
-        User result = new User(user.getString("userName"),
-                                user.getString("password"),
-                user.getString("firstName"),
-                user.getString("secondName"),
-                user.getString("lastName"),
-                user.getString("office"));
-        result.setRole(user.getString("role"));
+    public User getUserByUserName(String userName) {
+        User result = null;
+        Document user = juryMongoCollection.find(new Document("userName", userName)).first();
+      //  if (user == null) user = adminMongoCollection.find(new Document("userName", userName)).first();
+
+        if (user != null) {
+            Role role = new Role(user.getInteger("roleId"), roleMongoCollection
+                    .find(new Document("id", user.get("roleId"))).first().getString(userName));
+
+            result = new User(user.getString("userName"),
+                    user.getString("password"),
+                    user.getString("firstName"),
+                    user.getString("secondName"),
+                    user.getString("lastName"),
+                    user.getString("office"),
+                    role);
+        }
         return result;
     }
 
+    @Override
+    public List<Role> getAllRolesFromDB() {
+        List<Role> result = new ArrayList<>();
+        for (Document doc : roleMongoCollection.find()
+        ) {
+            Role role = new Role(doc.getInteger("id"),
+                    doc.getString("name"));
+            result.add(role);
+        }
+        return result;
+    }
 }

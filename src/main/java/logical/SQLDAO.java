@@ -1,5 +1,6 @@
 package logical;
 
+import entity.Role;
 import entity.User;
 
 import java.util.List;
@@ -35,12 +36,17 @@ public class SQLDAO extends Repository {
     }
 
     @Override
-    public List<User> getAllUsersFromDB() {
+    public List<Role> getAllRolesFromDB() {
         return null;
     }
 
     @Override
-    public User getUserByName(String name) {
+    public List<User> getAllFromDBByRole(Role role) {
+        return null;
+    }
+
+    @Override
+    public User getUserByUserName(String name) {
         return null;
     }
 }

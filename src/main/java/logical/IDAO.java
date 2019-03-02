@@ -1,5 +1,6 @@
 package logical;
 
+import entity.Role;
 import entity.User;
 
 import java.util.List;
@@ -25,8 +26,9 @@ public interface IDAO {
  //   boolean registerUser(User user);
     String getROLE(User user);
 
-    List<User> getAllUsersFromDB();
+    List<Role> getAllRolesFromDB();
+    List<User> getAllFromDBByRole(Role role);
 
-    User getUserByName(String name);
+    User getUserByUserName(String name);
 
 }

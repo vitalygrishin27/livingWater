@@ -8,19 +8,20 @@ import java.util.Objects;
 public class User {
     private final String userName;
     private final String password;
-    private String role;
+    private Role role;
     private String firstName;
     private String secondName;
     private String lastName;
     private String office;
 
-    public User(String userName, String password, String firstName, String secondName, String lastName, String office) {
+    public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.secondName = secondName;
         this.lastName = lastName;
         this.office = office;
+        this.role=role;
     }
 
 
@@ -34,12 +35,11 @@ public class User {
         return password;
     }
 
-
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -48,8 +48,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userName.equals(user.userName) &&
-                password.equals(user.password);
+        return userName.equals(user.userName);
     }
 
     @Override
