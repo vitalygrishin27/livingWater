@@ -37,7 +37,8 @@ function getInfo(){
 			
 				},
 				error: function(){
-					alert("fewfwef");
+					//alert("fewfwef");
+					document.getElementById("messageAboutOnline").innerHTML=data.message;
 				}
 		  });
   
