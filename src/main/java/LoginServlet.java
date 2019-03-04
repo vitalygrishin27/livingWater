@@ -15,11 +15,25 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         System.out.println(Utils.getCurrentTime() + " / Request received to LoginServlet (Jury).");
         JSONObject jsonObject = Utils.getJsonFromRequest(req);
         JSONObject jsonObjectResponse = new JSONObject();
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
+
+
+      // eeeeeeeeTTTT
+        System.out.println("8787");
+        System.out.println("Somebody want to log in.");
+        JSONObject jsonObject;
+        StringBuffer jb = new StringBuffer();
+        String line = null;
+        try {
+            BufferedReader reader = req.getReader();
+            while ((line = reader.readLine()) != null)
+                jb.append(line);
+
 
         User user = Authentication.getRepository().getJuryByUserName(jsonObject.getString("userName"));
 
