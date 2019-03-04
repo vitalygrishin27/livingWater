@@ -1,0 +1,17 @@
+<application>
+  <component name="PropertiesComponent">
+    <property name="ExpandBeforeRunStepsPanel" value="true" />
+    <property name="ExpandRunDashboardTypesPanel" value="false" />
+    <property name="InstalledPluginsSearchHistory" value="S&#10;#enabled" />
+    <property name="PluginConfigurable.selectionTab" value="1" />
+    <property name="SettingsSearchHistory" value="js" />
+    <property name="TrendingPluginsSearchHistory" value="SonarLint&#10;mong&#10;Sma&#10;tag:&quot;Apps, Notification and Interaction Applications&quot;&#10;Smart" />
+    <property name="defaultJdkConfigured" value="true" />
+    <property name="file.chooser.recent.files" value="Z:/livingWater/jscs-plugin.zip&#10;Z:/livingWater/jscs-plugin.jar&#10;Z:/livingWater/jsToolbox.jar&#10;Z:/livingWater/apache-tomcat-8.5.37&#10;Z:/livingWater/apache-tomcat-8.5.37/bin&#10;C:/Program Files/Java/jdk-11.0.2&#10;Z:/" />
+    <property name="file.gist.reindex.count" value="25" />
+    <property name="fileTypeChangedCounter" value="1" />
+    <property name="installed.kotlin.plugin.version" value="1.3.11-release-IJ2018.3-1" />
+    <property name="lastTip" value="1" />
+    <property name="plugins.preselection.path" value="Z:/livingWater" />
+  </component>
+</application>
