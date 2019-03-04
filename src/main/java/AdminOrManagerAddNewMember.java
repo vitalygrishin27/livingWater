@@ -15,7 +15,7 @@ public class AdminOrManagerAddNewMember extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("START ADMIN Registration member SERVLET IS DONE! (GET)");
 
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
+        if (Authentication.isAdminInDbByCookies(req)) {
             req.getRequestDispatcher("/WEB-INF/view/admin/registration/member/registrationMember.html")
                .forward(req, resp);
 
@@ -30,7 +30,7 @@ public class AdminOrManagerAddNewMember extends HttpServlet {
         System.out.println("START Admin registration member SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
+        if (Authentication.isAdminInDbByCookies(req)) {
 
           //  System.out.println("USER Want to log in.");
             StringBuilder jb = new StringBuilder();

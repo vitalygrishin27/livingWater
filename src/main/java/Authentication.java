@@ -72,6 +72,30 @@ public class Authentication {
         return result;
     }
 
+
+    public static boolean isAdminInDbByCookies(HttpServletRequest req) {
+        boolean result = false;
+        if (req.getCookies() != null) {
+
+            for (Cookie co : req.getCookies()
+            ) {
+                String userName = co.getValue();
+                User user = repository.getAdminByUserName(userName);
+                if (user != null) {
+
+                    result = true;
+                    break;
+
+                }
+            }
+        } else {
+            System.out.println(Utils.getCurrentTime() + " / No cookies present.");
+            result = false;
+        }
+        return result;
+    }
+
+
 /*
     public static boolean isAuthenticated(HttpServletRequest req, String role) {
 
@@ -132,16 +156,15 @@ public class Authentication {
         return repository.getAllFromDBByRole(new Role(3, "JURY"));
     }
 
- //   public static User getJuryByUserNameFromDB(String userName) {
- //       return repository.getJuryByUserName(userName);
+    //   public static User getJuryByUserNameFromDB(String userName) {
+    //       return repository.getJuryByUserName(userName);
 
- //   }
+    //   }
 
-  //  public static String getUserNameFromCookies(HttpServletRequest req){
+    //  public static String getUserNameFromCookies(HttpServletRequest req){
 
 
-  //  }
-
+    //  }
 
 
     //  public static String getRoleBySId(String sId) {

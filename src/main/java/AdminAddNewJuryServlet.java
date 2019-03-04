@@ -15,13 +15,12 @@ public class AdminAddNewJuryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("START ADMIN Add new jury SERVLET IS DONE! (GET)");
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
+        if (Authentication.isAdminInDbByCookies(req)) {
             req.getRequestDispatcher("/WEB-INF/view/admin/newJury.html")
                .forward(req, resp);
         } else {
             System.out.println("Not authorization. Return to login page.");
             resp.sendRedirect("/");
-          //  return;
         }
     }
 
@@ -30,7 +29,7 @@ public class AdminAddNewJuryServlet extends HttpServlet {
         System.out.println("START Admin add new Jury SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
+        if (Authentication.isAdminInDbByCookies(req)) {
             StringBuilder jb = new StringBuilder();
             String line;
             try {
