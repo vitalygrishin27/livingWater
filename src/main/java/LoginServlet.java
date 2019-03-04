@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
 
       // eeeeeeeeTTTT
-        System.out.println("8787");
+   /*     System.out.println("8787");
         System.out.println("Somebody want to log in.");
         JSONObject jsonObject;
         StringBuffer jb = new StringBuffer();
@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-
+*/
 
         User user = Authentication.getRepository().getJuryByUserName(jsonObject.getString("userName"));
 
