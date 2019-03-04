@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
-        User user = Authentication.getRepository().getUserByUserName(jsonObject.getString("userName"));
+        User user = Authentication.getRepository().getJuryByUserName(jsonObject.getString("userName"));
 
 
         if (user == null) {

@@ -1,7 +1,6 @@
 package logical;
 
-import entity.Role;
-import entity.User;
+import entity.*;
 
 import java.util.List;
 
@@ -16,19 +15,28 @@ public interface IDAO {
         return new DAO();
     } */
 
-  //  boolean isUserAlreadyRegistered(String userName);
+    //  boolean isUserAlreadyRegistered(String userName);
     boolean isUserAlreadyRegistered(User user);
 
- //   boolean isPasswordRight(String userName, String pass);
+    //   boolean isPasswordRight(String userName, String pass);
     boolean isPasswordRight(User user);
 
- //   boolean registerUser(String userName, String password);
- //   boolean registerUser(User user);
+    //   boolean registerUser(String userName, String password);
+    //   boolean registerUser(User user);
     String getROLE(User user);
 
     List<Role> getAllRolesFromDB();
+
     List<User> getAllFromDBByRole(Role role);
 
-    User getUserByUserName(String name);
+    List<Member> getAllMembersFromDB();
+
+    Address getAddressById(int id);
+
+    Song getSongById(int id);
+
+    User getJuryByUserName(String name);
+
+    User getAdminByUserName(String name);
 
 }

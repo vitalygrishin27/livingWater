@@ -1,3 +1,4 @@
+import entity.Member;
 import entity.Role;
 import entity.User;
 import logical.Repository;
@@ -14,8 +15,8 @@ public class Authentication {
     private static List<Role> roles;
     private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
-    private static
-
+    private static List<Member> listOfMembers;
+    private static Member currentMemberForEvaluation;
 
 
     static {
@@ -24,9 +25,17 @@ public class Authentication {
         listOfJuriesOnline = new ArrayList<>();
         //  admins= repository.getAllAdminsFromDB();
         roles = repository.getAllRolesFromDB();
-
+        listOfMembers = repository.getAllMembersFromDB();
     }
 
+
+    public static Member getCurrentMemberForEvaluation() {
+        return currentMemberForEvaluation;
+    }
+
+    public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
+        Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
+    }
 
     public static void addToListOfJuriesOnline(User user) {
         listOfJuriesOnline.add(user);
@@ -47,10 +56,10 @@ public class Authentication {
             for (Cookie co : req.getCookies()
             ) {
                 String userName = co.getValue();
-                User user = repository.getUserByUserName(userName);
+                User user = repository.getJuryByUserName(userName);
                 if (user != null) {
                     if (listOfJuriesOnline.contains(user)) {
-                        result= true;
+                        result = true;
                         break;
                     }
                     listOfJuriesOnline.add(user);
@@ -123,7 +132,7 @@ public class Authentication {
     }
 
     public User getUserByUserNameFromDB(String userName) {
-        return repository.getUserByUserName(userName);
+        return repository.getJuryByUserName(userName);
 
     }
     //  public static String getRoleBySId(String sId) {
