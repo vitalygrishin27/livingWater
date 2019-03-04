@@ -1,3 +1,5 @@
+import logical.Utils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +12,9 @@ public class AdminMainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START ADMIN SERVLET IS DONE! (GET)");
+        System.out.println(Utils.getCurrentTime() + "START ADMIN SERVLET IS DONE! (GET)");
+
+
         if (Authentication.isAuthenticated(req, "ADMIN")) {
             req.getRequestDispatcher("WEB-INF/view/admin/mainAdmin.html")
                .forward(req, resp);

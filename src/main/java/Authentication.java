@@ -96,7 +96,7 @@ public class Authentication {
                     return true;
                 }
                 System.out.println("but role: " + sIds.get(sId)
-                                                      .getRole() + " is not correct to access the page. STATUS: ERROR.");
+                        .getRole() + " is not correct to access the page. STATUS: ERROR.");
                 return false;
 
             }
@@ -151,7 +151,6 @@ public class Authentication {
             System.out.println("No cookies present.");
             sId = "00000";
         }
-
         if(!sIds.containsKey(sId)){
             int index=sId.indexOf('_');
             String name=sId.substring(0,index);
@@ -174,13 +173,9 @@ public class Authentication {
                 result.add(element);
             }
         }
-
-
-
         return result;
     }
 */
 
 
 }
-
