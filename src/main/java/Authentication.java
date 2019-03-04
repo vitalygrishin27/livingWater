@@ -1,5 +1,8 @@
+import entity.Member;
+import entity.Role;
 import entity.User;
 import logical.Repository;
+import logical.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -7,20 +10,68 @@ import java.util.*;
 
 public class Authentication {
 
-    private static List<User> users;
+    private static List<User> listOfJuriesOnline;
+    private static List<User> admins;
+    private static List<Role> roles;
     private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
+    private static List<Member> listOfMembers;
+    private static Member currentMemberForEvaluation;
+
 
     static {
         System.out.println("Starting DB with MONGO");
-        repository=Repository.getDAO("MONGO");
-        users= repository.getAllUsersFromDB();
+        repository = Repository.getDAO("MONGO");
+        listOfJuriesOnline = new ArrayList<>();
+        //  admins= repository.getAllAdminsFromDB();
+        roles = repository.getAllRolesFromDB();
+        listOfMembers = repository.getAllMembersFromDB();
+    }
 
+
+    public static Member getCurrentMemberForEvaluation() {
+        return currentMemberForEvaluation;
+    }
+
+    public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
+        Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
+    }
+
+    public static void addToListOfJuriesOnline(User user) {
+        listOfJuriesOnline.add(user);
+    }
+
+    public static boolean isJuryOnline(User user) {
+        return listOfJuriesOnline.contains(user);
     }
 
     public static Repository getRepository() {
         return repository;
     }
+
+    public static boolean isJuryOnlineByCoockiesSid(HttpServletRequest req) {
+        boolean result = false;
+        if (req.getCookies() != null) {
+
+            for (Cookie co : req.getCookies()
+            ) {
+                String userName = co.getValue();
+                User user = repository.getJuryByUserName(userName);
+                if (user != null) {
+                    if (listOfJuriesOnline.contains(user)) {
+                        result = true;
+                        break;
+                    }
+                    listOfJuriesOnline.add(user);
+                }
+            }
+        } else {
+            System.out.println(Utils.getCurrentTime() + " / No cookies present.");
+            result = false;
+        }
+        return result;
+    }
+
 
     public static boolean isAuthenticated(HttpServletRequest req, String role) {
 
@@ -44,7 +95,8 @@ public class Authentication {
                     System.out.println("with role: " + role + ". STATUS: OK.");
                     return true;
                 }
-                System.out.println("but role: " + sIds.get(sId).getRole() + " is not correct to access the page. STATUS: ERROR.");
+                System.out.println("but role: " + sIds.get(sId)
+                                                      .getRole() + " is not correct to access the page. STATUS: ERROR.");
                 return false;
 
             }
@@ -64,7 +116,7 @@ public class Authentication {
         if (repository.isUserAlreadyRegistered(user)) {
             if (repository.isPasswordRight(user)) {
 
-                String newSId = user.getUserName() +"_"+
+                String newSId = user.getUserName() + "_" +
                         ((new Random().nextInt(20) + 1) *
                                 (new Random().nextInt(20) + 1));
                 sIds.put(newSId, user);
@@ -75,12 +127,20 @@ public class Authentication {
         return "ERROR";
     }
 
-    public static String getRoleBySId(String sId) {
-
-        return sIds.get(sId).getRole();
+    public static List<User> getAllJuryFromDB() {
+        return repository.getAllFromDBByRole(new Role(3, "JURY"));
     }
 
-    public static void addSIdToMap(HttpServletRequest req){
+    public User getUserByUserNameFromDB(String userName) {
+        return repository.getJuryByUserName(userName);
+
+    }
+    //  public static String getRoleBySId(String sId) {
+//
+    //       return sIds.get(sId).getRole();
+//    }
+
+ /*   public static void addSIdToMap(HttpServletRequest req){
         String sId = "";
         if (req.getCookies() != null) {
             for (Cookie co : req.getCookies()
@@ -102,17 +162,11 @@ public class Authentication {
             System.out.println("sId '"+sId+"' is already presented in sIds.");
             System.out.println("Error with method.");
         }
-    }
+    }*/
 
-    public static String getCurrentTime(){
-        GregorianCalendar gcalendar = new GregorianCalendar();
-        return  gcalendar.get(Calendar.HOUR) + ":"+
-                gcalendar.get(Calendar.MINUTE) + ":"+
-                gcalendar.get(Calendar.SECOND);
 
-    }
-
-    public static List<User> getJuryList(){
+/*
+   public static List<User> getJuryList(){
         List<User> result=new ArrayList<>();
         for (User element:users
              ) {
@@ -125,6 +179,8 @@ public class Authentication {
 
         return result;
     }
+*/
+
 
 }
 
