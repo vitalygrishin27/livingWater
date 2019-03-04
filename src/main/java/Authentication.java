@@ -41,7 +41,7 @@ public class Authentication {
         listOfJuriesOnline.add(user);
     }
 
-    public static boolean isJuryOnline(User user) {
+    public static boolean isJuryAlreadyInListOnline(User user) {
         return listOfJuriesOnline.contains(user);
     }
 
@@ -49,7 +49,7 @@ public class Authentication {
         return repository;
     }
 
-    public static boolean isJuryOnlineByCoockiesSid(HttpServletRequest req) {
+    public static boolean isJuryInDbByCookies(HttpServletRequest req) {
         boolean result = false;
         if (req.getCookies() != null) {
 
@@ -72,7 +72,7 @@ public class Authentication {
         return result;
     }
 
-
+/*
     public static boolean isAuthenticated(HttpServletRequest req, String role) {
 
         String sId = "";
@@ -96,7 +96,7 @@ public class Authentication {
                     return true;
                 }
                 System.out.println("but role: " + sIds.get(sId)
-                                                      .getRole() + " is not correct to access the page. STATUS: ERROR.");
+                        .getRole() + " is not correct to access the page. STATUS: ERROR.");
                 return false;
 
             }
@@ -111,7 +111,7 @@ public class Authentication {
         return true;
     }
 
-
+/*
     public static String getSIdAuthenticate(User user) {
         if (repository.isUserAlreadyRegistered(user)) {
             if (repository.isPasswordRight(user)) {
@@ -126,15 +126,24 @@ public class Authentication {
 
         return "ERROR";
     }
+*/
 
     public static List<User> getAllJuryFromDB() {
         return repository.getAllFromDBByRole(new Role(3, "JURY"));
     }
 
-    public User getUserByUserNameFromDB(String userName) {
-        return repository.getJuryByUserName(userName);
+ //   public static User getJuryByUserNameFromDB(String userName) {
+ //       return repository.getJuryByUserName(userName);
 
-    }
+ //   }
+
+  //  public static String getUserNameFromCookies(HttpServletRequest req){
+
+
+  //  }
+
+
+
     //  public static String getRoleBySId(String sId) {
 //
     //       return sIds.get(sId).getRole();
@@ -151,7 +160,6 @@ public class Authentication {
             System.out.println("No cookies present.");
             sId = "00000";
         }
-
         if(!sIds.containsKey(sId)){
             int index=sId.indexOf('_');
             String name=sId.substring(0,index);
@@ -174,13 +182,9 @@ public class Authentication {
                 result.add(element);
             }
         }
-
-
-
         return result;
     }
 */
 
 
 }
-

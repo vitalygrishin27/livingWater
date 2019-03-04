@@ -16,7 +16,7 @@ public class UserOnlineServlet extends HttpServlet {
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject userJSon = Utils.getJsonFromRequest(req);
 
-        if (!Authentication.isJuryOnlineByCoockiesSid(req)) {
+        if (!Authentication.isJuryInDbByCookies(req)) {
 
             System.out.println(Utils.getCurrentTime() + " / Jury not login in. (POST UserOnlineServlet).");
 

@@ -12,7 +12,7 @@ public class UserMainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START USER SERVLET IS DONE! (GET)");
 
-        if (Authentication.isJuryOnlineByCoockiesSid(req)) {
+        if (Authentication.isJuryInDbByCookies(req)) {
             req.getRequestDispatcher("WEB-INF/view/user/mainUser.html").forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Error with authorization. Redirect to login page. (Jury).");
@@ -27,10 +27,11 @@ public class UserMainServlet extends HttpServlet {
         JSONObject userJson =Utils.getJsonFromRequest(req);
         resp.setContentType("application/json; charset=UTF-8");
 
-        if(!Authentication.isJuryOnlineByCoockiesSid(req)){
+        if(!Authentication.isJuryInDbByCookies(req)){
             jsonObjectResponse.append("status", "401");
-            jsonObjectResponse.append("message", "Вы неавторизованы или Статус подключения - OFF-line.");
+            jsonObjectResponse.append("message", "Вы неавторизованы.");
             System.out.println(Utils.getCurrentTime() + " / Not logged in.");
+            resp.sendRedirect("/");
         }
         else{
 
