@@ -2,8 +2,11 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
-
+@Entity
+@Table (name = "users")
 @JsonPropertyOrder({"userName", "password", "role"})
 public class User {
     private final String userName;
