@@ -13,7 +13,7 @@ public class User {
     private String secondName;
     private String lastName;
     private String office;
-    private int idCurrentMemberForEvaluation;
+    private Member currentMemberForEvaluation;
 
     public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
         this.userName = userName;
@@ -23,15 +23,15 @@ public class User {
         this.lastName = lastName;
         this.office = office;
         this.role=role;
+        this.currentMemberForEvaluation=null;
     }
 
-
-    public int getIdCurrentMemberForEvaluation() {
-        return idCurrentMemberForEvaluation;
+    public Member getCurrentMemberForEvaluation() {
+        return currentMemberForEvaluation;
     }
 
-    public void setIdCurrentMemberForEvaluation(int idCurrentMemberForEvaluation) {
-        this.idCurrentMemberForEvaluation = idCurrentMemberForEvaluation;
+    public void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
+        this.currentMemberForEvaluation = currentMemberForEvaluation;
     }
 
     public String getUserName() {

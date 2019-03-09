@@ -49,13 +49,13 @@ public class Authentication {
 
 
 
-    public static Member getCurrentMemberForEvaluation() {
+ /*   public static Member getCurrentMemberForEvaluation() {
         return currentMemberForEvaluation;
     }
 
     public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
         Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
-    }
+    }*/
 
     public static void addToListOfJuriesOnline(User user) {
         listOfJuriesOnline.add(user);
