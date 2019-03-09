@@ -3,7 +3,6 @@
     <option name="current">
       <TomcatInfo>
         <option name="name" value="Apache Tomcat 8.5.37" />
-        <option name="number" value="1" />
         <option name="path" value="Z:\livingWater\apache-tomcat-8.5.37" />
         <option name="version" value="8.5.37.0" />
       </TomcatInfo>
