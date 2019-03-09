@@ -1,6 +1,7 @@
 $(document).ready(function() {
     // var sId=readCookie('LivingWaterSession');
      getInfoAboutJury();
+     updatePage();
     online();
     update();
 	//hiddenDivIfEmpty()
@@ -79,14 +80,14 @@ function updatePage(){
   				}
   				else{
   				    document.getElementById("jury_1_div").style.display="block";
-  				    if(document.getElementById("jury_1_ping")==0){
+  				    if(parseInt(document.getElementById("jury_1_ping").innerHTML)==0){
   				        document.getElementById("jury_1_div").className="col-4 princing-item red"
   				   // class="col-4 princing-item red"
   				    }
-  				    if(document.getElementById("jury_1_ping")>80){
+  				    if(parseInt(document.getElementById("jury_1_ping").innerHTML)>80){
   				    document.getElementById("jury_1_div").className="col-4 princing-item blue"
   				    }
-  				     if(document.getElementById("jury_1_ping")>0 && document.getElementById("jury_1_ping")<=80){
+  				     if(parseInt(document.getElementById("jury_1_ping").innerHTML)>0 && parseInt(document.getElementById("jury_1_ping").innerHTML)<=80){
   				    document.getElementById("jury_1_div").className="col-4 princing-item green"
   				    }
   				}

@@ -6,6 +6,8 @@ import logical.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Authentication {
@@ -17,7 +19,7 @@ public class Authentication {
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
-    private static Map<String, Long> juryPingMap;
+    private static Map<String, LocalDateTime> juryPingMap;
 
 
     static {
@@ -31,18 +33,19 @@ public class Authentication {
     }
 
     public static void ping(String juryUserName) {
-        juryPingMap.put(juryUserName,(new Date()).getTime());
+
+        juryPingMap.put(juryUserName, LocalDateTime.now());
     }
 
-    public static Integer getSecondsAfterPingJury(String juryUserName){
+    public static Integer getSecondsAfterPingJury(String juryUserName) {
         int timeElapseAfterPing;
 
-            if(juryPingMap.containsKey(juryUserName)) {
-               timeElapseAfterPing = (int)(new Date().getTime() - juryPingMap.get(juryUserName));
-            }
-            else{
-                timeElapseAfterPing=0;
-            }
+
+        if (juryPingMap.containsKey(juryUserName)) {
+            timeElapseAfterPing = LocalDateTime.now().compareTo(juryPingMap.get(juryUserName));
+        } else {
+            timeElapseAfterPing = 0;
+        }
 
         return timeElapseAfterPing;
     }
