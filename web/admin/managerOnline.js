@@ -82,7 +82,7 @@ function updatePage(){
   				    document.getElementById("jury_1_div").style.display="block";
   				    if(parseInt(document.getElementById("jury_1_ping").innerHTML)==0){
   				        document.getElementById("jury_1_div").className="col-4 princing-item red"
-  				   // class="col-4 princing-item red"
+  				   // class="col-4 princing-item red"8
   				    }
   				    if(parseInt(document.getElementById("jury_1_ping").innerHTML)>80){
   				    document.getElementById("jury_1_div").className="col-4 princing-item blue"
