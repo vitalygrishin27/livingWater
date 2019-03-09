@@ -1,4 +1,5 @@
 import entity.User;
+import logical.Utils;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -15,67 +16,50 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START ADMIN ONLINE SERVLET IS DONE! (GET)");
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
+        System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! (GET)");
+        if (Authentication.isAdminInDbByCookies(req)) {
             req.getRequestDispatcher("/WEB-INF/view/admin/managerOnline.html")
-               .forward(req, resp);
+                    .forward(req, resp);
         } else {
-            System.out.println("Not authorization. Return to login page.");
+            System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
             resp.sendRedirect("/");
-            //  return;
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START ADMIN ONLINE SERVLET IS DONE! POST");
+        System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
+        JSONObject userJson = Utils.getJsonFromRequest(req);
         JSONObject jsonObjectResponse = new JSONObject();
-        if (Authentication.isAuthenticated(req, "ADMIN") || Authentication.isAuthenticated(req, "MANAGER")) {
-            StringBuilder jb = new StringBuilder();
-            String line;
-            try {
-                BufferedReader reader = req.getReader();
-                while ((line = reader.readLine()) != null)
-                    jb.append(line);
+      //  System.out.println(userJson);
 
+        if (Authentication.isAdminInDbByCookies(req)) {
+            if (userJson.getString("command").equals("getCountOfJuries")) {
+                System.out.println("Admin '" + userJson.getString("sId") +
+                        "' want to get count of juries.");
+                resp.setContentType("application/json; charset=UTF-8");
 
-                JSONObject userJSon = new JSONObject(jb.toString());
+                List<User> juryList = Authentication.getAllJuryFromDB();
 
-
-                System.out.println(userJSon);
-
-                if (userJSon.getString("command").equals("getCountOfJuries")) {
-                    System.out.println("sID with '" + userJSon.getString("sId") +
-                            "' want to get count of juries.");
-                    resp.setContentType("application/json; charset=UTF-8");
-
-                    List<User> juryList = Authentication.getAllJuryFromDB();
-                    jsonObjectResponse.append("countOfJuries", juryList.size());
-                    System.out.println("There are " + juryList.size() + " of Users in DB. Send to WebSite.");
-                    int count = 1;
-                    for (User element : juryList
-                    ) {
-                        jsonObjectResponse.append("jury_" + count + "_name", element.getLastName() + " " + element
-                                .getFirstName() + " " + element.getSecondName());
-                        jsonObjectResponse.append("jury_" + count +"_office",element.getOffice());
-                        count++;
-                    }
-
-                    jsonObjectResponse.append("status", "200");
-                    jsonObjectResponse.append("message", "Зарегистрированных в БД членов жюри - " + juryList.size());
-
-
-                    resp.getWriter().write(String.valueOf(jsonObjectResponse));
-
-                    resp.flushBuffer();
-
+                jsonObjectResponse.append("countOfJuries", juryList.size());
+                System.out.println("There are " + juryList.size() + " of Users in DB. Send to WebSite.");
+                int count = 1;
+                for (User element : juryList
+                ) {
+                    jsonObjectResponse.append("jury_" + count + "_name", element.getLastName() + " " + element
+                            .getFirstName() + " " + element.getSecondName());
+                    jsonObjectResponse.append("jury_" + count + "_office", element.getOffice());
+                    jsonObjectResponse.append("jury_"+count+"_ping", Authentication.getSecondsAfterPingJury(element.getUserName()));
+                    count++;
                 }
 
-            } catch (Exception e) {
-                System.out.println("Error with buffered reader.");
-            }
+                jsonObjectResponse.append("status", "200");
+                jsonObjectResponse.append("message", "Зарегистрированных в БД членов жюри - " + juryList.size());
 
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+                resp.flushBuffer();
+            }
 
         } else {
             System.out.println("Access to page AdminOnline (POST) is denided. Authorization error.");
@@ -89,19 +73,5 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
         }
 
     }
-
-    private String messageIsJsonCorrect(JSONObject json) {
-        int countNotFilledFields = 0;
-        String resultMessage = "OK";
-        for (String element : json.keySet()
-        ) {
-            if (json.getString(element).equals(""))
-                resultMessage = "Не заполнено " + (++countNotFilledFields) + " обязательных полей.";
-        }
-        return resultMessage;
-
-
-    }
-
 
 }

@@ -1,81 +1,147 @@
 $(document).ready(function() {
-    getCountOfJuries()
+    // var sId=readCookie('LivingWaterSession');
+     getInfoAboutJury();
+    online();
+    update();
 	//hiddenDivIfEmpty()
+
+
 
 })
 
 
-function getCountOfJuries(){		
+function online(){
+	setInterval(()=> getInfoAboutJury(), 10000)
+	}
+
+function update(){
+    setInterval(()=> updatePage(), 11000)
+}
+
+
+function getInfoAboutJury(){
 	var sId=getCookie('LivingWaterSession');
-  console.log("function - getCountOfJyries");
-  
-  
-fetch('/admin/online', {
-    method: 'POST',
+  console.log("function - getCountOfJuries");
 
-    body: JSON.stringify({sId:sId, command:"getCountOfJuries"})
+  $.ajax({
+  			type: 'POST',
+  			url: "/admin/online",
+  			data: JSON.stringify({sId:sId, command:"getCountOfJuries"}),
+  			success: function(data){
+  				console.log(data);
+  				document.getElementById("jury_1_name").innerHTML=data.jury_1_name;
+  				document.getElementById("jury_2_name").innerHTML=data.jury_2_name;
+            	document.getElementById("jury_3_name").innerHTML=data.jury_3_name;
+            	document.getElementById("jury_4_name").innerHTML=data.jury_4_name;
+            	document.getElementById("jury_5_name").innerHTML=data.jury_5_name;
+            	document.getElementById("jury_6_name").innerHTML=data.jury_6_name;
+            	document.getElementById("jury_7_name").innerHTML=data.jury_7_name;
+            	document.getElementById("jury_8_name").innerHTML=data.jury_8_name;
+
+            	document.getElementById("jury_1_office").innerHTML=data.jury_1_office;
+            	document.getElementById("jury_2_office").innerHTML=data.jury_2_office;
+            	document.getElementById("jury_3_office").innerHTML=data.jury_3_office;
+            	document.getElementById("jury_4_office").innerHTML=data.jury_4_office;
+            	document.getElementById("jury_5_office").innerHTML=data.jury_5_office;
+            	document.getElementById("jury_6_office").innerHTML=data.jury_6_office;
+            	document.getElementById("jury_7_office").innerHTML=data.jury_7_office;
+            	document.getElementById("jury_8_office").innerHTML=data.jury_8_office;
+
+                document.getElementById("jury_1_ping").innerHTML=data.jury_1_ping;
+  				document.getElementById("jury_2_ping").innerHTML=data.jury_2_ping;
+            	document.getElementById("jury_3_ping").innerHTML=data.jury_3_ping;
+            	document.getElementById("jury_4_ping").innerHTML=data.jury_4_ping;
+            	document.getElementById("jury_5_ping").innerHTML=data.jury_5_ping;
+            	document.getElementById("jury_6_ping").innerHTML=data.jury_6_ping;
+            	document.getElementById("jury_7_ping").innerHTML=data.jury_7_ping;
+            	document.getElementById("jury_8_ping").innerHTML=data.jury_8_ping;
 
 
-  })
-  .then(response => response.json())
-  .then(function (data) {
-   
 
 
- //  document.getElementById("messageAboutOnline").innerHTML=data.message;
-	console.log(data.message);
-	console.log(data);
-	
-//	for(var i=1; i<=data.countOfJuries; i++){
-	//console.log(data.jury_+{i}+lastName);
-	//fillPageWithNameOfJuries(i,data.jury_&{i}&_lastName);
-	
-	//alert(jury_3_name.value);
-	//if(data.jury_3_name.value==null){
-//		alert("kugiug");
-//	}
-	
-	document.getElementById("jury_1_name").innerHTML=data.jury_1_name;
-	document.getElementById("jury_2_name").innerHTML=data.jury_2_name;
-	document.getElementById("jury_3_name").innerHTML=data.jury_3_name;
-	document.getElementById("jury_4_name").innerHTML=data.jury_4_name;
-	document.getElementById("jury_5_name").innerHTML=data.jury_5_name;
-	document.getElementById("jury_6_name").innerHTML=data.jury_6_name;
-	document.getElementById("jury_7_name").innerHTML=data.jury_7_name;
-	document.getElementById("jury_8_name").innerHTML=data.jury_8_name;
 
-	document.getElementById("jury_1_office").innerHTML=data.jury_1_office;
-	document.getElementById("jury_2_office").innerHTML=data.jury_2_office;
-	document.getElementById("jury_3_office").innerHTML=data.jury_3_office;
-	document.getElementById("jury_4_office").innerHTML=data.jury_4_office;
-	document.getElementById("jury_5_office").innerHTML=data.jury_5_office;
-	document.getElementById("jury_6_office").innerHTML=data.jury_6_office;
-	document.getElementById("jury_7_office").innerHTML=data.jury_7_office;
-	document.getElementById("jury_8_office").innerHTML=data.jury_8_office;
-	
-	//}
-	var result=data.jury_2_office;
-	
-	
-	
-	}).then(function(result){
-		alert("iugiuh");
-	})
-	
-	
-	
-	
-	.catch(function(){
-		document.getElementById("messageAboutOnline").innerHTML="Внимание. Статус - OFFline.";
-	console.log('Request succeeded with JSON response', data);
-	});
- 
-  }
-  function hiddenDivIfEmpty(){
-	  alert("end");
-  }
-  
- // function fillPageWithNameOfJuries(i,name,office){
-//	  alert(i,name,office);
- // }
+
+  				},
+  			error: function(data){
+  			console.log("Error with getCountOfJuries");
+  			}
+
+  		  });
+ }
+
+
+function updatePage(){
+
+
+
+  				if(document.getElementById("jury_1_name").innerHTML=="undefined"){
+  				document.getElementById("jury_1_div").style.display="none";
+  				}
+  				else{
+  				    document.getElementById("jury_1_div").style.display="block";
+  				    if(document.getElementById("jury_1_ping")==0){
+  				        document.getElementById("jury_1_div").className="col-4 princing-item red"
+  				   // class="col-4 princing-item red"
+  				    }
+  				    if(document.getElementById("jury_1_ping")>80){
+  				    document.getElementById("jury_1_div").className="col-4 princing-item blue"
+  				    }
+  				     if(document.getElementById("jury_1_ping")>0 && document.getElementById("jury_1_ping")<=80){
+  				    document.getElementById("jury_1_div").className="col-4 princing-item green"
+  				    }
+  				}
+
+  				if(document.getElementById("jury_2_name").innerHTML=="undefined"){
+                 document.getElementById("jury_2_div").style.display="none";
+                 }
+                 else{
+                 document.getElementById("jury_2_div").style.display="block";
+                 }
+
+                 if(document.getElementById("jury_3_name").innerHTML=="undefined"){
+                   document.getElementById("jury_3_div").style.display="none";
+                   }
+                   else{
+                   document.getElementById("jury_3_div").style.display="block";
+                    }
+
+  				if(document.getElementById("jury_4_name").innerHTML=="undefined"){
+                  document.getElementById("jury_4_div").style.display="none";
+                  }
+                  else{
+                   document.getElementById("jury_4_div").style.display="block";
+                   }
+
+  				if(document.getElementById("jury_5_name").innerHTML=="undefined"){
+                  document.getElementById("jury_5_div").style.display="none";
+                  }
+                  else{
+                   document.getElementById("jury_5_div").style.display="block";
+                   }
+
+                if(document.getElementById("jury_6_name").innerHTML=="undefined"){
+                  document.getElementById("jury_6_div").style.display="none";
+                  }
+                  else{
+                   document.getElementById("jury_6_div").style.display="block";
+                   }
+
+                if(document.getElementById("jury_7_name").innerHTML=="undefined"){
+                  document.getElementById("jury_7_div").style.display="none";
+                  }
+                  else{
+                   document.getElementById("jury_7_div").style.display="block";
+                   }
+
+                if(document.getElementById("jury_8_name").innerHTML=="undefined"){
+                  document.getElementById("jury_8_div").style.display="none";
+                  }
+                  else{
+                   document.getElementById("jury_8_div").style.display="block";
+                   }
+
+
+
+}
+
   
