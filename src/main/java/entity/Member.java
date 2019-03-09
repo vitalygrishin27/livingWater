@@ -58,6 +58,8 @@ public class Member {
         return id;
     }
 
+    public Date getBirth() { return birth; }
+
     public String getLastName() {
         return lastName;
     }
