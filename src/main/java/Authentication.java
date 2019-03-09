@@ -17,16 +17,36 @@ public class Authentication {
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
+    private static Map<String, Long> juryPingMap;
 
 
     static {
         System.out.println("Starting DB with MONGO");
         repository = Repository.getDAO("MONGO");
         listOfJuriesOnline = new ArrayList<>();
-        //  admins= repository.getAllAdminsFromDB();
         roles = repository.getAllRolesFromDB();
         listOfMembers = repository.getAllMembersFromDB();
+        juryPingMap = new HashMap<>();
+
     }
+
+    public static void ping(String juryUserName) {
+        juryPingMap.put(juryUserName,(new Date()).getTime());
+    }
+
+    public static Integer getSecondsAfterPingJury(String juryUserName){
+        int timeElapseAfterPing;
+
+            if(juryPingMap.containsKey(juryUserName)) {
+               timeElapseAfterPing = (int)(new Date().getTime() - juryPingMap.get(juryUserName));
+            }
+            else{
+                timeElapseAfterPing=0;
+            }
+
+        return timeElapseAfterPing;
+    }
+
 
 
     public static Member getCurrentMemberForEvaluation() {

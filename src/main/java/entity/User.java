@@ -13,6 +13,7 @@ public class User {
     private String secondName;
     private String lastName;
     private String office;
+    private int idCurrentMemberForEvaluation;
 
     public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
         this.userName = userName;
@@ -25,6 +26,13 @@ public class User {
     }
 
 
+    public int getIdCurrentMemberForEvaluation() {
+        return idCurrentMemberForEvaluation;
+    }
+
+    public void setIdCurrentMemberForEvaluation(int idCurrentMemberForEvaluation) {
+        this.idCurrentMemberForEvaluation = idCurrentMemberForEvaluation;
+    }
 
     public String getUserName() {
         return userName;

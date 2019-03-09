@@ -32,7 +32,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         JSONObject userJson = Utils.getJsonFromRequest(req);
         JSONObject jsonObjectResponse = new JSONObject();
-        System.out.println(userJson);
+      //  System.out.println(userJson);
 
         if (Authentication.isAdminInDbByCookies(req)) {
             if (userJson.getString("command").equals("getCountOfJuries")) {
@@ -50,6 +50,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     jsonObjectResponse.append("jury_" + count + "_name", element.getLastName() + " " + element
                             .getFirstName() + " " + element.getSecondName());
                     jsonObjectResponse.append("jury_" + count + "_office", element.getOffice());
+                    jsonObjectResponse.append("jury_"+count+"_ping", Authentication.getSecondsAfterPingJury(element.getUserName()));
                     count++;
                 }
 

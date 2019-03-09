@@ -2,6 +2,7 @@ $(document).ready(function() {
     // var sId=readCookie('LivingWaterSession');
      getInfoAboutJury();
     online();
+    update();
 	//hiddenDivIfEmpty()
 
 
@@ -12,6 +13,10 @@ $(document).ready(function() {
 function online(){
 	setInterval(()=> getInfoAboutJury(), 10000)
 	}
+
+function update(){
+    setInterval(()=> updatePage(), 11000)
+}
 
 
 function getInfoAboutJury(){
@@ -42,11 +47,48 @@ function getInfoAboutJury(){
             	document.getElementById("jury_7_office").innerHTML=data.jury_7_office;
             	document.getElementById("jury_8_office").innerHTML=data.jury_8_office;
 
+                document.getElementById("jury_1_ping").innerHTML=data.jury_1_ping;
+  				document.getElementById("jury_2_ping").innerHTML=data.jury_2_ping;
+            	document.getElementById("jury_3_ping").innerHTML=data.jury_3_ping;
+            	document.getElementById("jury_4_ping").innerHTML=data.jury_4_ping;
+            	document.getElementById("jury_5_ping").innerHTML=data.jury_5_ping;
+            	document.getElementById("jury_6_ping").innerHTML=data.jury_6_ping;
+            	document.getElementById("jury_7_ping").innerHTML=data.jury_7_ping;
+            	document.getElementById("jury_8_ping").innerHTML=data.jury_8_ping;
+
+
+
+
+
+
+  				},
+  			error: function(data){
+  			console.log("Error with getCountOfJuries");
+  			}
+
+  		  });
+ }
+
+
+function updatePage(){
+
+
+
   				if(document.getElementById("jury_1_name").innerHTML=="undefined"){
   				document.getElementById("jury_1_div").style.display="none";
   				}
   				else{
-  				document.getElementById("jury_1_div").style.display="block";
+  				    document.getElementById("jury_1_div").style.display="block";
+  				    if(document.getElementById("jury_1_ping")==0){
+  				        document.getElementById("jury_1_div").className="col-4 princing-item red"
+  				   // class="col-4 princing-item red"
+  				    }
+  				    if(document.getElementById("jury_1_ping")>80){
+  				    document.getElementById("jury_1_div").className="col-4 princing-item blue"
+  				    }
+  				     if(document.getElementById("jury_1_ping")>0 && document.getElementById("jury_1_ping")<=80){
+  				    document.getElementById("jury_1_div").className="col-4 princing-item green"
+  				    }
   				}
 
   				if(document.getElementById("jury_2_name").innerHTML=="undefined"){
@@ -99,13 +141,7 @@ function getInfoAboutJury(){
                    }
 
 
-  				},
-  			error: function(data){
-  			console.log("Error with getCountOfJuries");
-  			}
 
-  		  });
- }
-
+}
 
   
