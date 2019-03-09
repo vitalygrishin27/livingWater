@@ -110,8 +110,8 @@ $(document).ready(function() {
 				repertoire:document.getElementById("repertoire-label").innerHTML,
 				artistic:document.getElementById("artistic-label").innerHTML,
 				individualy:document.getElementById("individualy-label").innerHTML,
-				member:document.getElementById("member").innerHTML,
-				number:document.getElementById("number").innerHTML.substring(2),
+				memberName:document.getElementById("member").innerHTML,
+				memberId:document.getElementById("number").innerHTML.substring(2),
 				category:document.getElementById("category").innerHTML.substring(11)}),
 			success: function(data){
 		console.log(data);

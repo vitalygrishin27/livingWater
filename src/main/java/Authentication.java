@@ -6,6 +6,8 @@ import logical.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Authentication {
@@ -17,25 +19,46 @@ public class Authentication {
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
+    private static Map<String, LocalDateTime> juryPingMap;
 
 
     static {
         System.out.println("Starting DB with MONGO");
         repository = Repository.getDAO("MONGO");
         listOfJuriesOnline = new ArrayList<>();
-        //  admins= repository.getAllAdminsFromDB();
         roles = repository.getAllRolesFromDB();
         listOfMembers = repository.getAllMembersFromDB();
+        juryPingMap = new HashMap<>();
+
+    }
+
+    public static void ping(String juryUserName) {
+
+        juryPingMap.put(juryUserName, LocalDateTime.now());
+    }
+
+    public static Integer getSecondsAfterPingJury(String juryUserName) {
+        int timeElapseAfterPing;
+
+
+        if (juryPingMap.containsKey(juryUserName)) {
+            timeElapseAfterPing = LocalDateTime.now().compareTo(juryPingMap.get(juryUserName));
+        } else {
+            timeElapseAfterPing = 0;
+        }
+
+        return timeElapseAfterPing;
     }
 
 
-    public static Member getCurrentMemberForEvaluation() {
+
+ /*   public static Member getCurrentMemberForEvaluation() {
         return currentMemberForEvaluation;
     }
 
     public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
         Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
-    }
+    }*/
 
     public static void addToListOfJuriesOnline(User user) {
         listOfJuriesOnline.add(user);
@@ -71,6 +94,30 @@ public class Authentication {
         }
         return result;
     }
+
+
+    public static boolean isAdminInDbByCookies(HttpServletRequest req) {
+        boolean result = false;
+        if (req.getCookies() != null) {
+
+            for (Cookie co : req.getCookies()
+            ) {
+                String userName = co.getValue();
+                User user = repository.getAdminByUserName(userName);
+                if (user != null) {
+
+                    result = true;
+                    break;
+
+                }
+            }
+        } else {
+            System.out.println(Utils.getCurrentTime() + " / No cookies present.");
+            result = false;
+        }
+        return result;
+    }
+
 
 /*
     public static boolean isAuthenticated(HttpServletRequest req, String role) {
@@ -132,16 +179,15 @@ public class Authentication {
         return repository.getAllFromDBByRole(new Role(3, "JURY"));
     }
 
- //   public static User getJuryByUserNameFromDB(String userName) {
- //       return repository.getJuryByUserName(userName);
+    //   public static User getJuryByUserNameFromDB(String userName) {
+    //       return repository.getJuryByUserName(userName);
 
- //   }
+    //   }
 
-  //  public static String getUserNameFromCookies(HttpServletRequest req){
+    //  public static String getUserNameFromCookies(HttpServletRequest req){
 
 
-  //  }
-
+    //  }
 
 
     //  public static String getRoleBySId(String sId) {

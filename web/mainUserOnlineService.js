@@ -25,6 +25,10 @@ function getInfo(){
 				document.getElementById("messageAboutOnline").innerHTML=data.message;
 			    document.getElementById("messageAboutOnline").style.backgroundColor="green";
 			    document.getElementById("connect").style.display="none";
+                document.getElementById("number").innerHTML="№ "+data.memberId;
+                document.getElementById("member").innerHTML=data.memberName;
+                document.getElementById("category").innerHTML="КАТЕГОРИЯ: "+data.memberName;
+
 			/*	if(data.messageBox="ONLINE"){
 					document.getElementById("messageAboutOnline").style.backgroundColor="green";
 					document.getElementById("connect").style.display="none";

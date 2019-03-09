@@ -36,6 +36,8 @@ public class UserMainServlet extends HttpServlet {
         else{
 
             if (messageIsJsonCorrect(userJson).equals("OK")) {
+
+
                 // TODO: 27.02.2019 Занесение оценок в БД
                 System.out.println(Utils.getCurrentTime() +  " / Mark is set successful.");
                 jsonObjectResponse.append("status", "200");
@@ -60,10 +62,16 @@ public class UserMainServlet extends HttpServlet {
         if (json.getString("repertoire").equals("0")) resultMessage += " репертуар,";
         if (json.getString("artistic").equals("0")) resultMessage += " артистизм,";
         if (json.getString("individualy").equals("0")) resultMessage += " индивидуальность,";
+        resultMessage=resultMessage.substring(0,resultMessage.length()-2)+".";
+        if (json.getString("memberId").equals("undefined")) resultMessage+= " + Неверный номер участника.";
 
         if (resultMessage.length() < 25) resultMessage = "OK";
         return resultMessage;
 
+    }
+
+    private boolean verifyMemberData(){
+        return true;
     }
 
 }

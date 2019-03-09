@@ -1,5 +1,7 @@
+import entity.User;
 import logical.Utils;
 import org.json.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -22,12 +24,28 @@ public class UserOnlineServlet extends HttpServlet {
 
             jsonObjectResponse.append("status", "ERROR");
             jsonObjectResponse.append("message", "Login out");
-         //   resp.addCookie(new Cookie("LivingWaterSession", "ERROR"));
+
+            //   resp.addCookie(new Cookie("LivingWaterSession", "ERROR"));
 
         } else {
-            System.out.println(Utils.getCurrentTime() + " / Jury '" + userJSon.getString("sId") + "' is ONLINE. ");
+            System.out.println(Utils.getCurrentTime() + " / Jury '" + userJSon.getString("sId") + "' is ONLINE with Ping.");
+            Authentication.ping(userJSon.getString("sId"));
             jsonObjectResponse.append("status", "200");
             jsonObjectResponse.append("message", "ONLINE");
+            for (User element: Authentication.getAllJuryFromDB()
+                 ) {
+                if(element.getUserName().equals(userJSon.getString("sId"))){
+                    if(element.getCurrentMemberForEvaluation()!=null) {
+                        jsonObjectResponse.append("memberId", element.getCurrentMemberForEvaluation().getId());
+                        jsonObjectResponse.append("memberName", element.getCurrentMemberForEvaluation().getLastName() + element.getCurrentMemberForEvaluation().getFirstName());
+                        jsonObjectResponse.append("category", element.getCurrentMemberForEvaluation().getCategory().toString());
+
+                    }
+                }
+            }
+
+
+
         }
 
         System.out.println(jsonObjectResponse);
