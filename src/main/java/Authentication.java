@@ -21,7 +21,11 @@ public class Authentication {
 
     static {
         System.out.println("Starting DB with MONGO");
+       /* DEV-7.03-Start
         repository = Repository.getDAO("MONGO");
+       */
+        repository = Repository.getDAO("SQL");
+       // DEV-7.03-End
         listOfJuriesOnline = new ArrayList<>();
         //  admins= repository.getAllAdminsFromDB();
         roles = repository.getAllRolesFromDB();

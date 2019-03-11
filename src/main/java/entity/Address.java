@@ -1,6 +1,13 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Embeddable
+@Table(name = "address")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String country;
     private String region;

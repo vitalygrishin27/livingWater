@@ -1,22 +1,49 @@
 package logical;
 
 import entity.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class SQLDAO extends Repository {
-    private static boolean single=false;
+    private static boolean single = false;
     private static SQLDAO sqldao;
+
     public static Repository getDAO() {
         if (single) {
             return sqldao;
         }
-        single=true;
+        single = true;
         return new SQLDAO();
     }
 
-    private SQLDAO(){
-//Конструктор
+    private SQLDAO() {
+        //Конструктор
+        //DEV- 7.03 -Start
+        getSQLSession();
+        //DEV - 7.03 - End
+    }
+
+    private void getSQLSession() {
+        Session session = null;
+        SessionFactory getSession = null;
+        SessionMaker.getInstance();
+        try {
+            getSession = SessionMaker.getSession();
+            session = getSession.openSession();
+            Transaction transaction = session.beginTransaction();
+         // ------------------
+            transaction.commit();
+        } catch (Exception e) {
+            e.getStackTrace();
+        } finally {
+            if (session != null) session.close();
+            if (getSession != null) getSession.close();
+        }
+
     }
 
     @Override

@@ -1,7 +1,7 @@
 package entity;
 
 public enum MarkCriteria {
-   VOCAL,
+    VOCAL,
     REPERTOIRE,
     ARTISTIC,
     INDIVIDUALY

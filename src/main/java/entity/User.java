@@ -2,15 +2,19 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
 @Entity
 @Table (name = "users")
+@Embeddable
 @JsonPropertyOrder({"userName", "password", "role"})
 public class User {
     private final String userName;
     private final String password;
+    @Embedded
     private Role role;
     private String firstName;
     private String secondName;

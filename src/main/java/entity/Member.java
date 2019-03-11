@@ -1,9 +1,14 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "members")
 public class Member {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String lastName;
     private String firstName;
@@ -11,13 +16,20 @@ public class Member {
     private String ensembleName;
     private Date birth;
     private int countOfMembers;
+    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(length = 1)
     private Gender gender;
+    @Embedded
     private Address address;
     private String passport;
     private String INN;
     private String boss;
+    @Embedded
     private Category category;
+    @Embedded
     private Song firstSong;
+    @Embedded
     private Song secondSong;
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
@@ -32,23 +44,23 @@ public class Member {
 
     public static Member createMember(BuilderMember builderMember) {
         Member member = new Member();
-        member.id=builderMember.getId();
-        member.lastName=builderMember.getLastName();
-        member.firstName=builderMember.getFirstName();
-        member.secondName=builderMember.getSecondName();
-        member.birth=builderMember.getBirth();
-        member.ensembleName=builderMember.getEnsembleName();
-        member.countOfMembers=builderMember.getCountOfMembers();
-        member.gender=builderMember.getGender();
-        member.address=builderMember.getAddress();
-        member.passport=builderMember.getPassport();
-        member.INN=builderMember.getINN();
-        member.boss=builderMember.getBoss();
-        member.category =builderMember.getCategory();
-        member.firstSong=builderMember.getFirstSong();
-        member.secondSong=builderMember.getSecondSong();
-        member.registration=builderMember.isRegistration();
-        member.turnNumber=builderMember.getTurnNumber();
+        member.id = builderMember.getId();
+        member.lastName = builderMember.getLastName();
+        member.firstName = builderMember.getFirstName();
+        member.secondName = builderMember.getSecondName();
+        member.birth = builderMember.getBirth();
+        member.ensembleName = builderMember.getEnsembleName();
+        member.countOfMembers = builderMember.getCountOfMembers();
+        member.gender = builderMember.getGender();
+        member.address = builderMember.getAddress();
+        member.passport = builderMember.getPassport();
+        member.INN = builderMember.getINN();
+        member.boss = builderMember.getBoss();
+        member.category = builderMember.getCategory();
+        member.firstSong = builderMember.getFirstSong();
+        member.secondSong = builderMember.getSecondSong();
+        member.registration = builderMember.isRegistration();
+        member.turnNumber = builderMember.getTurnNumber();
         return member;
 
     }
