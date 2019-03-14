@@ -17,21 +17,12 @@ public class AdminMainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN SERVLET IS DONE! (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
-            req.getRequestDispatcher("WEB-INF/view/admin/mainAdmin.html")
+            req.getRequestDispatcher("/admin/mainMenu/mainAdmin.html")
                     .forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
-            resp.sendRedirect("/");
+            resp.sendRedirect("/adminLogin");
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START SERVLET IS DONE! POST");
-        resp.setCharacterEncoding("UTF-8");
-        //  resp.sendRedirect("/admin");
-        //req.getRequestDispatcher("WEB-INF/view/admin.html").forward(req,resp);
-        //    doGet(req,resp);
-        // super.doPost(req, resp);
-    }
 }

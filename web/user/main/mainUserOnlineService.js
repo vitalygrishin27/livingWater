@@ -1,4 +1,5 @@
 ﻿$(document).ready(function() {
+    getInfo();
     online();
 	
 });
@@ -44,7 +45,7 @@ function getInfo(){
 				},
 				error: function(){
 					//alert("fewfwef");
-					document.getElementById("messageAboutOnline").innerHTML=data.message;
+					document.getElementById("messageAboutOnline").innerHTML="OFFLINE";
 					document.getElementById("messageAboutOnline").style.backgroundColor="red";
 					document.getElementById("connect").style.display="block";
 				}

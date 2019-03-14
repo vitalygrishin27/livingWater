@@ -2,31 +2,35 @@
 	var sId=getCookie('LivingWaterSession');
 	console.log("addNewJury");
   
-  
-fetch('/admin/jury', {
-    method: 'POST',
 
-    body: JSON.stringify({sId:sId, 
-						command:"addNewJury",
-						firstName: document.getElementById("firstName").value,
-						secondName: document.getElementById("secondName").value,
-						lastName: document.getElementById("lastName").value,
-						office: document.getElementById("office").value,
-						login: document.getElementById("login").value,
-						password: document.getElementById("password").value,
-						
-	})
+  $.ajax({
+  			 type: 'POST',
+  			url: "/admin/newJury",
+  			data: JSON.stringify({                      sId:sId,
+                                  						command:"addNewJury",
+                                  						firstName: document.getElementById("firstName").value,
+                                  						secondName: document.getElementById("secondName").value,
+                                  						lastName: document.getElementById("lastName").value,
+                                  						office: document.getElementById("office").value,
+                                  						login: document.getElementById("login").value,
+                                  						password: document.getElementById("password").value}),
+  			success: function(data){
+  		console.log(data);
+  		document.getElementById("message").innerHTML=data.message;
+  		if(data.status=="200"){
+  				reset();
+  		}
+  		else{
+  			alert(data.message);
+  		}
 
 
-  })
-  .then(response => response.json())
-  .then(function (data) {
-    document.getElementById("message").innerHTML=data.message;
-	console.log('Request succeeded with JSON response', data);
-	})
-	.catch(function(){
-		document.getElementById("message").innerHTML="Ошибка регистрации. Обратитесь к администратору.";
-	console.log('Request succeeded with JSON response ERROR', data);
-	});
- 
+  		},
+  		error: function(){
+  		document.getElementById("message").innerHTML="Ошибка регистрации. Обратитесь к администратору.";
+        	console.log('Request succeeded with JSON response ERROR', data);
+  		}
+  		  });
+
+
   }

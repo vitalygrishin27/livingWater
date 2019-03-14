@@ -20,7 +20,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
-            req.getRequestDispatcher("/WEB-INF/view/admin/managerOnline.html")
+            req.getRequestDispatcher("/admin/managerOnline.html")
                     .forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
