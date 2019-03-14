@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/admin/registration/member")
+@WebServlet("/admin/newMember")
 public class AddNewMember extends HttpServlet {
 
     @Override
@@ -19,8 +19,8 @@ public class AddNewMember extends HttpServlet {
         System.out.println("START ADMIN Registration member SERVLET IS DONE! (GET)");
 
         if (Authentication.isAdminInDbByCookies(req)) {
-            req.getRequestDispatcher("/WEB-INF/view/admin/registration/member/registrationMember.html")
-               .forward(req, resp);
+            req.getRequestDispatcher("/admin/newMember/createNewMember.html")
+                    .forward(req, resp);
 
         } else {
             resp.sendRedirect("/");
@@ -34,8 +34,6 @@ public class AddNewMember extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
         if (Authentication.isAdminInDbByCookies(req)) {
-
-          //  System.out.println("USER Want to log in.");
             StringBuilder jb = new StringBuilder();
             String line;
             try {

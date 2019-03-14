@@ -19,7 +19,7 @@ public class AdminLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN SERVLET IS DONE! (GET)");
 
-        req.getRequestDispatcher("WEB-INF/view/admin/adminLogin.html").forward(req, resp);
+        req.getRequestDispatcher("/admin/login/adminLogin.html").forward(req, resp);
 
     }
 

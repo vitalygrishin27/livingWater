@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Authentication {
 
@@ -20,7 +21,7 @@ public class Authentication {
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
-    private static Map<String, LocalDateTime> juryPingMap;
+    private static Map<String, Long> juryPingMap;
 
 
     static {
@@ -34,16 +35,19 @@ public class Authentication {
     }
 
     public static void ping(String juryUserName) {
-
-        juryPingMap.put(juryUserName, LocalDateTime.now());
+        Date date=new Date();
+        System.out.println(date.getTime());
+        juryPingMap.put(juryUserName, date.getTime());
     }
 
-    public static Integer getSecondsAfterPingJury(String juryUserName) {
-        int timeElapseAfterPing;
+    public static Long getSecondsAfterPingJury(String juryUserName) {
+        Date date=new Date();
 
+        long timeElapseAfterPing;
+    //   new TimeUnit().convert()
 
         if (juryPingMap.containsKey(juryUserName)) {
-            timeElapseAfterPing = LocalDateTime.now().compareTo(juryPingMap.get(juryUserName));
+            timeElapseAfterPing = date.getTime()-juryPingMap.get(juryUserName);
         } else {
             timeElapseAfterPing = 0;
         }
@@ -87,6 +91,8 @@ public class Authentication {
                         break;
                     }
                     listOfJuriesOnline.add(user);
+                    result = true;
+                    break;
                 }
             }
         } else {

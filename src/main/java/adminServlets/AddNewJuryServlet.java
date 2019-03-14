@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/admin/jury")
+@WebServlet("/admin/newJury")
 public class AddNewJuryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("START ADMIN Add new jury SERVLET IS DONE! (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
-            req.getRequestDispatcher("/WEB-INF/view/admin/newJury.html")
+            req.getRequestDispatcher("/admin/newJury/newJury.html")
                .forward(req, resp);
         } else {
             System.out.println("Not authorization. Return to login page.");
