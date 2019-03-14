@@ -5,7 +5,7 @@
 
         <welcome-file-list>
             <welcome-file>
-                login.html
+                /user/login/login.html
             </welcome-file>
         </welcome-file-list>
     <!--
@@ -27,12 +27,12 @@
 
 
             <servlet>
-              <servlet-name>LoginServlet</servlet-name>
-              <servlet-class>LoginServlet</servlet-class>
+              <servlet-name>userServlets.LoginServlet</servlet-name>
+              <servlet-class>userServlets.LoginServlet</servlet-class>
               </servlet>
 
               <servlet-mapping>
-                  <servlet-name>LoginServlet</servlet-name>
+                  <servlet-name>userServlets.LoginServlet</servlet-name>
                   <url-pattern>/login</url-pattern>
               </servlet-mapping>
                <servlet>
