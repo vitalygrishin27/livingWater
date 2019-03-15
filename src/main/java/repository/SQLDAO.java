@@ -55,17 +55,13 @@ public class SQLDAO extends Repository {
     }
 
     @Override
-    public Address getAddressById(int id) {
-        return null;
-    }
-
-    @Override
     public User getAdminByUserName(String name) {
         return null;
     }
 
+
     @Override
-    public Song getSongById(int id) {
+    public List<Mark> getAllMarksFromDB() {
         return null;
     }
 }

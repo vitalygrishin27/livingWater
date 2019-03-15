@@ -31,12 +31,11 @@ public interface IDAO {
 
     List<Member> getAllMembersFromDB();
 
-    Address getAddressById(int id);
-
-    Song getSongById(int id);
-
     User getJuryByUserName(String name);
 
     User getAdminByUserName(String name);
+
+    List<Mark> getAllMarksFromDB();
+
 
 }
