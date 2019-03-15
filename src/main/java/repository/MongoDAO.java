@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import entity.*;
 import org.bson.Document;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -57,7 +58,6 @@ public class MongoDAO extends Repository {
         songMongoCollection = database.getCollection("song");
         markMongoCollection = database.getCollection("mark");
         markCriteriaMongoCollection = database.getCollection("MarkCriteria");
-
 
 
         document = new Document();
@@ -150,6 +150,8 @@ public class MongoDAO extends Repository {
 
     }
 
+
+
     public User getJuryByUserName(String userName) {
         User result = null;
         Document user = juryMongoCollection.find(new Document("userName", userName)).first();
@@ -170,6 +172,16 @@ public class MongoDAO extends Repository {
         return result;
     }
 
+
+  /*  private User getJuryById(Integer id) {
+        User result = null;
+        Document user = juryMongoCollection.find(new Document("id", id)).first();
+        if (user != null) {
+            return getJuryByUserName(user.getString("userName"));
+        }
+        return result;
+    }
+*/
 
     public User getAdminByUserName(String userName) {
         User result = null;
@@ -209,32 +221,43 @@ public class MongoDAO extends Repository {
         List<Member> result = new ArrayList<>();
         for (Document doc : memberMongoCollection.find()
         ) {
-            result.add(BuilderMember.getBuilderMember()
-                                    .setId(doc.getInteger("id"))
-                                    .setFirstName(doc.getString("firstName"))
-                                    .setSecondName(doc.getString("secondName"))
-                                    .setLastName(doc.getString("lastName"))
-                                    .setBirth(doc.getDate("birth"))
-                                    .setEnsembleName(doc.getString("ensembleName"))
-                                    .setCountOfMembers(doc.getInteger("countOfMembers"))
-                                    .setGender(Gender.getGenderById(doc.getString("gender")))
-                                    .setAddress(getAddressById(doc.getInteger("addressId")))
-                                    .setPassport(doc.getString("passport"))
-                                    .setINN(doc.getString("INN"))
-                                    .setBoss(doc.getString("boss"))
-                                    .setCategory(Category.getCategoryByName(doc.getString("category")))
-                                    .setFirstSong(getSongById(doc.getInteger("firstSongId")))
-                                    .setSecondSong(getSongById(doc.getInteger("secondSongId")))
-                                    .setRegistration(doc.getBoolean("registration"))
-                                    .setTurnNumber(doc.getInteger("turnNumber"))
-                                    .build());
+            result.add(getMemberById(doc.getInteger("id")));
 
-   }
+        }
         return result;
     }
 
-    @Override
-    public Address getAddressById(int id) {
+
+    private Member getMemberById(Integer id) {
+        Member result = null;
+        Document doc = memberMongoCollection.find(new Document("id", id)).first();
+        if (doc != null) {
+            return BuilderMember.getBuilderMember()
+                    .setId(doc.getInteger("id"))
+                    .setFirstName(doc.getString("firstName"))
+                    .setSecondName(doc.getString("secondName"))
+                    .setLastName(doc.getString("lastName"))
+                    .setBirth(doc.getDate("birth"))
+                    .setEnsembleName(doc.getString("ensembleName"))
+                    .setCountOfMembers(doc.getInteger("countOfMembers"))
+                    .setGender(Gender.getGenderByChar(doc.getString("gender")))
+                    .setAddress(getAddressById(doc.getInteger("addressId")))
+                    .setPassport(doc.getString("passport"))
+                    .setINN(doc.getString("INN"))
+                    .setBoss(doc.getString("boss"))
+                    .setCategory(Category.getCategoryByName(doc.getString("category")))
+                    .setFirstSong(getSongById(doc.getInteger("firstSongId")))
+                    .setSecondSong(getSongById(doc.getInteger("secondSongId")))
+                    .setRegistration(doc.getBoolean("registration"))
+                    .setTurnNumber(doc.getInteger("turnNumber"))
+                    .build();
+        }
+        return result;
+
+    }
+
+
+    private Address getAddressById(int id) {
         Address result = new Address();
         Document doc = addressMongoCollection.find(new Document("id", id)).first();
         result.setId(id);
@@ -246,8 +269,7 @@ public class MongoDAO extends Repository {
         return result;
     }
 
-    @Override
-    public Song getSongById(int id) {
+    private Song getSongById(int id) {
         Song result = new Song();
 
         Document doc = songMongoCollection.find(new Document("id", id)).first();
@@ -258,4 +280,78 @@ public class MongoDAO extends Repository {
 
 
     }
+
+    @Override
+    public List<Mark> getAllMarksFromDB() {
+        List<Mark> result = new ArrayList<>();
+
+        for (Document element : markMongoCollection.find()
+        ) {
+            result.add(getMarkById(element.getInteger("id")));
+        }
+        return result;
+
+
+    }
+
+    private Mark getMarkById(Integer id) {
+        Mark result = null;
+        Document element = markMongoCollection.find(new Document("id", id)).first();
+        if (element != null) {
+            return BuilderMark.getNewBuilderMark().setId(element.getInteger("id"))
+                    .setJury(getJuryByUserName(element.getString("juryUserName")))
+                    .setMember(getMemberById(element.getInteger("juryId")))
+                    .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName(element.getString("markCriteria")))
+                    .setSong(getSongById(element.getInteger("songId")))
+                    .setValue(element.getInteger("value"))
+                    .build();
+
+        }
+        return result;
+
+
+    }
+
+
+    /*  @Override
+    public List<Member> getListOfMembers() {
+        List<Member> result = new ArrayList<>();
+
+        for (Document element : memberMongoCollection.find()
+        ) {
+            BuilderMember.getBuilderMember().setId(element.getInteger("id"))
+                                            .setLastName(element.getString("lastName"))
+                                            .setFirstName(element.getString("firstName"))
+                                            .setSecondName(element.getString("secondName"))
+                                            .setBirth(element.getDate("birth"))
+                                            .setEnsembleName(element.getString("ensembleName"))
+                                            .setCountOfMembers(element.getInteger("countOfMembers"))
+                                            .setGender(Gender.getGenderByChar(element.getString("gender")))
+                                            .setAddress(getAddressById())
+
+        }
+
+new Gender("M");
+
+        member.countOfMembers=builderMember.getCountOfMembers();
+        member.gender=builderMember.getGender();
+        member.address=builderMember.getAddress();
+        member.passport=builderMember.getPassport();
+        member.INN=builderMember.getINN();
+        member.boss=builderMember.getBoss();
+        member.category =builderMember.getCategory();
+        member.firstSong=builderMember.getFirstSong();
+        member.secondSong=builderMember.getSecondSong();
+        member.registration=builderMember.isRegistration();
+        member.turnNumber=builderMember.getTurnNumber();
+
+
+
+
+
+
+
+
+        return null;
+    }*/
 }

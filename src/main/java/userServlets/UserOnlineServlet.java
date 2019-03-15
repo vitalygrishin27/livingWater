@@ -35,7 +35,7 @@ public class UserOnlineServlet extends HttpServlet {
             Authentication.ping(userJSon.getString("sId"));
             jsonObjectResponse.append("status", "200");
             jsonObjectResponse.append("message", "ONLINE");
-            for (User element: Authentication.getAllJuryFromDB()
+      /*      for (User element: Authentication.getAllJuryFromDB()
                  ) {
                 if(element.getUserName().equals(userJSon.getString("sId"))){
                     if(element.getCurrentMemberForEvaluation()!=null) {
@@ -47,7 +47,7 @@ public class UserOnlineServlet extends HttpServlet {
                 }
             }
 
-
+*/
 
         }
 

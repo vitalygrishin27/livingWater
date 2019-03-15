@@ -5,7 +5,7 @@ public enum Gender {
     M,
     F;
 
-    public static Gender getGenderById(String ch){
+    public static Gender getGenderByChar(String ch){
         if(ch.equals("M")) {
             return Gender.M;
         }
