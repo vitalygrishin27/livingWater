@@ -8,6 +8,7 @@ font-family: 'Numans', sans-serif;
 }
 .centered-form{
 	margin-top: 60px;
+	padding:20px;
 }
 
 .centered-form .panel{

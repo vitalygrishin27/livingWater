@@ -12,7 +12,7 @@
                                   						secondName: document.getElementById("secondName").value,
                                   						lastName: document.getElementById("lastName").value,
                                   						office: document.getElementById("office").value,
-                                  						login: document.getElementById("login").value,
+                                  						userName: document.getElementById("login").value,
                                   						password: document.getElementById("password").value}),
   			success: function(data){
   		console.log(data);

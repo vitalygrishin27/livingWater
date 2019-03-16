@@ -31,12 +31,37 @@ public interface IDAO {
 
     List<Member> getAllMembersFromDB();
 
-    Address getAddressById(int id);
-
-    Song getSongById(int id);
-
     User getJuryByUserName(String name);
 
     User getAdminByUserName(String name);
 
-}
+    List<Mark> getAllMarksFromDB();
+
+    int getFreeIdOfMembersDB();
+
+    int getFreeIdOfAddressDB();
+
+    int getFreeIdOfSongDB();
+
+    int getFreeTurnNumberFromMemberDB();
+
+    int getFreeIdOfJuryDB();
+
+    boolean saveNewMemberIntoDB(Member member);
+
+   Category getCategoryByName(String name);
+
+   boolean isLoginForNewJuryCorrect(String login);
+
+   boolean saveNewJuryIntoDB(User jury);
+
+   Role createRoleByName(String name);
+
+   boolean isMemberSoloByMemberId(int id);
+
+    Member getMemberById(Integer id);
+    }
+
+
+
+

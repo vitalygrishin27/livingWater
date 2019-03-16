@@ -8,16 +8,15 @@ import repository.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Authentication {
 
     private static List<User> listOfJuriesOnline;
-    private static List<User> admins;
-    private static List<Role> roles;
-    private static Map<String, User> sIds = new HashMap<>();
+ //   private static List<User> listOfJury;
+ //   private static List<User> admins;
+    //private static List<Role> roles;
+ //   private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
@@ -27,11 +26,12 @@ public class Authentication {
     static {
         System.out.println("Starting DB with MONGO");
         repository = Repository.getDAO("MONGO");
+    //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
         listOfJuriesOnline = new ArrayList<>();
-        roles = repository.getAllRolesFromDB();
-        listOfMembers = repository.getAllMembersFromDB();
+    //    roles = repository.getAllRolesFromDB();
+      //  listOfMembers = repository.getAllMembersFromDB();
         juryPingMap = new HashMap<>();
-
+        currentMemberForEvaluation=null;
     }
 
     public static void ping(String juryUserName) {
@@ -57,13 +57,13 @@ public class Authentication {
 
 
 
- /*   public static Member getCurrentMemberForEvaluation() {
+    public static Member getCurrentMemberForEvaluation() {
         return currentMemberForEvaluation;
     }
 
     public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
-        authentication.Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
-    }*/
+        Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
+    }
 
     public static void addToListOfJuriesOnline(User user) {
         listOfJuriesOnline.add(user);
@@ -125,7 +125,9 @@ public class Authentication {
         return result;
     }
 
-
+    public static List<User> getAllJury(){
+        return repository.getAllFromDBByRole(new Role(3, "JURY"));
+    }
 /*
     public static boolean isAuthenticated(HttpServletRequest req, String role) {
 
@@ -182,9 +184,9 @@ public class Authentication {
     }
 */
 
-    public static List<User> getAllJuryFromDB() {
-        return repository.getAllFromDBByRole(new Role(3, "JURY"));
-    }
+ //   public static List<User> getAllJuryFromDB() {
+ //       return repository.getAllFromDBByRole(new Role(3, "JURY"));
+ //   }
 
     //   public static User getJuryByUserNameFromDB(String userName) {
     //       return repository.getJuryByUserName(userName);

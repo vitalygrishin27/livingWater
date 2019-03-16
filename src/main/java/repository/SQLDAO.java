@@ -55,17 +55,73 @@ public class SQLDAO extends Repository {
     }
 
     @Override
-    public Address getAddressById(int id) {
-        return null;
-    }
-
-    @Override
     public User getAdminByUserName(String name) {
         return null;
     }
 
+
     @Override
-    public Song getSongById(int id) {
+    public List<Mark> getAllMarksFromDB() {
+        return null;
+    }
+
+    @Override
+    public int getFreeIdOfMembersDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeIdOfAddressDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeIdOfSongDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeTurnNumberFromMemberDB() {
+        return 0;
+    }
+
+    @Override
+    public boolean saveNewMemberIntoDB(Member member) {
+        return false;
+    }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean isLoginForNewJuryCorrect(String login) {
+        return false;
+    }
+
+    @Override
+    public boolean saveNewJuryIntoDB(User jury) {
+        return false;
+    }
+
+    @Override
+    public int getFreeIdOfJuryDB() {
+        return 0;
+    }
+
+    @Override
+    public Role createRoleByName(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean isMemberSoloByMemberId(int id) {
+        return false;
+    }
+
+    @Override
+    public Member getMemberById(Integer id) {
         return null;
     }
 }
