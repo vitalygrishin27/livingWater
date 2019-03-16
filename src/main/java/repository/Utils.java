@@ -49,7 +49,7 @@ public class Utils {
                 .setPassport(jsonObject.getString("passport"))
                 .setINN(jsonObject.getString("INN"))
                 .setBoss(jsonObject.getString("boss"))
-                .setCategory(Category.getCategoryByName(jsonObject.getString("category")))
+                .setCategory(Authentication.getRepository().getCategoryByName(jsonObject.getString("category")))
                 .setFirstSong(createFirstSongByName(jsonObject.getString("firstSong")))
                 .setSecondSong(createSecondSongByName(jsonObject.getString("secondSong")))
                 .setRegistration(false)
@@ -58,6 +58,11 @@ public class Utils {
 
     }
 
+
+    public static User getJuryFromJson(JSONObject jsonObject) {
+// TODO: 16.03.2019
+        return null;
+    }
 
     private static Song createFirstSongByName(String name) {
         Song song = new Song();
