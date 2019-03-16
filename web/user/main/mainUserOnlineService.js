@@ -28,7 +28,7 @@ function getInfo(){
 			    document.getElementById("connect").style.display="none";
                 document.getElementById("number").innerHTML="№ "+data.memberId;
                 document.getElementById("member").innerHTML=data.memberName;
-                document.getElementById("category").innerHTML="КАТЕГОРИЯ: "+data.memberName;
+                document.getElementById("category").innerHTML="КАТЕГОРИЯ: "+data.category;
 
 			/*	if(data.messageBox="ONLINE"){
 					document.getElementById("messageAboutOnline").style.backgroundColor="green";

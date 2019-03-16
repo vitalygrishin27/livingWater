@@ -1,6 +1,7 @@
 package userServlets;
 
 import authentication.Authentication;
+import entity.Member;
 import entity.User;
 import repository.Utils;
 import org.json.JSONObject;
@@ -35,6 +36,14 @@ public class UserOnlineServlet extends HttpServlet {
             Authentication.ping(userJSon.getString("sId"));
             jsonObjectResponse.append("status", "200");
             jsonObjectResponse.append("message", "ONLINE");
+
+
+            Member cur=Authentication.getCurrentMemberForEvaluation();
+            if(cur!=null){
+                jsonObjectResponse.append("memberId",cur.getId())
+                        .append("memberName",cur.getLastName()+" "+cur.getFirstName()+" "+cur.getSecondName())
+                        .append("category",cur.getCategory().getName());
+            }
       /*      for (User element: Authentication.getAllJuryFromDB()
                  ) {
                 if(element.getUserName().equals(userJSon.getString("sId"))){

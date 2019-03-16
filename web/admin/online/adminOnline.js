@@ -7,6 +7,49 @@ CreateTableFromJSON();
 
 
 
+function sendPost(ths) {
+var sId=getCookie('LivingWaterSession');
+    var tr = ths.parentNode.parentNode;
+
+         songNumber = tr.getElementsByTagName("td")[1].innerHTML;
+         memberId = tr.getElementsByTagName("td")[5].innerHTML;
+
+
+
+$.ajax({
+			 type: 'POST',
+			url: "/admin/online",
+			data: JSON.stringify({                      sId:sId,
+                                  						command:"setMemberForEvaluation",
+                                  						songNumber:songNumber,
+                                  						memberId:memberId}),
+		success: function(data){
+		console.log(data);
+	//	document.getElementById("message").innerHTML=data.message;
+
+			alert(data.message);
+
+
+
+		}
+		  });
+
+
+
+
+
+
+
+      //   name = tr.getElementsByTagName("td")[1].innerHTML.replace("<b>", "").replace("</b>", ""),
+
+     //    review = tr.getElementsByTagName("td")[3].childNodes[0].value;
+
+ //   alert(code+"\n"+name+"\n"+review);
+
+}
+
+
+
 
   function CreateTableFromJSON() {
       var sId=readCookie('LivingWaterSession');
@@ -69,12 +112,54 @@ CreateTableFromJSON();
                              var but=document.createElement("button");
                              but.style="width: 100%; height: 30px";
                              but.innerText="Отправить";
+                             but.id="but"+i;
+                            but.setAttribute('onclick', 'sendPost(this);')
+
                              tabCell.appendChild(but);
 
 
                         }
 
                         // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+
+  /*  $(function() {
+          jQuery.each($("table tr"), function() {
+              $(this).children(":eq(1)").after($(this).children(":eq(0)"));
+          });
+      });
+*/
+
+   //узнать по какой строке кликнули
+ /*   $(document).ready(function(){
+
+          $('table tr').click(function(){
+
+            alert($('td.cellIndex', this).html());
+//var cell = e.target || window.event.srcElement;
+ // alert( cell.cellIndex + ' : ' + cell.parentNode.rowIndex );
+          });
+
+        });
+
+
+/*
+var tbl = document.getElementById("customers");
+var cls = $tbl(tbl 'table tr');
+
+function alertRowCell(e){
+  var cell = e.target || window.event.srcElement;
+  alert( cell.cellIndex + ' : ' + cell.parentNode.rowIndex );
+}
+
+for ( var i = 0; i < cls.length; i++ ) {
+  if ( cls[i].addEventListener ) {
+    cls[i].addEventListener("click", alertRowCell, false);
+  } else if ( cls[i].attachEvent ) {
+    cls[i].attachEvent("onclick", alertRowCell);
+  }
+}
+
+*/
 
 
 

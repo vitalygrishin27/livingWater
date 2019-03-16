@@ -31,7 +31,7 @@ public class Authentication {
     //    roles = repository.getAllRolesFromDB();
       //  listOfMembers = repository.getAllMembersFromDB();
         juryPingMap = new HashMap<>();
-
+        currentMemberForEvaluation=null;
     }
 
     public static void ping(String juryUserName) {
@@ -57,13 +57,13 @@ public class Authentication {
 
 
 
- /*   public static Member getCurrentMemberForEvaluation() {
+    public static Member getCurrentMemberForEvaluation() {
         return currentMemberForEvaluation;
     }
 
     public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
-        authentication.Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
-    }*/
+        Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
+    }
 
     public static void addToListOfJuriesOnline(User user) {
         listOfJuriesOnline.add(user);

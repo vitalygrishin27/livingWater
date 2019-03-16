@@ -56,6 +56,10 @@ public interface IDAO {
    boolean saveNewJuryIntoDB(User jury);
 
    Role createRoleByName(String name);
+
+   boolean isMemberSoloByMemberId(int id);
+
+    Member getMemberById(Integer id);
     }
 
 
