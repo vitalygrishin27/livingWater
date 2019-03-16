@@ -89,4 +89,19 @@ public class SQLDAO extends Repository {
     public boolean saveNewMemberIntoDB(Member member) {
         return false;
     }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean isLoginForNewJuryCorrect(String login) {
+        return false;
+    }
+
+    @Override
+    public boolean saveNewJuryIntoDB(User jury) {
+        return false;
+    }
 }

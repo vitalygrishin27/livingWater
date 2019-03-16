@@ -47,7 +47,11 @@ public interface IDAO {
 
     boolean saveNewMemberIntoDB(Member member);
 
+   Category getCategoryByName(String name);
 
+   boolean isLoginForNewJuryCorrect(String login);
+
+   boolean saveNewJuryIntoDB(User jury);
     }
 
 

@@ -79,7 +79,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     //Добавление в мапу записи о первой песне исполнителя
                     Map<String, String> map = new HashMap<>();
                     map.put("id", String.valueOf(element.getId()));
-                    map.put("category", element.getCategory().name());
+                    map.put("category", element.getCategory().getName());
                     map.put("songNumber", "1");
                     map.put("songName", element.getFirstSong().getName());
 
@@ -125,7 +125,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     //Добавление в мапу записи о второй песне исполнителя
                     map = new HashMap<>();
                     map.put("id", String.valueOf(element.getId()));
-                    map.put("category", element.getCategory().name());
+                    map.put("category", element.getCategory().getName());
                     map.put("songNumber", "2");
                     map.put("songName", element.getSecondSong().getName());
 

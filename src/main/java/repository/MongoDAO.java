@@ -26,6 +26,7 @@ public class MongoDAO extends Repository {
     private static MongoCollection<Document> songMongoCollection;
     private static MongoCollection<Document> markMongoCollection;
     private static MongoCollection<Document> markCriteriaMongoCollection;
+    private static MongoCollection<Document> categoryMongoCollection;
 
 
     private static Document document;
@@ -60,6 +61,7 @@ public class MongoDAO extends Repository {
         songMongoCollection = database.getCollection("song");
         markMongoCollection = database.getCollection("mark");
         markCriteriaMongoCollection = database.getCollection("MarkCriteria");
+       categoryMongoCollection = database.getCollection("category");
 
 
         document = new Document();
@@ -246,7 +248,7 @@ public class MongoDAO extends Repository {
                     .setPassport(doc.getString("passport"))
                     .setINN(doc.getString("INN"))
                     .setBoss(doc.getString("boss"))
-                    .setCategory(Category.getCategoryByName(doc.getString("category")))
+                    .setCategory(getCategoryByName(doc.getString("category")))
                     .setFirstSong(getSongById(doc.getInteger("firstSongId")))
                     .setSecondSong(getSongById(doc.getInteger("secondSongId")))
                     .setRegistration(doc.getBoolean("registration"))
@@ -256,6 +258,12 @@ public class MongoDAO extends Repository {
         return result;
 
     }
+
+    public Category getCategoryByName(String name){
+        Document doc=categoryMongoCollection.find(new Document("name",name)).first();
+       return new Category(doc.getInteger("id"),doc.getString("name"));
+    }
+
 
 
     @Override
@@ -333,7 +341,7 @@ public class MongoDAO extends Repository {
         Document doc = addressMongoCollection.find(new Document("id", id)).first();
         if (doc != null) {
             return BuilderAddress.getBuilderAddress().setId(id)
-                    .setCountry(doc.getString("city"))
+                    .setCountry(doc.getString("country"))
                     .setRegion(doc.getString("region"))
                     .setDistrict(doc.getString("district"))
                     .setCity(doc.getString("city"))
@@ -462,6 +470,17 @@ public class MongoDAO extends Repository {
             return (usedId.get(usedId.size() - 1)) + 1;
         }
     }
+
+    @Override
+    public boolean isLoginForNewJuryCorrect(String login) {
+        return false;
+    }
+
+    @Override
+    public boolean saveNewJuryIntoDB(User jury) {
+        return false;
+    }
+
 
     /*  @Override
     public List<Member> getListOfMembers() {
