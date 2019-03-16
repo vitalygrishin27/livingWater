@@ -52,7 +52,7 @@ public class MongoDAO extends Repository {
                 .valueOf(properties.getProperty("port")));
         database = mongoClient.getDatabase(properties.getProperty("database"));
 
-
+//rgreg
         juryMongoCollection = database.getCollection("jury");
         adminMongoCollection = database.getCollection("admin");
         roleMongoCollection = database.getCollection("role");
