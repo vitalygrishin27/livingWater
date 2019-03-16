@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>V3</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+
+<div id="main"></div>
+<div id="main2"></div>
+<div id="main3"></div>
+<script type="text/babel">
+const place=document.getElementById("main");
+
+function tick(){
+const element=(
+	<div>
+	<h1> It is {new Date().toLocaleTimeString()}.</h1>
+	</div>
+	);
+	ReactDOM.render(element,document.getElementById('main2'));
+}
+setInterval(tick,1000);
+
+class User extends React.Component{
+constructor(){
+	
+	super();
+	this.state={
+	score:0};
+	}
+	
+	increaseScore(){
+	this.setState({score:this.state.score+1});
+	}
+	
+	render(){
+	return(
+	<div>This score {this.state.score}</div>
+	);}
+}
+
+var us1=new User;
+
+
+
+class Login extends React.Component{
+	
+	constructor(){
+	super();
+	this.state={
+	score:0};
+	}
+	
+	buttonClick(){
+    console.log("came here")
+    
+  }
+  
+  add(){
+  this.setState({score : this.state.score+1});
+  console.log("coooo")
+  ReactDOM.render(<Login/>, document.getElementById('main'));
+  }
+  
+  subComponent() {
+    return (<div>{this.state.score}</div>);
+  }
+  
+  
+   login(){
+
+
+var user=document.getElementById('user').value ;
+var pass=document.getElementById('pass').value;
+
+
+
+fetch('/login', {
+    method: 'POST',
+
+    body: JSON.stringify({user:user, pass:pass, command:"loginIn"})
+
+
+  })
+  .then(response => response.json())
+  .then(function (data) {
+   
+	console.log('Request succeeded with JSON response', data);
+  })
+  .catch(function (error) {
+    console.log('Request failed', error);
+  });
+}
+  
+  
+  
+  
+  render() {
+  
+       return(
+            <div className="box">
+                <div className="Username">{this.props.title1} <input id="user"></input></div>
+                <div className="Password">{this.props.title2} <input id="pass"></input></div>
+                <button onClick = {this.increaseScore()} className="btn green">Login in </button>
+                <button onClick = {this.register} className="btn light">Register</button>
+				<div>This {this.state.score}</div>
+			</div>
+         );
+     
+  }
+  
+
+
+}
+
+ReactDOM.render(<Login/>, document.getElementById('main'));
+ReactDOM.render(<User/>, document.getElementById('main3'));
+
+
+</script>
+
+</body>
+</html>
