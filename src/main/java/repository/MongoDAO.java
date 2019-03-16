@@ -229,8 +229,8 @@ public class MongoDAO extends Repository {
         return result;
     }
 
-
-    private Member getMemberById(Integer id) {
+    @Override
+    public Member getMemberById(Integer id) {
         Member result = null;
         Document doc = memberMongoCollection.find(new Document("id", id)).first();
         if (doc != null) {
@@ -518,6 +518,15 @@ public class MongoDAO extends Repository {
         return true;
     }
 
+    @Override
+    public boolean isMemberSoloByMemberId(int id) {
+        Document doc=memberMongoCollection.find(new Document("id",id)).first();
+        if(doc.getInteger("countOfMembers")==1){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     /*  @Override
     public List<Member> getListOfMembers() {

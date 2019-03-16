@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/admin/online")
 public class AdminOnlineManagmentServlet extends HttpServlet {
@@ -30,7 +27,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     .forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
-            resp.sendRedirect("/");
+            resp.sendRedirect("/adminLogin");
         }
     }
 
@@ -77,7 +74,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                 ) {
 
                     //Добавление в мапу записи о первой песне исполнителя
-                    Map<String, String> map = new HashMap<>();
+                    Map<String, String> map = new LinkedHashMap<>();
                     map.put("id", String.valueOf(element.getId()));
                     map.put("category", element.getCategory().getName());
                     map.put("songNumber", "1");
@@ -123,7 +120,7 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     result.add(map);
 
                     //Добавление в мапу записи о второй песне исполнителя
-                    map = new HashMap<>();
+                    map = new LinkedHashMap<String, String>();
                     map.put("id", String.valueOf(element.getId()));
                     map.put("category", element.getCategory().getName());
                     map.put("songNumber", "2");
@@ -167,6 +164,8 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
                     }
                     result.add(map);
+
+// TODO: 16.03.2019 Сделать у юзера номер песни, название песни. После оценивания чтобы затенялся экран в ожидании, чтобы выходило на экран логина, коргда у юзера логаут, 
 
                 }
 
@@ -221,10 +220,28 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                // jsonObjectResponse2.to
 */
                 JSONObject jsonObjectResponse2=new JSONObject();
+
+
+
+
+
+
+             //  jsonObjectResponse2.append();
+            //    System.out.println(jsonObjectResponse2);
+
+
                 System.out.println(result);
                 resp.getWriter().write(String.valueOf(new JSONArray(result)));
+           //     resp.getWriter().write(String.valueOf(jsonObjectResponse2));
                 resp.flushBuffer();
 
+
+            }
+
+
+            if (userJson.getString("command").equals("setMemberForEvaluation")) {
+                resp.setContentType("application/json; charset=UTF-8");
+                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")));
 
             }
 

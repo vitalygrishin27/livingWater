@@ -114,4 +114,14 @@ public class SQLDAO extends Repository {
     public Role createRoleByName(String name) {
         return null;
     }
+
+    @Override
+    public boolean isMemberSoloByMemberId(int id) {
+        return false;
+    }
+
+    @Override
+    public Member getMemberById(Integer id) {
+        return null;
+    }
 }
