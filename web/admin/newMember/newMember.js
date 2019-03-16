@@ -28,10 +28,7 @@ var INN=document.getElementById('INN').value ;
 var boss=document.getElementById('boss').value ;
 var phone=document.getElementById('phone').value ;
 
-if(document.getElementById('category').value=="от 16 до 20 лет"){
-var category="TO_21";
-}
-
+var category=document.getElementById('category').value;
 
 var firstSong=document.getElementById('firstSong').value ;
 var secondSong=document.getElementById('secondSong').value ;

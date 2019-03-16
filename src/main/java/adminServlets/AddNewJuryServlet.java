@@ -45,15 +45,14 @@ public class AddNewJuryServlet extends HttpServlet {
             if (messageToResponse.equals("OK")) {
 
                 //проверка на логин
-                if (Authentication.getRepository().isLoginForNewJuryCorrect(userJSon.getString("login"))) {
+                if (Authentication.getRepository().isLoginForNewJuryCorrect(userJSon.getString("userName"))) {
                     //  201 Created («создано»)[2][3][4];
 
                    Authentication.getRepository().saveNewJuryIntoDB(Utils.getJuryFromJson(userJSon));
-                    System.out.println("Add to DB new JURY is OK. ("+userJSon.get("login")+")");
-
-                    // TODO: 16.02.2019 Добавление записи жюри в базу данных
+                    System.out.println("Add to DB new JURY is OK. ("+userJSon.get("userName")+")");
                     jsonObjectResponse.append("status", "201");
                     jsonObjectResponse.append("message", "Новый член жюри добавлен в БД.");
+
 
 
                 }else{
@@ -61,9 +60,9 @@ public class AddNewJuryServlet extends HttpServlet {
                     jsonObjectResponse.append("status", "406");
                     jsonObjectResponse.append("message", "Недопустимый логин.");
                 }
-                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+             //   resp.getWriter().write(String.valueOf(jsonObjectResponse));
 
-                resp.flushBuffer();
+          //      resp.flushBuffer();
 
 
 

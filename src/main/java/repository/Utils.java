@@ -60,8 +60,15 @@ public class Utils {
 
 
     public static User getJuryFromJson(JSONObject jsonObject) {
-// TODO: 16.03.2019
-        return null;
+
+        return BuilderUserJury.getBuilderUserJury().setFirstName(jsonObject.getString("firstName"))
+                .setSecondName(jsonObject.getString("secondName"))
+                .setLastName(jsonObject.getString("lastName"))
+                .setUserName(jsonObject.getString("userName"))
+                .setPassword(jsonObject.getString("password"))
+                .setOffice(jsonObject.getString("office"))
+                .setRole(Authentication.getRepository().createRoleByName("JURY"))
+                .build();
     }
 
     private static Song createFirstSongByName(String name) {
