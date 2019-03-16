@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>V3</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+	<script src="/coockies.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+
+<div id="main"></div>
+<script type="text/babel">
+var sId=getCookie('LivingWaterSession');
+
+const place=document.getElementById("main");
+class Login extends React.Component{
+
+
+
+
+logout(){
+//writeCookie('sessionId', "00000",3)
+fetch('/login', {
+    method: 'POST',
+	//var sId=readCookie('LivingWaterSession');
+    body: JSON.stringify({sId:sId, command:"logOut"})
+
+
+  })
+
+
+}
+
+
+
+login(){
+     
+//var sId=readCookie('sessionId');
+
+var user=document.getElementById('user').value ;
+var pass=document.getElementById('pass').value;
+
+document.getElementById('user').value ="";
+document.getElementById('pass').value="";
+
+fetch('/login', {
+    method: 'POST',
+
+    body: JSON.stringify({userName:user, password:pass, sId:sId, command:"logIn"})
+
+
+  })
+  .then(response => response.json())
+  .then(function (data) {
+    document.getElementById("message").innerHTML=data.message;
+	console.log('Request succeeded with JSON response', data);
+	
+	
+	
+		if(data.status=="ADMIN"){
+	//	writeCookie('sessionId', data.sId,3)
+		document.location.href="/admin";
+		}
+		if(data.status=="USER"){
+	//	writeCookie('sessionId', data.sId,3)
+		document.location.href="/user";
+		}
+	
+	
+//	document.getElementById("message").innerHTML=data.message;
+	
+	
+	//document.location.href="/admin";
+	
+	});
+ 
+}
+
+
+
+    render(){
+        return(
+            <div className="box">
+                <div className="Username">{this.props.title1} <input id="user"></input></div>
+                <div className="Password">{this.props.title2} <input id="pass"></input></div>
+                <button id="btn_Login" onClick = {this.login} className="btn green">Log in </button>
+                <button id="btn_Register" hidden onClick = {this.register} className="btn light">Register</button>
+				<button id="btn_logout" hidden onClick = {this.logout} className="btn light">Log out</button>
+				<div id="message"></div>
+			</div>
+         );
+    }
+
+
+
+}
+
+ReactDOM.render(
+    <div className="field">
+        <Login title1="Login" title2="password">i1</Login>
+    </div>,place);
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
