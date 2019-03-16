@@ -9,6 +9,25 @@ public class Address {
     private String phone;
 
 
+    private Address(){
+
+    }
+
+
+    public static Address createAddress(BuilderAddress builderAddress) {
+        Address address=new Address();
+        address.id = builderAddress.getId();
+        address.country = builderAddress.getCountry();
+        address.region = builderAddress.getRegion();
+        address.district = builderAddress.getDistrict();
+        address.city = builderAddress.getCity();
+        address.phone = builderAddress.getPhone();
+        return address;
+    }
+
+
+
+
     public int getId() {
         return id;
     }

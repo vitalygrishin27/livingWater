@@ -1,5 +1,6 @@
 package repository;
 
+import authentication.Authentication;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -151,7 +153,6 @@ public class MongoDAO extends Repository {
     }
 
 
-
     public User getJuryByUserName(String userName) {
         User result = null;
         Document user = juryMongoCollection.find(new Document("userName", userName)).first();
@@ -257,16 +258,91 @@ public class MongoDAO extends Repository {
     }
 
 
+    @Override
+    public synchronized boolean saveNewMemberIntoDB(Member member) {
+        //Сохраняем Адресс и получаем реальный ID в случае если он успел занятся
+        member.getAddress().setId(saveAddressIntoDB(member.getAddress()));
+        //Сохраняем SONG и получаем реальный ID в случае если он успел занятся
+        member.getFirstSong().setId(saveSongIntoDB(member.getFirstSong()));
+        member.getSecondSong().setId(saveSongIntoDB(member.getSecondSong()));
+        //Проверяем ID turnNumber
+        member.setTurnNumber(Authentication.getRepository().getFreeTurnNumberFromMemberDB());
+
+        //Проверяем не занят ли уже ID
+        int id = Authentication.getRepository().getFreeIdOfMembersDB();
+        if (id != member.getId()) {
+            System.out.println("ID of Member was CHANGED.");
+        }
+        member.setId(id);
+        memberMongoCollection.insertOne(new Document("id", id)
+                .append("lastName", member.getLastName())
+                .append("firstName", member.getFirstName())
+                .append("secondName", member.getSecondName())
+                .append("birth", member.getBirth())
+                .append("ensembleName", member.getEnsembleName())
+                .append("countOfMembers", member.getCountOfMembers())
+                .append("gender", member.getGender().toString())
+                .append("addressId", member.getAddress().getId())
+                .append("passport", member.getPassport())
+                .append("INN", member.getINN())
+                .append("boss", member.getBoss())
+                .append("category", member.getCategory().toString())
+                .append("firstSongId", member.getFirstSong().getId())
+                .append("secondSongId", member.getSecondSong().getId())
+                .append("registration", member.isRegistration())
+                .append("turnNumber", member.getTurnNumber()));
+
+        return true;
+    }
+
+    // возвращает id
+    private synchronized int saveAddressIntoDB(Address address) {
+        int id = Authentication.getRepository().getFreeIdOfAddressDB();
+        if (id != address.getId()) {
+            System.out.println("ID of Address was CHANGED.");
+        }
+        address.setId(id);
+        addressMongoCollection.insertOne(new Document("id", address.getId())
+                .append("country", address.getCountry())
+                .append("region", address.getRegion())
+                .append("district", address.getDistrict())
+                .append("city", address.getCity())
+                .append("phone", address.getPhone()));
+
+        System.out.println("Address successful saved into DB. ("+address.getId()+").");
+        return id;
+    }
+
+
+    //возвращает id
+    private synchronized int saveSongIntoDB(Song song) {
+        int id = Authentication.getRepository().getFreeIdOfSongDB();
+        if (id != song.getId()) {
+            System.out.println("ID of Song was CHANGED.");
+        }
+        song.setId(id);
+        songMongoCollection.insertOne(new Document("id", song.getId())
+                .append("name", song.getName()));
+        System.out.println("Song successful saved into DB. ("+song.getId()+" "+song.getName()+").");
+        return id;
+
+    }
+
+
     private Address getAddressById(int id) {
-        Address result = new Address();
         Document doc = addressMongoCollection.find(new Document("id", id)).first();
-        result.setId(id);
-        result.setCountry(doc.getString("city"));
-        result.setRegion(doc.getString("region"));
-        result.setDistrict(doc.getString("district"));
-        result.setCity(doc.getString("city"));
-        result.setPhone(doc.getString("phone"));
-        return result;
+        if (doc != null) {
+            return BuilderAddress.getBuilderAddress().setId(id)
+                    .setCountry(doc.getString("city"))
+                    .setRegion(doc.getString("region"))
+                    .setDistrict(doc.getString("district"))
+                    .setCity(doc.getString("city"))
+                    .setPhone(doc.getString("phone"))
+                    .build();
+        } else {
+            return null;
+        }
+
     }
 
     private Song getSongById(int id) {
@@ -312,6 +388,80 @@ public class MongoDAO extends Repository {
 
     }
 
+    @Override
+    public synchronized int getFreeIdOfMembersDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : memberMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("id"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
+
+    }
+
+    @Override
+    public synchronized int getFreeIdOfAddressDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : addressMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("id"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
+
+    }
+
+    @Override
+    public synchronized int getFreeIdOfSongDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : songMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("id"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
+
+    }
+
+    @Override
+    public synchronized int getFreeTurnNumberFromMemberDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : memberMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("turnNumber"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
+    }
 
     /*  @Override
     public List<Member> getListOfMembers() {

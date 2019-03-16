@@ -53,6 +53,13 @@ public class Member {
 
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
+    }
 
     public int getId() {
         return id;

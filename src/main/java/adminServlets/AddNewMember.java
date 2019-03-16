@@ -2,6 +2,7 @@ package adminServlets;
 
 import authentication.Authentication;
 import org.json.JSONObject;
+import repository.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,49 +34,65 @@ public class AddNewMember extends HttpServlet {
         System.out.println("START Admin registration member SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
+
         if (Authentication.isAdminInDbByCookies(req)) {
-            StringBuilder jb = new StringBuilder();
-            String line;
-            try {
-                BufferedReader reader = req.getReader();
-                while ((line = reader.readLine()) != null)
-                    jb.append(line);
 
+            JSONObject userJSon = Utils.getJsonFromRequest(req);
+            System.out.println(userJSon);
 
-                JSONObject userJSon = new JSONObject(jb.toString());
+            if (userJSon.getString("command").equals("registerSolo")) {
+                System.out.println("sID with '" + userJSon.getString("sId") +
+                        "' want to add into DB solo member.");
+                resp.setContentType("application/json; charset=UTF-8");
 
-
-                System.out.println(userJSon);
-
-                if (userJSon.getString("command").equals("registerSolo")) {
-                    System.out.println("sID with '" + userJSon.getString("sId") +
-                            "' want to add into DB solo member.");
-                    resp.setContentType("application/json; charset=UTF-8");
-
-                    String messageToResponse = messageIsJsonCorrect(userJSon);
-                    if (messageToResponse.equals("OK")) {
-                        //  201 Created («создано»)[2][3][4];
-                        System.out.println("Add to DB new solo member is OK.");
-                        // TODO: 16.02.2019 Добавление записи в базу данных
-                        jsonObjectResponse.append("status", "201");
-                        jsonObjectResponse.append("message", "Новый солист добавлен в БД.");
-                    } else {
-                        System.out.println("Add to DB crashed with not filled input boxes");
-                        jsonObjectResponse.append("status", "406");
-                        jsonObjectResponse.append("message", messageToResponse);
-                        //  406 Not Acceptable («неприемлемо»)[2][3];
-
-                    }
-
-
-                    resp.getWriter().write(String.valueOf(jsonObjectResponse));
-
-                    resp.flushBuffer();
+                String messageToResponse = messageIsJsonCorrect(userJSon);
+                if (messageToResponse.equals("OK")) {
+                    //  201 Created («создано»)[2][3][4];
+                    Authentication.getRepository().saveNewMemberIntoDB(Utils.getSoloMemberFromJson(userJSon));
+                    System.out.println("Add to DB new solo member is OK.");
+                    jsonObjectResponse.append("status", "201");
+                    jsonObjectResponse.append("message", "Новый солист добавлен в БД.");
+                } else {
+                    System.out.println("Add to DB crashed with not filled input boxes");
+                    jsonObjectResponse.append("status", "406");
+                    jsonObjectResponse.append("message", messageToResponse);
+                    //  406 Not Acceptable («неприемлемо»)[2][3];
 
                 }
 
-            } catch (Exception e) {
-                System.out.println("Error with buffered reader.");
+
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+
+                resp.flushBuffer();
+
+            }
+
+
+            if (userJSon.getString("command").equals("registerEnsemble")) {
+                System.out.println("sID with '" + userJSon.getString("sId") +
+                        "' want to add into DB ensemble member.");
+                resp.setContentType("application/json; charset=UTF-8");
+
+                String messageToResponse = messageIsJsonCorrect(userJSon);
+                if (messageToResponse.equals("OK")) {
+                    //  201 Created («создано»)[2][3][4];
+                    System.out.println("Add to DB new ensemble member is OK.");
+                    // TODO: 16.02.2019 Добавление записи в базу данных ENSEMBLE
+                    jsonObjectResponse.append("status", "201");
+                    jsonObjectResponse.append("message", "Новый ансамбль добавлен в БД.");
+                } else {
+                    System.out.println("Add to DB crashed with not filled input boxes");
+                    jsonObjectResponse.append("status", "406");
+                    jsonObjectResponse.append("message", messageToResponse);
+                    //  406 Not Acceptable («неприемлемо»)[2][3];
+
+                }
+
+
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+
+                resp.flushBuffer();
+
             }
 
 

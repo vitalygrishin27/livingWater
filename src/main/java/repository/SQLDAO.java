@@ -64,4 +64,29 @@ public class SQLDAO extends Repository {
     public List<Mark> getAllMarksFromDB() {
         return null;
     }
+
+    @Override
+    public int getFreeIdOfMembersDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeIdOfAddressDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeIdOfSongDB() {
+        return 0;
+    }
+
+    @Override
+    public int getFreeTurnNumberFromMemberDB() {
+        return 0;
+    }
+
+    @Override
+    public boolean saveNewMemberIntoDB(Member member) {
+        return false;
+    }
 }

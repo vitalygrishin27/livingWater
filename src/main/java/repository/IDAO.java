@@ -37,5 +37,19 @@ public interface IDAO {
 
     List<Mark> getAllMarksFromDB();
 
+    int getFreeIdOfMembersDB();
 
-}
+    int getFreeIdOfAddressDB();
+
+    int getFreeIdOfSongDB();
+
+    int getFreeTurnNumberFromMemberDB();
+
+    boolean saveNewMemberIntoDB(Member member);
+
+
+    }
+
+
+
+
