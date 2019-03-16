@@ -104,4 +104,14 @@ public class SQLDAO extends Repository {
     public boolean saveNewJuryIntoDB(User jury) {
         return false;
     }
+
+    @Override
+    public int getFreeIdOfJuryDB() {
+        return 0;
+    }
+
+    @Override
+    public Role createRoleByName(String name) {
+        return null;
+    }
 }

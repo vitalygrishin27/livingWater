@@ -45,6 +45,8 @@ public interface IDAO {
 
     int getFreeTurnNumberFromMemberDB();
 
+    int getFreeIdOfJuryDB();
+
     boolean saveNewMemberIntoDB(Member member);
 
    Category getCategoryByName(String name);
@@ -52,6 +54,8 @@ public interface IDAO {
    boolean isLoginForNewJuryCorrect(String login);
 
    boolean saveNewJuryIntoDB(User jury);
+
+   Role createRoleByName(String name);
     }
 
 

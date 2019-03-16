@@ -52,7 +52,6 @@ public class MongoDAO extends Repository {
                 .valueOf(properties.getProperty("port")));
         database = mongoClient.getDatabase(properties.getProperty("database"));
 
-//rgreg
         juryMongoCollection = database.getCollection("jury");
         adminMongoCollection = database.getCollection("admin");
         roleMongoCollection = database.getCollection("role");
@@ -61,7 +60,7 @@ public class MongoDAO extends Repository {
         songMongoCollection = database.getCollection("song");
         markMongoCollection = database.getCollection("mark");
         markCriteriaMongoCollection = database.getCollection("MarkCriteria");
-       categoryMongoCollection = database.getCollection("category");
+        categoryMongoCollection = database.getCollection("category");
 
 
         document = new Document();
@@ -259,11 +258,10 @@ public class MongoDAO extends Repository {
 
     }
 
-    public Category getCategoryByName(String name){
-        Document doc=categoryMongoCollection.find(new Document("name",name)).first();
-       return new Category(doc.getInteger("id"),doc.getString("name"));
+    public Category getCategoryByName(String name) {
+        Document doc = categoryMongoCollection.find(new Document("name", name)).first();
+        return new Category(doc.getInteger("id"), doc.getString("name"));
     }
-
 
 
     @Override
@@ -317,7 +315,7 @@ public class MongoDAO extends Repository {
                 .append("city", address.getCity())
                 .append("phone", address.getPhone()));
 
-        System.out.println("Address successful saved into DB. ("+address.getId()+").");
+        System.out.println("Address successful saved into DB. (" + address.getId() + ").");
         return id;
     }
 
@@ -331,7 +329,7 @@ public class MongoDAO extends Repository {
         song.setId(id);
         songMongoCollection.insertOne(new Document("id", song.getId())
                 .append("name", song.getName()));
-        System.out.println("Song successful saved into DB. ("+song.getId()+" "+song.getName()+").");
+        System.out.println("Song successful saved into DB. (" + song.getId() + " " + song.getName() + ").");
         return id;
 
     }
@@ -393,6 +391,32 @@ public class MongoDAO extends Repository {
         }
         return result;
 
+
+    }
+
+
+    @Override
+    public Role createRoleByName(String name) {
+        Document doc = roleMongoCollection.find(new Document("name", "JURY")).first();
+        return new Role(doc.getInteger("id"), doc.getString("name"));
+    }
+
+    @Override
+    public synchronized int getFreeIdOfJuryDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : juryMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("id"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
 
     }
 
@@ -473,12 +497,25 @@ public class MongoDAO extends Repository {
 
     @Override
     public boolean isLoginForNewJuryCorrect(String login) {
-        return false;
+        if(juryMongoCollection.find(new Document("userName",login)).first()!=null){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     @Override
-    public boolean saveNewJuryIntoDB(User jury) {
-        return false;
+    public synchronized boolean saveNewJuryIntoDB(User jury) {
+       juryMongoCollection.insertOne(new Document("id", getFreeIdOfJuryDB())
+       .append("userName",jury.getUserName())
+       .append("password",jury.getPassword())
+       .append("firstName",jury.getFirstName())
+       .append("secondName",jury.getSecondName())
+       .append("lastName",jury.getLastName())
+       .append("office",jury.getOffice())
+       .append("roleId",jury.getRole().getId()));
+
+        return true;
     }
 
 
