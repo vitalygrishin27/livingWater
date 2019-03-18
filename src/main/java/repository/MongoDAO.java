@@ -543,9 +543,9 @@ public class MongoDAO extends Repository {
 
     @Override
     public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songId) {
-     //   int songId = -1;
-       // if (songNumber == 1) songId = getMemberById(memberId).getFirstSong().getId();
-     //   if (songNumber == 2) songId = getMemberById(memberId).getSecondSong().getId();
+        //   int songId = -1;
+        // if (songNumber == 1) songId = getMemberById(memberId).getFirstSong().getId();
+        //   if (songNumber == 2) songId = getMemberById(memberId).getSecondSong().getId();
         Document doc = markMongoCollection.find(new Document("juryUserName", juryUserName)
                 .append("memberId", memberId)
                 .append("songId", songId)).first();
@@ -579,8 +579,26 @@ public class MongoDAO extends Repository {
         return true;
     }
 
+    @Override
+    public List<Mark> getListOfMarksBySong(Song song) {
+        List<Mark> result = new ArrayList<>();
 
-/*  @Override
+
+        for (Document doc : markMongoCollection.find(new Document("id", song.getId()))
+        ) {
+         result.add(BuilderMark.getNewBuilderMark().setId(doc.getInteger("id"))
+                    .setJury(getJuryByUserName(doc.getString("juryUserName")))
+                    .setMember(getMemberById(doc.getInteger("memberId")))
+                    .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName(doc.getString("markCriteria")))
+                    .setSong(song)
+                    .setValue(doc.getInteger("value"))
+                    .build());
+        }
+
+        return result;
+    }
+
+    /*  @Override
     public List<Member> getListOfMembers() {
         List<Member> result = new ArrayList<>();
 
