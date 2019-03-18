@@ -289,7 +289,7 @@ public class MongoDAO extends Repository {
                 .append("ensembleName", member.getEnsembleName())
                 .append("countOfMembers", member.getCountOfMembers())
                 .append("gender", member.getGender().toString())
-                .append("office",member.getOffice())
+                .append("office", member.getOffice())
                 .append("addressId", member.getAddress().getId())
                 .append("passport", member.getPassport())
                 .append("INN", member.getINN())
@@ -353,7 +353,8 @@ public class MongoDAO extends Repository {
 
     }
 
-    private Song getSongById(int id) {
+    @Override
+    public Song getSongById(int id) {
         Song result = new Song();
 
         Document doc = songMongoCollection.find(new Document("id", id)).first();
@@ -480,6 +481,24 @@ public class MongoDAO extends Repository {
     }
 
     @Override
+    public synchronized int getFreeIdOfMarkDB() {
+        List<Integer> usedId = new ArrayList<>();
+
+        for (Document doc : markMongoCollection.find()
+        ) {
+            usedId.add(doc.getInteger("id"));
+        }
+
+        if (usedId.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(usedId);
+
+            return (usedId.get(usedId.size() - 1)) + 1;
+        }
+    }
+
+    @Override
     public synchronized int getFreeTurnNumberFromMemberDB() {
         List<Integer> usedId = new ArrayList<>();
 
@@ -523,10 +542,10 @@ public class MongoDAO extends Repository {
     }
 
     @Override
-    public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
-        int songId = -1;
-        if (songNumber == 1) songId = getMemberById(memberId).getFirstSong().getId();
-        if (songNumber == 2) songId = getMemberById(memberId).getSecondSong().getId();
+    public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songId) {
+     //   int songId = -1;
+       // if (songNumber == 1) songId = getMemberById(memberId).getFirstSong().getId();
+     //   if (songNumber == 2) songId = getMemberById(memberId).getSecondSong().getId();
         Document doc = markMongoCollection.find(new Document("juryUserName", juryUserName)
                 .append("memberId", memberId)
                 .append("songId", songId)).first();
@@ -547,7 +566,21 @@ public class MongoDAO extends Repository {
         return result;
     }
 
-    /*  @Override
+    @Override
+    public synchronized boolean saveMark(Member member, User jury, MARKCRITERIA markcriteria, Song song, int value) {
+        markMongoCollection.insertOne(new Document("id", getFreeIdOfMarkDB())
+                .append("juryUserName", jury.getUserName())
+                .append("memberId", member.getId())
+                .append("markCriteria", markcriteria.toString())
+                .append("songId", song.getId())
+                .append("value", value));
+
+
+        return true;
+    }
+
+
+/*  @Override
     public List<Member> getListOfMembers() {
         List<Member> result = new ArrayList<>();
 

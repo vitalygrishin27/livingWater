@@ -135,4 +135,19 @@ public class SQLDAO extends Repository {
     public List<Category> getAllCategoryFromDB() {
         return null;
     }
+
+    @Override
+    public boolean saveMark(Member member, User jury, MARKCRITERIA markcriteria, Song song, int value) {
+        return false;
+    }
+
+    @Override
+    public Song getSongById(int id) {
+        return null;
+    }
+
+    @Override
+    public int getFreeIdOfMarkDB() {
+        return 0;
+    }
 }
