@@ -230,7 +230,7 @@ public class MongoDAO extends Repository {
     }
 
     @Override
-    public Member getMemberById(Integer id) {
+    public Member getMemberById(int id) {
         Member result = null;
         Document doc = memberMongoCollection.find(new Document("id", id)).first();
         if (doc != null) {
@@ -243,6 +243,7 @@ public class MongoDAO extends Repository {
                     .setEnsembleName(doc.getString("ensembleName"))
                     .setCountOfMembers(doc.getInteger("countOfMembers"))
                     .setGender(Gender.getGenderByChar(doc.getString("gender")))
+                    .setOffice(doc.getString("office"))
                     .setAddress(getAddressById(doc.getInteger("addressId")))
                     .setPassport(doc.getString("passport"))
                     .setINN(doc.getString("INN"))
@@ -288,11 +289,12 @@ public class MongoDAO extends Repository {
                 .append("ensembleName", member.getEnsembleName())
                 .append("countOfMembers", member.getCountOfMembers())
                 .append("gender", member.getGender().toString())
+                .append("office",member.getOffice())
                 .append("addressId", member.getAddress().getId())
                 .append("passport", member.getPassport())
                 .append("INN", member.getINN())
                 .append("boss", member.getBoss())
-                .append("category", member.getCategory().toString())
+                .append("category", member.getCategory().getName())
                 .append("firstSongId", member.getFirstSong().getId())
                 .append("secondSongId", member.getSecondSong().getId())
                 .append("registration", member.isRegistration())
@@ -382,7 +384,7 @@ public class MongoDAO extends Repository {
         if (element != null) {
             return BuilderMark.getNewBuilderMark().setId(element.getInteger("id"))
                     .setJury(getJuryByUserName(element.getString("juryUserName")))
-                    .setMember(getMemberById(element.getInteger("juryId")))
+                    .setMember(getMemberById(element.getInteger("memberId")))
                     .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName(element.getString("markCriteria")))
                     .setSong(getSongById(element.getInteger("songId")))
                     .setValue(element.getInteger("value"))
@@ -497,35 +499,52 @@ public class MongoDAO extends Repository {
 
     @Override
     public boolean isLoginForNewJuryCorrect(String login) {
-        if(juryMongoCollection.find(new Document("userName",login)).first()!=null){
-            return false;
-        }else {
-            return true;
-        }
+        return juryMongoCollection.find(new Document("userName", login)).first() == null;
     }
 
     @Override
     public synchronized boolean saveNewJuryIntoDB(User jury) {
-       juryMongoCollection.insertOne(new Document("id", getFreeIdOfJuryDB())
-       .append("userName",jury.getUserName())
-       .append("password",jury.getPassword())
-       .append("firstName",jury.getFirstName())
-       .append("secondName",jury.getSecondName())
-       .append("lastName",jury.getLastName())
-       .append("office",jury.getOffice())
-       .append("roleId",jury.getRole().getId()));
+        juryMongoCollection.insertOne(new Document("id", getFreeIdOfJuryDB())
+                .append("userName", jury.getUserName())
+                .append("password", jury.getPassword())
+                .append("firstName", jury.getFirstName())
+                .append("secondName", jury.getSecondName())
+                .append("lastName", jury.getLastName())
+                .append("office", jury.getOffice())
+                .append("roleId", jury.getRole().getId()));
 
         return true;
     }
 
     @Override
     public boolean isMemberSoloByMemberId(int id) {
-        Document doc=memberMongoCollection.find(new Document("id",id)).first();
-        if(doc.getInteger("countOfMembers")==1){
-            return true;
-        }else {
-            return false;
+        Document doc = memberMongoCollection.find(new Document("id", id)).first();
+        return doc.getInteger("countOfMembers") == 1;
+    }
+
+    @Override
+    public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
+        int songId = -1;
+        if (songNumber == 1) songId = getMemberById(memberId).getFirstSong().getId();
+        if (songNumber == 2) songId = getMemberById(memberId).getSecondSong().getId();
+        Document doc = markMongoCollection.find(new Document("juryUserName", juryUserName)
+                .append("memberId", memberId)
+                .append("songId", songId)).first();
+        return doc != null;
+
+    }
+
+    @Override
+    public List<Category> getAllCategoryFromDB() {
+        List<Category> result = new ArrayList<>();
+
+        for (Document doc : categoryMongoCollection.find()
+        ) {
+            result.add(new Category(doc.getInteger("id"), doc.getString("name")));
         }
+
+
+        return result;
     }
 
     /*  @Override

@@ -1,6 +1,7 @@
 package adminServlets;
 
 import authentication.Authentication;
+import entity.Category;
 import org.json.JSONObject;
 import repository.Utils;
 
@@ -94,6 +95,22 @@ public class AddNewMember extends HttpServlet {
                 resp.flushBuffer();
 
             }
+
+            if (userJSon.getString("command").equals("getCategory")) {
+                System.out.println("sID with '" + userJSon.getString("sId") +
+                        "' want to get category.");
+                resp.setContentType("application/json; charset=UTF-8");
+                for (Category element: Authentication.getRepository().getAllCategoryFromDB()
+                     ) {
+                    jsonObjectResponse.append("category",element.getName());
+                }
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+
+                resp.flushBuffer();
+
+            }
+
+
 
 
         } else {

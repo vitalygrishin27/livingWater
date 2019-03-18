@@ -38,12 +38,22 @@ public class UserMainServlet extends HttpServlet {
         } else {
 
             if (messageIsJsonCorrect(userJson).equals("OK")) {
+                //Проверка не выставлена ли уже оценка
+                if (!Authentication.getRepository().isMemberAlreadyEvaluated(userJson.getString("sId"),
+                        Integer.valueOf(userJson.getString("memberId")),
+                        Integer.valueOf(userJson.getString("songId")))) {
+                    //Занесение оценки в БД
+
+                    System.out.println(Utils.getCurrentTime() + " / Mark is set successful.");
+                    jsonObjectResponse.append("status", "200");
+                    jsonObjectResponse.append("message", "Оценка успешно сохранена.");
+
+                } else {
+                    jsonObjectResponse.append("status", "406");
+                    jsonObjectResponse.append("message", "ОШИБКА. Оценка уже была выставлена ранее.");
 
 
-                // TODO: 27.02.2019 Занесение оценок в БД
-                System.out.println(Utils.getCurrentTime() + " / Mark is set successful.");
-                jsonObjectResponse.append("status", "200");
-                jsonObjectResponse.append("message", "Оценка успешно сохранена.");
+                }
 
             } else {
                 System.out.println(Utils.getCurrentTime() + " / Json is not correct.");

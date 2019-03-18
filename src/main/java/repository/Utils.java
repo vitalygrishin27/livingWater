@@ -45,6 +45,7 @@ public class Utils {
                 .setEnsembleName("")
                 .setCountOfMembers(1)
                 .setGender(Gender.getGenderByChar(jsonObject.getString("gender")))
+                .setOffice(jsonObject.getString("office"))
                 .setAddress(getAddressFromJson(jsonObject))
                 .setPassport(jsonObject.getString("passport"))
                 .setINN(jsonObject.getString("INN"))

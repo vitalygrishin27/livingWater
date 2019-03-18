@@ -111,8 +111,9 @@ $(document).ready(function() {
 				artistic:document.getElementById("artistic-label").innerHTML,
 				individualy:document.getElementById("individualy-label").innerHTML,
 				memberName:document.getElementById("member").innerHTML,
-				memberId:document.getElementById("number").innerHTML.substring(2),
-				category:document.getElementById("category").innerHTML.substring(11)}),
+				memberId:document.getElementById("memberId").innerHTML.substring(2),
+				category:document.getElementById("category").innerHTML.substring(11),
+				songId:document.getElementById("songId").innerHTML}),
 			success: function(data){
 		console.log(data);
 		if(data.status=="200"){
@@ -125,5 +126,4 @@ $(document).ready(function() {
 	
 		}
 		  });
-
-	  }
+}
