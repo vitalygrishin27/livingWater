@@ -3,6 +3,7 @@ package adminServlets;
 import authentication.Authentication;
 import entity.Mark;
 import entity.Member;
+import entity.Song;
 import entity.User;
 import org.json.JSONArray;
 import repository.Utils;
@@ -237,9 +238,21 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
             if (userJson.getString("command").equals("setMemberForEvaluation")) {
                 resp.setContentType("application/json; charset=UTF-8");
-                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")),Integer.valueOf(userJson.getString("songNumber")));
+                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")), Integer.valueOf(userJson.getString("songNumber")));
 
                 //   Authentication.setCurrentSongForEvaluation(Authentication.getRepository().);
+            }
+
+            if (userJson.getString("command").equals("getMarksValueOfMemberThatEvaluate")) {
+                Member member = Authentication.getCurrentMemberForEvaluation();
+                Song song = Authentication.getCurrentSongForEvaluation();
+
+                for (Mark element : Authentication.getRepository().getListOfMarksBySong(song)
+                ) {
+                    if()
+
+                }
+
             }
 
 

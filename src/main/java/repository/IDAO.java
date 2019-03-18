@@ -71,6 +71,8 @@ public interface IDAO {
 
     Song getSongById(int id);
 
+    List<Mark> getListOfMarksBySong(Song song);
+
     }
 
 

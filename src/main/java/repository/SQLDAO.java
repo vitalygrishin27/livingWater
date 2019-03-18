@@ -150,4 +150,9 @@ public class SQLDAO extends Repository {
     public int getFreeIdOfMarkDB() {
         return 0;
     }
+
+    @Override
+    public List<Mark> getListOfMarksBySong(Song song) {
+        return null;
+    }
 }
