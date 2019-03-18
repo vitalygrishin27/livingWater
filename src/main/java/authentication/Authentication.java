@@ -2,6 +2,7 @@ package authentication;
 
 import entity.Member;
 import entity.Role;
+import entity.Song;
 import entity.User;
 import repository.Repository;
 import repository.Utils;
@@ -20,6 +21,7 @@ public class Authentication {
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
+    private static Song currentSongForEvaluation;
     private static Map<String, Long> juryPingMap;
 
 
@@ -32,6 +34,7 @@ public class Authentication {
       //  listOfMembers = repository.getAllMembersFromDB();
         juryPingMap = new HashMap<>();
         currentMemberForEvaluation=null;
+        currentSongForEvaluation=null;
     }
 
     public static void ping(String juryUserName) {
@@ -56,13 +59,21 @@ public class Authentication {
     }
 
 
+    public static Song getCurrentSongForEvaluation() {
+        return currentSongForEvaluation;
+    }
 
     public static Member getCurrentMemberForEvaluation() {
+
         return currentMemberForEvaluation;
     }
 
-    public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation) {
+    public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation, int songNumber) {
+        System.out.println(Utils.getCurrentTime()+" / Set to current Member successful.");
+
         Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
+        if(songNumber==1) Authentication.currentSongForEvaluation=currentMemberForEvaluation.getFirstSong();
+        if(songNumber==2) Authentication.currentSongForEvaluation=currentMemberForEvaluation.getSecondSong();
     }
 
     public static void addToListOfJuriesOnline(User user) {

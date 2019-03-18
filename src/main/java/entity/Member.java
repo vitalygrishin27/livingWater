@@ -12,6 +12,7 @@ public class Member {
     private Date birth;
     private int countOfMembers;
     private Gender gender;
+    private String office;
     private Address address;
     private String passport;
     private String INN;
@@ -40,6 +41,7 @@ public class Member {
         member.ensembleName=builderMember.getEnsembleName();
         member.countOfMembers=builderMember.getCountOfMembers();
         member.gender=builderMember.getGender();
+        member.office=builderMember.getOffice();
         member.address=builderMember.getAddress();
         member.passport=builderMember.getPassport();
         member.INN=builderMember.getINN();
@@ -89,6 +91,10 @@ public class Member {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public String getOffice() {
+        return office;
     }
 
     public Address getAddress() {

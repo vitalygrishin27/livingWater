@@ -219,20 +219,16 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                 System.out.println(jsonObjectResponse2);
                // jsonObjectResponse2.to
 */
-                JSONObject jsonObjectResponse2=new JSONObject();
+                JSONObject jsonObjectResponse2 = new JSONObject();
 
 
-
-
-
-
-             //  jsonObjectResponse2.append();
-            //    System.out.println(jsonObjectResponse2);
+                //  jsonObjectResponse2.append();
+                //    System.out.println(jsonObjectResponse2);
 
 
                 System.out.println(result);
                 resp.getWriter().write(String.valueOf(new JSONArray(result)));
-           //     resp.getWriter().write(String.valueOf(jsonObjectResponse2));
+                //     resp.getWriter().write(String.valueOf(jsonObjectResponse2));
                 resp.flushBuffer();
 
 
@@ -241,8 +237,9 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
             if (userJson.getString("command").equals("setMemberForEvaluation")) {
                 resp.setContentType("application/json; charset=UTF-8");
-                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")));
+                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")),Integer.valueOf(userJson.getString("songNumber")));
 
+                //   Authentication.setCurrentSongForEvaluation(Authentication.getRepository().);
             }
 
 

@@ -120,8 +120,19 @@ public class SQLDAO extends Repository {
         return false;
     }
 
+
     @Override
-    public Member getMemberById(Integer id) {
+    public Member getMemberById(int id) {
+        return null;
+    }
+
+    @Override
+    public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
+        return false;
+    }
+
+    @Override
+    public List<Category> getAllCategoryFromDB() {
         return null;
     }
 }

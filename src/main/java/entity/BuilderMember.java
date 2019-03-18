@@ -12,6 +12,7 @@ public class BuilderMember {
     private String ensembleName;
     private int countOfMembers;
     private Gender gender;
+    private String office;
     private Address address;
     private String passport;
     private String INN;
@@ -74,6 +75,11 @@ public Member build(){
 
     public  BuilderMember setGender(Gender gender) {
         this.gender = gender;
+        return this;
+    }
+
+    public BuilderMember setOffice(String office) {
+        this.office = office;
         return this;
     }
 
@@ -153,6 +159,10 @@ public Member build(){
 
     public Gender getGender() {
         return gender;
+    }
+
+    public String getOffice() {
+        return office;
     }
 
     public Address getAddress() {

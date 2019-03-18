@@ -59,7 +59,11 @@ public interface IDAO {
 
    boolean isMemberSoloByMemberId(int id);
 
-    Member getMemberById(Integer id);
+    Member getMemberById(int id);
+
+    boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber);
+
+    List<Category> getAllCategoryFromDB();
     }
 
 

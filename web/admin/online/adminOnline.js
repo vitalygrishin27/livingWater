@@ -11,8 +11,8 @@ function sendPost(ths) {
 var sId=getCookie('LivingWaterSession');
     var tr = ths.parentNode.parentNode;
 
-         songNumber = tr.getElementsByTagName("td")[1].innerHTML;
-         memberId = tr.getElementsByTagName("td")[5].innerHTML;
+         songNumber = tr.getElementsByTagName("td")[3].innerHTML;
+         memberId = tr.getElementsByTagName("td")[0].innerHTML;
 
 
 
@@ -66,17 +66,31 @@ $.ajax({
 
   				 // EXTRACT VALUE FOR HTML HEADER.
                         var col = [];
-                        for (var i = 0; i < list.length; i++) {
+                    //    for (var i = 0; i < list.length; i++) {
+                        for (var i = 0; i < 1; i++) {
+                            col.push("id");
+                            col.push("name");
+                            col.push("category");
+                            col.push("songNumber");
+                            col.push("songName");
+
                             for (var key in list[i]) {
+                               // console.log(col.indexOf(key));
                                 if (col.indexOf(key) === -1) {
-                                    col.push(key);
+                                    console.log(key);
+                                   if(key!="id" && key!="name" && key!="category" && key!="songNumber" && key!="songName"){
+                                   col.push(key);
+                                   }
+
+                                 //   col.push("yt");
                                 }
                             }
+                           console.log(col)
                         }
 
                         // CREATE DYNAMIC TABLE.
                         var table = document.createElement("table");
-                        table.id="customers";
+                        table.id="members";
                                 table.className="table table-striped custab";
                         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
