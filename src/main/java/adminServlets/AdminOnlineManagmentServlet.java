@@ -243,15 +243,41 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                 //   Authentication.setCurrentSongForEvaluation(Authentication.getRepository().);
             }
 
-            if (userJson.getString("command").equals("getMarksValueOfMemberThatEvaluate")) {
+            if (userJson.getString("command").equals("getMarksValueOfMemberThatEvaluate")
+                    && Authentication.getCurrentMemberForEvaluation() != null
+                    && Authentication.getCurrentSongForEvaluation() != null) {
+                resp.setContentType("application/json; charset=UTF-8");
                 Member member = Authentication.getCurrentMemberForEvaluation();
                 Song song = Authentication.getCurrentSongForEvaluation();
 
+
+                Map<String, Integer> markByJury = new HashMap<>();
+                for (User userElement : Authentication.getAllJury()
+                ) {
+                    markByJury.put(userElement.getUserName(), 0);
+                }
+
+
                 for (Mark element : Authentication.getRepository().getListOfMarksBySong(song)
                 ) {
-                    if()
+                    markByJury.put(element.getJury().getUserName(), markByJury.get(element.getJury().getUserName()) + element.getValue());
 
                 }
+
+                markByJury.put("memberId", member.getId());
+                if (song.equals(member.getFirstSong())) markByJury.put("songNumber", 1);
+                if (song.equals(member.getSecondSong())) markByJury.put("songNumber", 2);
+
+                for (Map.Entry<String, Integer> element : markByJury.entrySet()
+                ) {
+                    jsonObjectResponse.append(element.getKey(), element.getValue());
+                }
+
+           //     jsonObjectResponse.append("juryUserName",userJson.getString("sId"));
+                System.out.println("SEND "+jsonObjectResponse);
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+             //   resp.getWriter().write(String.valueOf(new JSONArray(new1)));
+                resp.flushBuffer();
 
             }
 

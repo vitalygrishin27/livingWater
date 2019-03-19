@@ -584,7 +584,7 @@ public class MongoDAO extends Repository {
         List<Mark> result = new ArrayList<>();
 
 
-        for (Document doc : markMongoCollection.find(new Document("id", song.getId()))
+        for (Document doc : markMongoCollection.find(new Document("songId", song.getId()))
         ) {
          result.add(BuilderMark.getNewBuilderMark().setId(doc.getInteger("id"))
                     .setJury(getJuryByUserName(doc.getString("juryUserName")))
