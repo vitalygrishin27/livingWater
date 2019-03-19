@@ -6,10 +6,10 @@
 $(document).ready(function(){
 
 CreateTableFromJSON();
-setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000)
+setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000);
 
 });
-
+// При загрузке документа нарисовать синим строку, если currentMember на сервере существует
 
 
 function getMarksValueOfMemberThatEvaluate (){
@@ -39,6 +39,7 @@ $.ajax({
 
                             //  console.log(data[k]);
                               tab.rows[i].cells[j].innerHTML=data[k];
+                              updateColorOfRow(i);
 
                          }
 
@@ -54,7 +55,7 @@ $.ajax({
 
 		}
 		  });
-
+updateColorOfRowWhenLoadPage();
 }
 
 
@@ -69,6 +70,13 @@ var sId=getCookie('LivingWaterSession');
          songNumber = tr.getElementsByTagName("td")[3].innerHTML;
          memberId = tr.getElementsByTagName("td")[0].innerHTML;
 
+//alert(tr.parentNode.rows[0].cells.length);
+    for(var i=0;i<tr.parentNode.rows[0].cells.length;i++){
+        tr.getElementsByTagName("td")[i].style.backgroundColor = "blue";
+         tr.getElementsByTagName("td")[i].style.color = "white";
+    }
+
+
 
 
 $.ajax({
@@ -80,6 +88,7 @@ $.ajax({
                                   						memberId:memberId}),
 		success: function(data){
 		console.log(data);
+
 	//	document.getElementById("message").innerHTML=data.message;
 
 			alert(data.message);
@@ -245,7 +254,58 @@ for ( var i = 0; i < cls.length; i++ ) {
  }
 
 
+function updateColorOfRow(rowIndex){
+var tab=document.getElementById('members');
+var countOfZeros=0;
+for (var i=1; i<tab.rows[0].cells.length; i++){
+    if(tab.rows[rowIndex].cells[i].innerHTML=="0"){
+    countOfZeros++;
+    }
 
+}
+//alert(countOfZeros);
+
+if(countOfZeros==0){
+    for(var j=0; j<tab.rows[0].cells.length; j++){
+            tab.rows[rowIndex].cells[j].style.backgroundColor = "green";
+            tab.rows[rowIndex].cells[j].style.color = "white";
+
+    }
+
+
+}
+
+
+}
+
+function updateColorOfRowWhenLoadPage(){
+var tab=document.getElementById('members');
+var countOfZeros=0;
+for(var r=1; r<tab.rows.length; r++){
+for (var i=1; i<tab.rows[0].cells.length; i++){
+    if(tab.rows[r].cells[i].innerHTML=="0"){
+    countOfZeros++;
+    }
+
+}
+
+if(countOfZeros==0){
+    for(var j=0; j<tab.rows[0].cells.length; j++){
+            tab.rows[r].cells[j].style.backgroundColor = "green";
+            tab.rows[r].cells[j].style.color = "white";
+
+    }
+
+
+}
+
+}
+//alert(countOfZeros);
+
+
+
+
+}
 
 
 
