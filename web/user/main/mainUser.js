@@ -100,7 +100,18 @@ $(document).ready(function() {
 	  function pushToServer(){
 		  var sId=getCookie('LivingWaterSession');
 		  console.log("pushToServer");
-		  
+
+
+		  //блокировка экрана до следующего участника
+
+
+
+
+
+
+
+
+
 	//	var poster=  $.ajax({
 		$.ajax({
 			 type: 'POST',
@@ -117,6 +128,7 @@ $(document).ready(function() {
 			success: function(data){
 		console.log(data);
 		if(data.status=="200"){
+				skm_LockScreen('Ваша оценка принята.\n Ожидание следующего участника.');
 				reset();
 		}
 		else{
@@ -127,3 +139,23 @@ $(document).ready(function() {
 		}
 		  });
 }
+
+function skm_LockScreen(str)
+               {
+                  var lock = document.getElementById('skm_LockPane');
+                  if (lock)
+                     lock.className = 'LockOn';
+
+
+                  lock.innerHTML = '<div class="h61">Оценка принята.</div><div class="h61">Ожидание следующего участника.</div>';
+                //  lock.innerHTML = str;
+               }
+
+            function skm_UnLockScreen()
+                           {
+                              var lock = document.getElementById('skm_LockPane');
+                              if (lock)
+                                 lock.className = 'LockOff';
+
+                        //      lock.innerHTML = str;
+                           }
