@@ -14,7 +14,7 @@ setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000)
 
 function getMarksValueOfMemberThatEvaluate (){
 var sId=getCookie('LivingWaterSession');
-
+//
 $.ajax({
 			type: 'POST',
 			url: "/admin/online",
