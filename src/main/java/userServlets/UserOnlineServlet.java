@@ -67,7 +67,7 @@ public class UserOnlineServlet extends HttpServlet {
 
         }
 
-        System.out.println(jsonObjectResponse);
+        System.out.println("SEND to JURY "+ jsonObjectResponse);
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
     }

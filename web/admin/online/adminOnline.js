@@ -1,9 +1,64 @@
 
+
+
+
+
 $(document).ready(function(){
 
 CreateTableFromJSON();
+setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000)
 
 });
+
+
+
+function getMarksValueOfMemberThatEvaluate (){
+var sId=getCookie('LivingWaterSession');
+
+$.ajax({
+			type: 'POST',
+			url: "/admin/online",
+			data: JSON.stringify({    sId:sId,
+                                  	  command:"getMarksValueOfMemberThatEvaluate"}),
+		success: function(data){
+		console.log(data);
+		var tab=document.getElementById("members");
+        //Перебор всех ключей JSON
+        for(var k in data){
+
+                if(k!="songNumber" && k!="memberId"){
+                    //Какой идекс колонки нужного члена жюри
+               // document.getElementById('table1').rows[0].cells.length
+
+                for(var j=0;j<tab.rows[0].cells.length;j++){
+                if(tab.rows[0].cells[j].innerHTML==k){
+                    //Поиск нужной строки по MemberId
+                    for(var i=0; i<tab.rows.length;i++){
+                         if(tab.rows[i].cells[0].innerHTML==data.memberId && tab.rows[i].cells[3].innerHTML==data.songNumber){
+                         //Проверка нужной песни
+
+                            //  console.log(data[k]);
+                              tab.rows[i].cells[j].innerHTML=data[k];
+
+                         }
+
+                    }
+
+                }
+                }
+  }
+
+
+        }
+
+
+		}
+		  });
+
+}
+
+
+
 
 
 
