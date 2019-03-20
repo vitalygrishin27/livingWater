@@ -2,6 +2,7 @@ package userServlets;
 
 import authentication.Authentication;
 import entity.Member;
+import entity.Song;
 import entity.User;
 import repository.Utils;
 import org.json.JSONObject;
@@ -38,11 +39,17 @@ public class UserOnlineServlet extends HttpServlet {
             jsonObjectResponse.append("message", "ONLINE");
 
 
-            Member cur=Authentication.getCurrentMemberForEvaluation();
-            if(cur!=null){
-                jsonObjectResponse.append("memberId",cur.getId())
-                        .append("memberName",cur.getLastName()+" "+cur.getFirstName()+" "+cur.getSecondName())
-                        .append("category",cur.getCategory().getName());
+            Member curMem = Authentication.getCurrentMemberForEvaluation();
+            Song curSong = Authentication.getCurrentSongForEvaluation();
+            if (curMem != null) {
+                jsonObjectResponse.append("memberId", curMem.getId())
+                        .append("memberName", curMem.getLastName() + " " + curMem.getFirstName() + " " + curMem.getSecondName())
+                        .append("category", curMem.getCategory().getName())
+                        .append("songName", curSong.getName())
+                        .append("songId", curSong.getId())
+                        .append("office",curMem.getOffice());
+
+
             }
       /*      for (User element: Authentication.getAllJuryFromDB()
                  ) {
@@ -60,7 +67,7 @@ public class UserOnlineServlet extends HttpServlet {
 
         }
 
-        System.out.println(jsonObjectResponse);
+        System.out.println("SEND to JURY "+ jsonObjectResponse);
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
     }

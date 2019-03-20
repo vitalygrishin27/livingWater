@@ -1,6 +1,10 @@
 package userServlets;
 
 import authentication.Authentication;
+import entity.MARKCRITERIA;
+import entity.Member;
+import entity.Song;
+import entity.User;
 import repository.Utils;
 import org.json.JSONObject;
 
@@ -38,12 +42,31 @@ public class UserMainServlet extends HttpServlet {
         } else {
 
             if (messageIsJsonCorrect(userJson).equals("OK")) {
+                //Проверка не выставлена ли уже оценка
+                if (!Authentication.getRepository().isMemberAlreadyEvaluated(userJson.getString("sId"),
+                        Integer.valueOf(userJson.getString("memberId")),
+                        Integer.valueOf(userJson.getString("songId")))) {
+                    //Занесение оценки в БД
+                    Member member = Authentication.getRepository().getMemberById(Integer.valueOf(userJson.getString("memberId")));
+                    User jury = Authentication.getRepository().getJuryByUserName(userJson.getString("sId"));
+                    Song song = Authentication.getRepository().getSongById(Integer.valueOf(userJson.getString("songId")));
+                    // TODO: 18.03.2019 Подумать над критериями
+                    Authentication.getRepository().saveMark(member, jury, MARKCRITERIA.VOCAL, song, Integer.valueOf(userJson.getString("vocal")));
+                    Authentication.getRepository().saveMark(member, jury, MARKCRITERIA.REPERTOIRE, song, Integer.valueOf(userJson.getString("repertoire")));
+                    Authentication.getRepository().saveMark(member, jury, MARKCRITERIA.ARTISTIC, song, Integer.valueOf(userJson.getString("artistic")));
+                    Authentication.getRepository().saveMark(member, jury, MARKCRITERIA.INDIVIDUALY, song, Integer.valueOf(userJson.getString("individualy")));
+
+                    System.out.println(Utils.getCurrentTime() + " / Mark is set successful.");
+                    jsonObjectResponse.append("status", "200");
+                    jsonObjectResponse.append("message", "Оценка успешно сохранена.");
+
+                } else {
+                    System.out.println(Utils.getCurrentTime() + " / Error Mark was already set.");
+                    jsonObjectResponse.append("status", "406");
+                    jsonObjectResponse.append("message", "ОШИБКА. Оценка уже была выставлена ранее.");
 
 
-                // TODO: 27.02.2019 Занесение оценок в БД
-                System.out.println(Utils.getCurrentTime() + " / Mark is set successful.");
-                jsonObjectResponse.append("status", "200");
-                jsonObjectResponse.append("message", "Оценка успешно сохранена.");
+                }
 
             } else {
                 System.out.println(Utils.getCurrentTime() + " / Json is not correct.");

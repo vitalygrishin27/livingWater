@@ -47,6 +47,8 @@ public interface IDAO {
 
     int getFreeIdOfJuryDB();
 
+    int getFreeIdOfMarkDB();
+
     boolean saveNewMemberIntoDB(Member member);
 
    Category getCategoryByName(String name);
@@ -59,8 +61,20 @@ public interface IDAO {
 
    boolean isMemberSoloByMemberId(int id);
 
-    Member getMemberById(Integer id);
+    Member getMemberById(int id);
+
+    boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber);
+
+    List<Category> getAllCategoryFromDB();
+
+    boolean saveMark(Member member, User jury, MARKCRITERIA markcriteria, Song song, int value);
+
+    Song getSongById(int id);
+
+    List<Mark> getListOfMarksBySong(Song song);
+
     }
+
 
 
 

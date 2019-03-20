@@ -3,6 +3,7 @@ package adminServlets;
 import authentication.Authentication;
 import entity.Mark;
 import entity.Member;
+import entity.Song;
 import entity.User;
 import org.json.JSONArray;
 import repository.Utils;
@@ -165,7 +166,9 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     }
                     result.add(map);
 
-// TODO: 16.03.2019 Сделать у юзера номер песни, название песни. После оценивания чтобы затенялся экран в ожидании, чтобы выходило на экран логина, коргда у юзера логаут, 
+// TODO: 16.03.2019 Сделать у юзера номер песни, название песни. После оценивания чтобы затенялся
+//  экран в ожидании, чтобы выходило на экран логина, коргда у юзера логаут
+//  , При загрузке документа нарисовать синим строку, если currentMember на сервере существует
 
                 }
 
@@ -219,20 +222,16 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                 System.out.println(jsonObjectResponse2);
                // jsonObjectResponse2.to
 */
-                JSONObject jsonObjectResponse2=new JSONObject();
+                JSONObject jsonObjectResponse2 = new JSONObject();
 
 
-
-
-
-
-             //  jsonObjectResponse2.append();
-            //    System.out.println(jsonObjectResponse2);
+                //  jsonObjectResponse2.append();
+                //    System.out.println(jsonObjectResponse2);
 
 
                 System.out.println(result);
                 resp.getWriter().write(String.valueOf(new JSONArray(result)));
-           //     resp.getWriter().write(String.valueOf(jsonObjectResponse2));
+                //     resp.getWriter().write(String.valueOf(jsonObjectResponse2));
                 resp.flushBuffer();
 
 
@@ -241,7 +240,46 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
             if (userJson.getString("command").equals("setMemberForEvaluation")) {
                 resp.setContentType("application/json; charset=UTF-8");
-                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")));
+                Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")), Integer.valueOf(userJson.getString("songNumber")));
+
+                //   Authentication.setCurrentSongForEvaluation(Authentication.getRepository().);
+            }
+
+            if (userJson.getString("command").equals("getMarksValueOfMemberThatEvaluate")
+                    && Authentication.getCurrentMemberForEvaluation() != null
+                    && Authentication.getCurrentSongForEvaluation() != null) {
+                resp.setContentType("application/json; charset=UTF-8");
+                Member member = Authentication.getCurrentMemberForEvaluation();
+                Song song = Authentication.getCurrentSongForEvaluation();
+
+
+                Map<String, Integer> markByJury = new HashMap<>();
+                for (User userElement : Authentication.getAllJury()
+                ) {
+                    markByJury.put(userElement.getUserName(), 0);
+                }
+
+
+                for (Mark element : Authentication.getRepository().getListOfMarksBySong(song)
+                ) {
+                    markByJury.put(element.getJury().getUserName(), markByJury.get(element.getJury().getUserName()) + element.getValue());
+
+                }
+
+                markByJury.put("memberId", member.getId());
+                if (song.equals(member.getFirstSong())) markByJury.put("songNumber", 1);
+                if (song.equals(member.getSecondSong())) markByJury.put("songNumber", 2);
+
+                for (Map.Entry<String, Integer> element : markByJury.entrySet()
+                ) {
+                    jsonObjectResponse.append(element.getKey(), element.getValue());
+                }
+
+           //     jsonObjectResponse.append("juryUserName",userJson.getString("sId"));
+                System.out.println("SEND "+jsonObjectResponse);
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+             //   resp.getWriter().write(String.valueOf(new JSONArray(new1)));
+                resp.flushBuffer();
 
             }
 

@@ -120,8 +120,39 @@ public class SQLDAO extends Repository {
         return false;
     }
 
+
     @Override
-    public Member getMemberById(Integer id) {
+    public Member getMemberById(int id) {
+        return null;
+    }
+
+    @Override
+    public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
+        return false;
+    }
+
+    @Override
+    public List<Category> getAllCategoryFromDB() {
+        return null;
+    }
+
+    @Override
+    public boolean saveMark(Member member, User jury, MARKCRITERIA markcriteria, Song song, int value) {
+        return false;
+    }
+
+    @Override
+    public Song getSongById(int id) {
+        return null;
+    }
+
+    @Override
+    public int getFreeIdOfMarkDB() {
+        return 0;
+    }
+
+    @Override
+    public List<Mark> getListOfMarksBySong(Song song) {
         return null;
     }
 }

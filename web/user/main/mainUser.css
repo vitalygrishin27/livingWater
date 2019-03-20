@@ -220,8 +220,8 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 60px;
-  background: url("https://phandroid.s3.amazonaws.com/wp-content/uploads/2014/05/rainbow-nebula.jpg") repeat;
+  font-size: 50px;
+  background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
   
@@ -229,6 +229,25 @@ hr.style {
   line-height: 70px;
   letter-spacing: 0 px;
 }
+
+
+.office_title {
+  font-family:Impact;
+  font-weight: 100%;
+  color: transparent;
+  font-size: 30px;
+  background: url("/user/main/83.jpg") repeat;
+  background-position: 40% 50%;
+  -webkit-background-clip: text;
+
+  text-align: center;
+  line-height: 40px;
+  letter-spacing: 0 px;
+}
+
+
+
+
 
 .subtitle1{
 font-family:Impact;
@@ -242,3 +261,44 @@ font-family:Impact;
 
 
 
+
+.LockOff {
+                  display: none;
+                  visibility: hidden;
+               }
+
+               .LockOn {
+                  display: block;
+                  visibility: visible;
+                  position: absolute;
+                  position:fixed;
+                  z-index: 999;
+                  top: 0px;
+                  left: 0px;
+                  width: 105%;
+                  height: 105%;
+                  background-color: #ccc;
+                  text-align: center;
+                  font-size:20px;
+                  padding-top: 20%;
+                  padding-right: 15%;
+
+                  filter: alpha(opacity=75);
+                  opacity: 0.75;
+               }
+
+
+
+
+.h61{
+	text-align: center;
+	color: rgba(0,0,0,0.8);
+	font-size: 60px;
+	  line-height: 60px;
+	padding-bottom: 100px;
+	text-shadow: 0 -3px 0 #333,
+		0 3px 4px rgba(0,0,0, 0.4),
+		0 4px 5px rgba(0,0,0, 0.15),
+		0 14px 5px rgba(0,0,0, 0.18),
+		0 6px 5px rgba(0,0,0, 0.21);
+}

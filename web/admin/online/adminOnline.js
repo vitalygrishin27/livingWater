@@ -1,9 +1,65 @@
 
+
+
+
+
 $(document).ready(function(){
 
 CreateTableFromJSON();
+setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000);
 
 });
+// При загрузке документа нарисовать синим строку, если currentMember на сервере существует
+
+
+function getMarksValueOfMemberThatEvaluate (){
+var sId=getCookie('LivingWaterSession');
+//
+$.ajax({
+			type: 'POST',
+			url: "/admin/online",
+			data: JSON.stringify({    sId:sId,
+                                  	  command:"getMarksValueOfMemberThatEvaluate"}),
+		success: function(data){
+		console.log(data);
+		var tab=document.getElementById("members");
+        //Перебор всех ключей JSON
+        for(var k in data){
+
+                if(k!="songNumber" && k!="memberId"){
+                    //Какой идекс колонки нужного члена жюри
+               // document.getElementById('table1').rows[0].cells.length
+
+                for(var j=0;j<tab.rows[0].cells.length;j++){
+                if(tab.rows[0].cells[j].innerHTML==k){
+                    //Поиск нужной строки по MemberId
+                    for(var i=0; i<tab.rows.length;i++){
+                         if(tab.rows[i].cells[0].innerHTML==data.memberId && tab.rows[i].cells[3].innerHTML==data.songNumber){
+                         //Проверка нужной песни
+
+                            //  console.log(data[k]);
+                              tab.rows[i].cells[j].innerHTML=data[k];
+                              updateColorOfRow(i);
+
+                         }
+
+                    }
+
+                }
+                }
+  }
+
+
+        }
+
+
+		}
+		  });
+updateColorOfRowWhenLoadPage();
+}
+
+
+
 
 
 
@@ -11,8 +67,15 @@ function sendPost(ths) {
 var sId=getCookie('LivingWaterSession');
     var tr = ths.parentNode.parentNode;
 
-         songNumber = tr.getElementsByTagName("td")[1].innerHTML;
-         memberId = tr.getElementsByTagName("td")[5].innerHTML;
+         songNumber = tr.getElementsByTagName("td")[3].innerHTML;
+         memberId = tr.getElementsByTagName("td")[0].innerHTML;
+
+//alert(tr.parentNode.rows[0].cells.length);
+    for(var i=0;i<tr.parentNode.rows[0].cells.length;i++){
+        tr.getElementsByTagName("td")[i].style.backgroundColor = "blue";
+         tr.getElementsByTagName("td")[i].style.color = "white";
+    }
+
 
 
 
@@ -25,6 +88,7 @@ $.ajax({
                                   						memberId:memberId}),
 		success: function(data){
 		console.log(data);
+
 	//	document.getElementById("message").innerHTML=data.message;
 
 			alert(data.message);
@@ -66,17 +130,31 @@ $.ajax({
 
   				 // EXTRACT VALUE FOR HTML HEADER.
                         var col = [];
-                        for (var i = 0; i < list.length; i++) {
+                    //    for (var i = 0; i < list.length; i++) {
+                        for (var i = 0; i < 1; i++) {
+                            col.push("id");
+                            col.push("name");
+                            col.push("category");
+                            col.push("songNumber");
+                            col.push("songName");
+
                             for (var key in list[i]) {
+                               // console.log(col.indexOf(key));
                                 if (col.indexOf(key) === -1) {
-                                    col.push(key);
+                                    console.log(key);
+                                   if(key!="id" && key!="name" && key!="category" && key!="songNumber" && key!="songName"){
+                                   col.push(key);
+                                   }
+
+                                 //   col.push("yt");
                                 }
                             }
+                           console.log(col)
                         }
 
                         // CREATE DYNAMIC TABLE.
                         var table = document.createElement("table");
-                        table.id="customers";
+                        table.id="members";
                                 table.className="table table-striped custab";
                         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
@@ -176,7 +254,58 @@ for ( var i = 0; i < cls.length; i++ ) {
  }
 
 
+function updateColorOfRow(rowIndex){
+var tab=document.getElementById('members');
+var countOfZeros=0;
+for (var i=1; i<tab.rows[0].cells.length; i++){
+    if(tab.rows[rowIndex].cells[i].innerHTML=="0"){
+    countOfZeros++;
+    }
 
+}
+//alert(countOfZeros);
+
+if(countOfZeros==0){
+    for(var j=0; j<tab.rows[0].cells.length; j++){
+            tab.rows[rowIndex].cells[j].style.backgroundColor = "green";
+            tab.rows[rowIndex].cells[j].style.color = "white";
+
+    }
+
+
+}
+
+
+}
+
+function updateColorOfRowWhenLoadPage(){
+var tab=document.getElementById('members');
+var countOfZeros=0;
+for(var r=1; r<tab.rows.length; r++){
+for (var i=1; i<tab.rows[0].cells.length; i++){
+    if(tab.rows[r].cells[i].innerHTML=="0"){
+    countOfZeros++;
+    }
+
+}
+
+if(countOfZeros==0){
+    for(var j=0; j<tab.rows[0].cells.length; j++){
+            tab.rows[r].cells[j].style.backgroundColor = "green";
+            tab.rows[r].cells[j].style.color = "white";
+
+    }
+
+
+}
+
+}
+//alert(countOfZeros);
+
+
+
+
+}
 
 
 

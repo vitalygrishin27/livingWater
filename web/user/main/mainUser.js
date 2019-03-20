@@ -100,7 +100,18 @@ $(document).ready(function() {
 	  function pushToServer(){
 		  var sId=getCookie('LivingWaterSession');
 		  console.log("pushToServer");
-		  
+
+
+		  //блокировка экрана до следующего участника
+
+
+
+
+
+
+
+
+
 	//	var poster=  $.ajax({
 		$.ajax({
 			 type: 'POST',
@@ -111,12 +122,23 @@ $(document).ready(function() {
 				artistic:document.getElementById("artistic-label").innerHTML,
 				individualy:document.getElementById("individualy-label").innerHTML,
 				memberName:document.getElementById("member").innerHTML,
-				memberId:document.getElementById("number").innerHTML.substring(2),
-				category:document.getElementById("category").innerHTML.substring(11)}),
+				memberId:document.getElementById("memberId").innerHTML.substring(2),
+				category:document.getElementById("category").innerHTML.substring(11),
+				songId:document.getElementById("songId").innerHTML}),
 			success: function(data){
 		console.log(data);
+
+        if(data.message=="ОШИБКА. Оценка уже была выставлена ранее."){
+				skm_LockScreen('ОШИБКА. Оценка уже была выставлена ранее.\n Ожидание следующего участника.');
+            reset();
+
+		}
+
+
 		if(data.status=="200"){
+				skm_LockScreen('Оценка принята.\n Ожидание следующего участника.');
 				reset();
+
 		}
 		else{
 			alert(data.message);
@@ -125,5 +147,24 @@ $(document).ready(function() {
 	
 		}
 		  });
+}
 
-	  }
+function skm_LockScreen(str)
+               {
+                  var lock = document.getElementById('skm_LockPane');
+                  if (lock)
+                     lock.className = 'LockOn';
+
+
+                  lock.innerHTML = '<div class="h61">'+str+'</div>';
+                //  lock.innerHTML = str;
+               }
+
+            function skm_UnLockScreen()
+                           {
+                              var lock = document.getElementById('skm_LockPane');
+                              if (lock)
+                                 lock.className = 'LockOff';
+
+                        //      lock.innerHTML = str;
+                           }
