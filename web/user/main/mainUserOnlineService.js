@@ -23,9 +23,12 @@ function getInfo(){
 			data: JSON.stringify({sId:sId, command:"online"}),
 			success: function(data){
 				console.log(data);
+
+
 				if(document.getElementById("songId").innerHTML!=data.songId){
 					skm_UnLockScreen();
 				}
+
 
 				document.getElementById("messageAboutOnline").innerHTML=data.message;
 			    document.getElementById("messageAboutOnline").style.backgroundColor="green";
