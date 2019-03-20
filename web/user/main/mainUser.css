@@ -293,7 +293,8 @@ font-family:Impact;
 .h61{
 	text-align: center;
 	color: rgba(0,0,0,0.8);
-	font-size: 100px;
+	font-size: 60px;
+	  line-height: 60px;
 	padding-bottom: 100px;
 	text-shadow: 0 -3px 0 #333,
 		0 3px 4px rgba(0,0,0, 0.4),

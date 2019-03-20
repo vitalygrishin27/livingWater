@@ -127,9 +127,18 @@ $(document).ready(function() {
 				songId:document.getElementById("songId").innerHTML}),
 			success: function(data){
 		console.log(data);
+
+        if(data.message=="ОШИБКА. Оценка уже была выставлена ранее."){
+				skm_LockScreen('ОШИБКА. Оценка уже была выставлена ранее.\n Ожидание следующего участника.');
+            reset();
+
+		}
+
+
 		if(data.status=="200"){
-				skm_LockScreen('Ваша оценка принята.\n Ожидание следующего участника.');
+				skm_LockScreen('Оценка принята.\n Ожидание следующего участника.');
 				reset();
+
 		}
 		else{
 			alert(data.message);
@@ -147,7 +156,7 @@ function skm_LockScreen(str)
                      lock.className = 'LockOn';
 
 
-                  lock.innerHTML = '<div class="h61">Оценка принята.</div><div class="h61">Ожидание следующего участника.</div>';
+                  lock.innerHTML = '<div class="h61">'+str+'</div>';
                 //  lock.innerHTML = str;
                }
 
