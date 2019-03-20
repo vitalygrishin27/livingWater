@@ -43,12 +43,16 @@ public class UserOnlineServlet extends HttpServlet {
             Song curSong = Authentication.getCurrentSongForEvaluation();
             if (curMem != null) {
                 jsonObjectResponse.append("memberId", curMem.getId())
-                        .append("memberName", curMem.getLastName() + " " + curMem.getFirstName() + " " + curMem.getSecondName())
+                   //     .append("memberName", curMem.getLastName() + " " + curMem.getFirstName() + " " + curMem.getSecondName())
                         .append("category", curMem.getCategory().getName())
                         .append("songName", curSong.getName())
                         .append("songId", curSong.getId())
                         .append("office",curMem.getOffice());
-
+            if(curMem.getEnsembleName().equals("")){
+                jsonObjectResponse.append("memberName", curMem.getLastName() + " " + curMem.getFirstName() + " " + curMem.getSecondName());
+            }else{
+                jsonObjectResponse.append("memberName", curMem.getEnsembleName());
+            }
 
             }
       /*      for (User element: Authentication.getAllJuryFromDB()

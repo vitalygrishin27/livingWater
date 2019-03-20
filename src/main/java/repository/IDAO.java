@@ -73,6 +73,8 @@ public interface IDAO {
 
     List<Mark> getListOfMarksBySong(Song song);
 
+  //  boolean saveNewEnsembleIntoDB(Member member);
+
     }
 
 
