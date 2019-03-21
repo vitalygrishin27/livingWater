@@ -150,34 +150,8 @@ public class Utils {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        readWorkbook("z:\\statement.xls");
 
-    }
-
-    public static void readWorkbook(String filename) throws IOException {
-        POIFSFileSystem fs=new POIFSFileSystem((new FileInputStream(filename)));
-        HSSFWorkbook wb=new HSSFWorkbook(fs);
-        HSSFSheet sheet=wb.getSheetAt(0);
-        HSSFRow row=sheet.getRow(4);
-        HSSFCell cell=row.getCell(1);
-
-        copyRow(wb,sheet,4,7);
-        copyRow(wb,sheet,5,8);
-        copyRow(wb,sheet,6,9);
-
-        System.out.println(cell.getNumericCellValue());
-        cell.setCellValue("Кобзев Сергей Сергеевич");
-        FileOutputStream outFile = new FileOutputStream("z:\\test.xls");
-        wb.write(outFile);
-
-//wb.write();
-wb.close();
-
-    }
-
-
-    private static void copyRow(HSSFWorkbook workbook, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
+    public static void copyRow(HSSFWorkbook workbook, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
         // Get the source / new row
         HSSFRow newRow = worksheet.getRow(destinationRowNum);
         HSSFRow sourceRow = worksheet.getRow(sourceRowNum);
