@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Member {
 
@@ -132,4 +133,19 @@ public class Member {
     public int getTurnNumber() {
         return turnNumber;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return id == member.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+
+
