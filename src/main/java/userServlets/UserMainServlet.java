@@ -20,7 +20,7 @@ public class UserMainServlet extends HttpServlet {
         System.out.println(Utils.getCurrentTime() + " / START USER SERVLET IS DONE! (GET)");
 
         if (Authentication.isJuryInDbByCookies(req)) {
-            req.getRequestDispatcher("/user/main/mainUser.html").forward(req, resp);
+            req.getRequestDispatcher("/user/main/mainUser2.html").forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Error with authorization. Redirect to login page. (Jury).");
             resp.sendRedirect("/");

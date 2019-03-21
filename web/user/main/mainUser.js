@@ -57,6 +57,13 @@ function reset(){
           update();
 }
 
+function setValueFromFirst(val){
+//$("#vocal").val(val);
+//$("#vocal-label").text(val);
+//var $vocal == 1?val:$("#vocal").val();
+//var $vocal == 1?val:$("#vocal").val();
+}
+
 
 
 
@@ -96,6 +103,7 @@ $(document).ready(function() {
          $('#slider3 a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> '+$artistic+' <span class="glyphicon glyphicon-chevron-right"></span></label>');
       $('#slider4 a').html('<label><span class="glyphicon glyphicon-chevron-left"></span> '+$individualy+' <span class="glyphicon glyphicon-chevron-right"></span></label>');
 	  }
+
 	  
 	  function pushToServer(){
 		  var sId=getCookie('LivingWaterSession');
