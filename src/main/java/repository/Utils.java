@@ -4,8 +4,6 @@ import authentication.Authentication;
 import entity.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.json.JSONObject;
 
@@ -51,7 +49,7 @@ public class Utils {
                 .setCountOfMembers(1)
                 .setGender(Gender.getGenderByChar(jsonObject.getString("gender")))
                 .setOffice(jsonObject.getString("office"))
-                .setAddress(getAddressFromJson(jsonObject))
+                .setAddress(getAddressForSoloMemberFromJson(jsonObject))
                 .setPassport(jsonObject.getString("passport"))
                 .setINN(jsonObject.getString("INN"))
                 .setBoss(jsonObject.getString("boss"))
@@ -63,6 +61,30 @@ public class Utils {
                 .build();
 
     }
+
+    public static Member getEnsembleFromJson(JSONObject jsonObject) {
+        return BuilderMember.getBuilderMember().setId(Authentication.getRepository().getFreeIdOfMembersDB())
+                .setFirstName("")
+                .setSecondName("")
+                .setLastName("")
+                .setBirth(getDateFromString("1985-03-27"))
+                .setEnsembleName(jsonObject.getString("ensembleName"))
+                .setCountOfMembers(jsonObject.getInt("countOfMembers"))
+                .setGender(Gender.getGenderByChar("M"))
+                .setOffice(jsonObject.getString("ensembleOffice"))
+                .setAddress(getAddressForSoloMemberFromJson(jsonObject))
+                .setPassport("")
+                .setINN("")
+                .setBoss(jsonObject.getString("boss"))
+                .setCategory(Authentication.getRepository().getCategoryByName(jsonObject.getString("category")))
+                .setFirstSong(createFirstSongByName(jsonObject.getString("firstSong")))
+                .setSecondSong(createSecondSongByName(jsonObject.getString("secondSong")))
+                .setRegistration(false)
+                .setTurnNumber(Authentication.getRepository().getFreeTurnNumberFromMemberDB())
+                .build();
+
+    }
+
 
 
     public static User getJuryFromJson(JSONObject jsonObject) {
@@ -92,7 +114,7 @@ public class Utils {
     }
 
 
-    private static Address getAddressFromJson(JSONObject jsonObject) {
+    private static Address getAddressForSoloMemberFromJson(JSONObject jsonObject) {
         return BuilderAddress.getBuilderAddress().setId(Authentication.getRepository().getFreeIdOfAddressDB())
                 .setCountry(jsonObject.getString("country"))
                 .setRegion(jsonObject.getString("region"))
@@ -103,6 +125,7 @@ public class Utils {
 
 
     }
+
 
 
     private static Date getDateFromString(String d) {
@@ -128,7 +151,7 @@ public class Utils {
     }
 
     public static void main(String[] args) throws IOException {
-        readWorkbook("d:\\statement.xls");
+        readWorkbook("z:\\statement.xls");
 
     }
 
@@ -145,7 +168,7 @@ public class Utils {
 
         System.out.println(cell.getNumericCellValue());
         cell.setCellValue("Кобзев Сергей Сергеевич");
-        FileOutputStream outFile = new FileOutputStream("d:\\test.xls");
+        FileOutputStream outFile = new FileOutputStream("z:\\test.xls");
         wb.write(outFile);
 
 //wb.write();
