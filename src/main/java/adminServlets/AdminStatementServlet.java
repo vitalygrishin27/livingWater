@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.json.JSONObject;
 import repository.Utils;
 
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class AdminStatementServlet extends HttpServlet {
     static int SUMMARYCOLUMNINDEX = 26;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
             //Для всех категорий
@@ -176,7 +177,7 @@ public class AdminStatementServlet extends HttpServlet {
                     cell.setCellValue(summaryMarkOfSecondSongByCriteria.get(MARKCRITERIA.INDIVIDUALY));
 
                     //Заполнение общей оценки за все песни от всех жюри
-                    row = sheet.getRow((memberNumberInCategory * 4)+3);
+                    row = sheet.getRow((memberNumberInCategory * 4) + 3);
                     cell = row.getCell(SUMMARYCOLUMNINDEX);
                     cell.setCellValue(globalSummary);
 
@@ -189,7 +190,7 @@ public class AdminStatementServlet extends HttpServlet {
 
                     memberNumberInCategory++;
                 }
-                FileOutputStream outFile = new FileOutputStream("z:\\test" + categoryElement.getName() + ".xls");
+                FileOutputStream outFile = new FileOutputStream(categoryElement.getName() + ".xls");
                 wb.write(outFile);
                 outFile.close();
                 wb.close();
@@ -197,8 +198,13 @@ public class AdminStatementServlet extends HttpServlet {
 
             }
 
-            req.getRequestDispatcher("/admin/statement/statement.html")
-                    .forward(req, resp);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.append("message", "Файлы успешно сохранены.");
+            resp.setContentType("application/json; charset=UTF-8");
+            resp.getWriter().write(String.valueOf(jsonObject));
+            resp.flushBuffer();
+            //  req.getRequestDispatcher("/admin/statement/statement.html")
+            //        .forward(req, resp);
         } else {
             System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
             resp.sendRedirect("/adminLogin");
