@@ -86,7 +86,7 @@
                     actives.clone().appendTo('.list-left ul');
                     actives.remove();
 
-
+//
                        alert(actives.class);
                 } else if ($button.hasClass('move-right')) {
 
