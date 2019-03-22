@@ -1,24 +1,40 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
+@Entity
+@Table (name = "members")
 public class Member {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "second_name")
     private String secondName;
+    @Column(name = "ensemble_name")
     private String ensembleName;
     private Date birth;
+    @Column(name = "count_of_members")
     private int countOfMembers;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 1)
     private Gender gender;
     private String office;
+    @Embedded
     private Address address;
     private String passport;
     private String INN;
     private String boss;
+    @Embedded
     private Category category;
+    @Embedded
     private Song firstSong;
+    @Embedded
     private Song secondSong;
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
@@ -132,4 +148,19 @@ public class Member {
     public int getTurnNumber() {
         return turnNumber;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return id == member.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+
+
