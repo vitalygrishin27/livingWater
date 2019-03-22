@@ -76,9 +76,10 @@ public class AddNewMember extends HttpServlet {
 
                 String messageToResponse = messageIsJsonCorrect(userJSon);
                 if (messageToResponse.equals("OK")) {
+
+                    Authentication.getRepository().saveNewMemberIntoDB(Utils.getEnsembleFromJson(userJSon));
                     //  201 Created («создано»)[2][3][4];
                     System.out.println("Add to DB new ensemble member is OK.");
-                    // TODO: 16.02.2019 Добавление записи в базу данных ENSEMBLE
                     jsonObjectResponse.append("status", "201");
                     jsonObjectResponse.append("message", "Новый ансамбль добавлен в БД.");
                 } else {

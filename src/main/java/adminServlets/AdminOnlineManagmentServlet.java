@@ -166,9 +166,10 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
                     }
                     result.add(map);
 
-// TODO: 16.03.2019 Сделать у юзера номер песни, название песни. После оценивания чтобы затенялся
-//  экран в ожидании, чтобы выходило на экран логина, коргда у юзера логаут
-//  , При загрузке документа нарисовать синим строку, если currentMember на сервере существует
+// TODO: 22.03.2019  добавить кнопку очистить на экране добавление участников
+//  в и может рядом сразу список всех участников
+//  окно добавлениеи редактирование категорий
+
 
                 }
 
@@ -244,6 +245,28 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
 
                 //   Authentication.setCurrentSongForEvaluation(Authentication.getRepository().);
             }
+
+            if (userJson.getString("command").equals("getCurrentMemberDataThatEvaluate")
+                    && Authentication.getCurrentMemberForEvaluation() != null
+                    && Authentication.getCurrentSongForEvaluation() != null) {
+                resp.setContentType("application/json; charset=UTF-8");
+                if(Authentication.getCurrentMemberForEvaluation().getFirstSong().equals(Authentication.getCurrentSongForEvaluation())){
+                    jsonObjectResponse.append("songNumber",1);
+                }
+                if(Authentication.getCurrentMemberForEvaluation().getSecondSong().equals(Authentication.getCurrentSongForEvaluation())){
+                    jsonObjectResponse.append("songNumber",2);
+                }
+
+                jsonObjectResponse.append("memberId",Authentication.getCurrentMemberForEvaluation().getId());
+                resp.getWriter().write(String.valueOf(jsonObjectResponse));
+
+                resp.flushBuffer();
+
+
+
+            }
+
+
 
             if (userJson.getString("command").equals("getMarksValueOfMemberThatEvaluate")
                     && Authentication.getCurrentMemberForEvaluation() != null

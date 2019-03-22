@@ -100,7 +100,7 @@ border:none !important;
 	font-weight: 600;
 	font-size: 62px;
 	color: #ffff00;
-	text-align: right;	
+	text-align: center;
 	line-height: 60px;
 }
 
@@ -109,7 +109,7 @@ h4.great {
 	margin: 0 0 25px -60px;
 	padding: 7px 15px;
 	color: #ffffff;
-	font-size: 18px;
+	font-size: 28px;
 	font-weight: 600;
 	border-radius: 5px;
 	display: inline-block;
@@ -175,13 +175,14 @@ h4.great {
 	display: inline-block;
 	color: #7f8c8d;
 	font-size: 14px;
+	text-align: center;
 }
 
 .help-text {
 	display: block;
 	margin-top: 32px;
 	margin-bottom: 10px;
-	color: #737373;
+	color: #d35656;
 	position: absolute;
 	/*margin-left: 20px;*/
 	font-weight: 200;
@@ -190,9 +191,10 @@ h4.great {
 }
 
 .price-form label {
-	font-weight: 200;
-	font-size: 21px;
+	font-weight: 100;
+	font-size: 15px;
 	color: #FFFFFF;
+	text-align: center;
 }
 
 img.payment {
@@ -302,3 +304,17 @@ font-family:Impact;
 		0 14px 5px rgba(0,0,0, 0.18),
 		0 6px 5px rgba(0,0,0, 0.21);
 }
+
+
+
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 34px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+
