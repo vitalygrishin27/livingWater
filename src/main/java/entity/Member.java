@@ -18,7 +18,7 @@ public class Member {
     @Column(name = "ensemble_name")
     private String ensembleName;
     private Date birth;
-    @Column(name = "count_of_members")
+    @Column(name = "count_ofmembers")
     private int countOfMembers;
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
