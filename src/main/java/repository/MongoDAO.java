@@ -586,7 +586,7 @@ public class MongoDAO extends Repository {
 
         for (Document doc : markMongoCollection.find(new Document("songId", song.getId()))
         ) {
-         result.add(BuilderMark.getNewBuilderMark().setId(doc.getInteger("id"))
+            result.add(BuilderMark.getNewBuilderMark().setId(doc.getInteger("id"))
                     .setJury(getJuryByUserName(doc.getString("juryUserName")))
                     .setMember(getMemberById(doc.getInteger("memberId")))
                     .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName(doc.getString("markCriteria")))
@@ -595,6 +595,40 @@ public class MongoDAO extends Repository {
                     .build());
         }
 
+        return result;
+    }
+
+    @Override
+    public List<Member> getMembersByCategory(Category category) {
+        List<Member> result = new ArrayList<>();
+        for (Member memberElement : getAllMembersFromDB()
+        ) {
+            if (memberElement.getCategory().equals(category)) {
+                result.add(memberElement);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Mark> getMarksByMember(Member member) {
+        List<Mark> result = new ArrayList<>();
+        for (Mark markElement : getAllMarksFromDB()
+        ) {
+            if (markElement.getMember().equals(member)) {
+                    result.add(markElement);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<MARKCRITERIA> getAllMarkCriteria() {
+        List<MARKCRITERIA> result=new ArrayList<>();
+        for (Document doc: markCriteriaMongoCollection.find()
+             ) {
+            result.add(MARKCRITERIA.getMarkCriteriaByName(doc.getString("name")));
+        }
         return result;
     }
 

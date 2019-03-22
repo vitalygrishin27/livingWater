@@ -155,4 +155,19 @@ public class SQLDAO extends Repository {
     public List<Mark> getListOfMarksBySong(Song song) {
         return null;
     }
+
+    @Override
+    public List<Member> getMembersByCategory(Category category) {
+        return null;
+    }
+
+    @Override
+    public List<Mark> getMarksByMember(Member member) {
+        return null;
+    }
+
+    @Override
+    public List<MARKCRITERIA> getAllMarkCriteria() {
+        return null;
+    }
 }

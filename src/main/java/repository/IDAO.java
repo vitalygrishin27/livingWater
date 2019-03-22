@@ -73,6 +73,12 @@ public interface IDAO {
 
     List<Mark> getListOfMarksBySong(Song song);
 
+    List<Member> getMembersByCategory(Category category);
+
+    List<Mark> getMarksByMember(Member member);
+
+    List<MARKCRITERIA> getAllMarkCriteria();
+
   //  boolean saveNewEnsembleIntoDB(Member member);
 
     }
