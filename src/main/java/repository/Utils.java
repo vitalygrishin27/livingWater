@@ -193,7 +193,7 @@ public class Utils {
 
             // Set the cell data type
             newCell.setCellType(oldCell.getCellType());
-          System.out.println(oldCell.getCellType());
+      //    System.out.println(oldCell.getCellType());
           //  System.exit(2);
 
             // Set the cell data value
@@ -204,9 +204,9 @@ public class Utils {
                 case BOOLEAN:
                     newCell.setCellValue(oldCell.getBooleanCellValue());
                     break;
-                case ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
+            //    case ERROR:
+          //          newCell.setCellErrorValue(oldCell.getErrorCellValue());
+         //           break;
                 case FORMULA:
                     newCell.setCellFormula(oldCell.getCellFormula());
                     break;
