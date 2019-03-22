@@ -77,6 +77,8 @@ public interface IDAO {
 
     List<Mark> getMarksByMember(Member member);
 
+    List<MARKCRITERIA> getAllMarkCriteria();
+
   //  boolean saveNewEnsembleIntoDB(Member member);
 
     }

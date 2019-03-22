@@ -622,6 +622,16 @@ public class MongoDAO extends Repository {
         return result;
     }
 
+    @Override
+    public List<MARKCRITERIA> getAllMarkCriteria() {
+        List<MARKCRITERIA> result=new ArrayList<>();
+        for (Document doc: markCriteriaMongoCollection.find()
+             ) {
+            result.add(MARKCRITERIA.getMarkCriteriaByName(doc.getString("name")));
+        }
+        return result;
+    }
+
     /*  @Override
     public List<Member> getListOfMembers() {
         List<Member> result = new ArrayList<>();

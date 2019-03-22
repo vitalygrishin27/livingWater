@@ -165,4 +165,9 @@ public class SQLDAO extends Repository {
     public List<Mark> getMarksByMember(Member member) {
         return null;
     }
+
+    @Override
+    public List<MARKCRITERIA> getAllMarkCriteria() {
+        return null;
+    }
 }
