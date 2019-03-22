@@ -15,7 +15,7 @@ public class Member {
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "second_name")
-    private String secondName;
+    private String secondName;///
     @Column(name = "ensemble_name")
     private String ensembleName;
     private Date birth;
