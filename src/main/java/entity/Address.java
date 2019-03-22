@@ -1,6 +1,12 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "address")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String country;
     private String region;

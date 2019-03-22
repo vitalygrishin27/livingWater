@@ -1,5 +1,10 @@
 package entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "marks")
 public class Mark {
     private int id;
     private User jury;
