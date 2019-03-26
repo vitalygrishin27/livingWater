@@ -31,7 +31,7 @@ public class User {
         this.role=role;
     }
 
-
+//
 
     public static User createUserJuryByBuilder(BuilderUserJury builderUserJury){
         return new User(builderUserJury.getUserName(),
