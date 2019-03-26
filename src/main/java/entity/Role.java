@@ -1,8 +1,16 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table (name = "roles")
+@Embeddable
 public class Role {
-    int id;
-    String name;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String name;
 
     public Role(int id, String name) {
         this.id = id;
