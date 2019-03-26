@@ -4,13 +4,16 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table (name = "songs")
+@Table(name = "songs")
 @Embeddable
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+
+    public Song() {
+    }
 
     public int getId() {
         return id;

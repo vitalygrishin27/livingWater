@@ -3,7 +3,7 @@ package entity;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "marks")
+@Table(name = "marks")
 public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -11,6 +11,8 @@ public class Mark {
     @Embedded
     private User jury;
     @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
     @Enumerated(EnumType.STRING)
     @Column(length = 11)

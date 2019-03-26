@@ -53,7 +53,7 @@ public class BuilderUserJury {
         return this;
     }
 
-    public User build(){
+    public User build() {
         return User.createUserJuryByBuilder(this);
     }
 

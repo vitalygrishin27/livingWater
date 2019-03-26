@@ -9,9 +9,10 @@ public class BuilderAddress {
     private String phone;
 
 
-    private BuilderAddress(){}
+    private BuilderAddress() {
+    }
 
-    public static BuilderAddress getBuilderAddress(){
+    public static BuilderAddress getBuilderAddress() {
         return new BuilderAddress();
     }
 
@@ -45,7 +46,7 @@ public class BuilderAddress {
         return this;
     }
 
-    public Address build(){
+    public Address build() {
         return Address.createAddress(this);
     }
 

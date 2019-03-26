@@ -10,7 +10,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "last_name")//
+    @Column(name = "last_name")
     private String lastName;
     @Column(name = "first_name")
     private String firstName;
@@ -26,15 +26,23 @@ public class Member {
     private Gender gender;
     private String office;
     @Embedded
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Address address;
     private String passport;
     private String INN;
     private String boss;
     @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
     @Embedded
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Song firstSong;
     @Embedded
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Song secondSong;
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
