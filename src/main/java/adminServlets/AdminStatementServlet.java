@@ -28,7 +28,7 @@ import static repository.Utils.copyRow;
 @WebServlet("/admin/statement")
 public class AdminStatementServlet extends HttpServlet {
 
-    static int SUMMARYCOLUMNINDEX = 26;
+    static int SUMMARYCOLUMNINDEX = 34;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

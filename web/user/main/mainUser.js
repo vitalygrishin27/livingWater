@@ -124,7 +124,7 @@ $(document).ready(function() {
 		$.ajax({
 			 type: 'POST',
 			url: "/user",
-			data: JSON.stringify({sId:sId, command:"setMark", 
+			data: JSON.stringify({sId:sId, command:"setMark",
 				vocal:document.getElementById("vocal-label").innerHTML,
 				repertoire:document.getElementById("repertoire-label").innerHTML,
 				artistic:document.getElementById("artistic-label").innerHTML,
@@ -150,9 +150,10 @@ $(document).ready(function() {
 		}
 		else{
 			alert(data.message);
+
 		}
-		
-	
+
+
 		}
 		  });
 }
@@ -175,4 +176,12 @@ function skm_LockScreen(str)
                                  lock.className = 'LockOff';
 
                         //      lock.innerHTML = str;
+                           }
+
+
+                           function fullScreenOn(){
+document.getElementById("butToFullScreen").style.display="none";
+document.getElementById("bod").webkitRequestFullscreen();
+
+
                            }
