@@ -9,6 +9,7 @@ public class Mark {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Embedded
+    @Column (name = "jury", nullable = false)
     private User jury;
     @Embedded
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,9 +19,9 @@ public class HibernateSessionFactoryUtil {
     }
 
 
-    public static Session getSessionFactory() throws HibernateException {
+    public static SessionFactory getSessionFactory() throws HibernateException {
 
-        return sessionFactory.openSession();
+        return sessionFactory;
 
     }
 }
