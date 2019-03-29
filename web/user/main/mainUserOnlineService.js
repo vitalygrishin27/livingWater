@@ -1,7 +1,7 @@
 ﻿$(document).ready(function() {
     getInfo();
     online();
-	
+
 });
 
 
@@ -9,14 +9,14 @@
 	function online(){
 	setInterval(()=> getInfo(), 10000)
 	}
-	
-	
-function getInfo(){		
+
+
+function getInfo(){
 	var sId=getCookie('LivingWaterSession');
   console.log("Online test with"+sId);
   console.log(document.cookie);
   //alert (document.cookie);
-  
+
   $.ajax({
 			type: 'POST',
 			url: "/user/online",
@@ -51,7 +51,7 @@ function getInfo(){
 					document.getElementById("connect").style.display="block";
 						}
 				*/
-			
+
 				},
 				error: function(){
 					//alert("fewfwef");
@@ -60,10 +60,10 @@ function getInfo(){
 					document.getElementById("connect").style.display="block";
 				}
 		  });
-  
+
 }
-  
-	
+
+
 	/*
 	console.log('Request succeeded with JSON response', data);
 	})
@@ -73,5 +73,5 @@ function getInfo(){
 		document.getElementById("connect").style.display="block";
 	console.log('Request succeeded with JSON response', data);
 	});
- 
+
   }*/
