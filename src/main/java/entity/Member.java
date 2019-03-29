@@ -10,16 +10,16 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "second_name")
+    @Column(name = "second_name", nullable = false)
     private String secondName;///
-    @Column(name = "ensemble_name")
+    @Column(name = "ensemble_name", nullable = false)
     private String ensembleName;
     private Date birth;
-    @Column(name = "count_of_members")
+    @Column(name = "count_of_members", nullable = false)
     private int countOfMembers;
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
@@ -47,6 +47,7 @@ public class Member {
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
     private boolean registration;
+    //номер выступления
     private int turnNumber;
 
 

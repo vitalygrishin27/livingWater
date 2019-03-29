@@ -219,7 +219,7 @@ public class Utils {
             }
         }
 
-        // If there are are any merged regions in the source row, copy to new row
+        // If there are any merged regions in the source row, copy to new row
         for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
             CellRangeAddress cellRangeAddress = worksheet.getMergedRegion(i);
             if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
