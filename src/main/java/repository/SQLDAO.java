@@ -2,7 +2,7 @@ package repository;
 
 import entity.*;
 import org.hibernate.SessionFactory;
-import utils.HibernateSessionFactoryUtil;
+import hibernateUtils.HibernateSessionFactoryUtil;
 
 import java.util.List;
 
@@ -20,11 +20,12 @@ public class SQLDAO extends Repository {
     private static SessionFactory sessionFactory;
     public static void main(String[] args) {
         SQLDAO sqlDAO = new SQLDAO();
-        sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
+
     }
 
     private SQLDAO(){
 //Конструктор
+        sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
     }
 
     @Override
