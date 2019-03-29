@@ -25,13 +25,13 @@ public class BuilderMember {
     private boolean registration;
     private int turnNumber;
 
-  private BuilderMember(){
+    private BuilderMember() {
 
-  }
+    }
 
-public Member build(){
-      return Member.createMember(this);
-}
+    public Member build() {
+        return Member.createMember(this);
+    }
 
     public static BuilderMember getBuilderMember() {
         return new BuilderMember();
@@ -43,17 +43,17 @@ public Member build(){
         return this;
     }
 
-    public  BuilderMember setLastName(String lastName) {
+    public BuilderMember setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public  BuilderMember setFirstName(String firstName) {
+    public BuilderMember setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public  BuilderMember setSecondName(String secondName) {
+    public BuilderMember setSecondName(String secondName) {
         this.secondName = secondName;
         return this;
     }
@@ -63,17 +63,17 @@ public Member build(){
         return this;
     }
 
-    public  BuilderMember setEnsembleName(String ensembleName) {
+    public BuilderMember setEnsembleName(String ensembleName) {
         this.ensembleName = ensembleName;
         return this;
     }
 
-    public  BuilderMember setCountOfMembers(int countOfMembers) {
+    public BuilderMember setCountOfMembers(int countOfMembers) {
         this.countOfMembers = countOfMembers;
         return this;
     }
 
-    public  BuilderMember setGender(Gender gender) {
+    public BuilderMember setGender(Gender gender) {
         this.gender = gender;
         return this;
     }
@@ -83,47 +83,47 @@ public Member build(){
         return this;
     }
 
-    public  BuilderMember setAddress(Address address) {
+    public BuilderMember setAddress(Address address) {
         this.address = address;
         return this;
     }
 
-    public  BuilderMember setPassport(String passport) {
+    public BuilderMember setPassport(String passport) {
         this.passport = passport;
         return this;
     }
 
-    public  BuilderMember setINN(String INN) {
+    public BuilderMember setINN(String INN) {
         this.INN = INN;
         return this;
     }
 
-    public  BuilderMember setBoss(String boss) {
+    public BuilderMember setBoss(String boss) {
         this.boss = boss;
         return this;
     }
 
-    public  BuilderMember setCategory(Category category) {
+    public BuilderMember setCategory(Category category) {
         this.category = category;
         return this;
     }
 
-    public  BuilderMember setFirstSong(Song firstSong) {
+    public BuilderMember setFirstSong(Song firstSong) {
         this.firstSong = firstSong;
         return this;
     }
 
-    public  BuilderMember setSecondSong(Song secondSong) {
+    public BuilderMember setSecondSong(Song secondSong) {
         this.secondSong = secondSong;
         return this;
     }
 
-    public  BuilderMember setRegistration(boolean registration) {
+    public BuilderMember setRegistration(boolean registration) {
         this.registration = registration;
         return this;
     }
 
-    public  BuilderMember setTurnNumber(int turnNumber) {
+    public BuilderMember setTurnNumber(int turnNumber) {
         this.turnNumber = turnNumber;
         return this;
     }

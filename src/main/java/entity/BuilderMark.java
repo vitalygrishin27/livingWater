@@ -48,7 +48,7 @@ public class BuilderMark {
         return this;
     }
 
-    public Mark build(){
+    public Mark build() {
         return Mark.createMark(this);
 
     }

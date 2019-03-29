@@ -15,6 +15,10 @@ public class SQLDAO extends Repository {
         return new SQLDAO();
     }
 
+    public static void main(String[] args) {
+        SQLDAO sqlDAO = new SQLDAO();
+    }
+
     private SQLDAO(){
 //Конструктор
     }

@@ -1,10 +1,23 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "marks")
 public class Mark {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Embedded
     private User jury;
+    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 11)
     private MARKCRITERIA criteriaOfMark;
+    @Embedded
     private Song song;
     private int value;
 
