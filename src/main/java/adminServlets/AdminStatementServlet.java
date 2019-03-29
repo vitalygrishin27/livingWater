@@ -139,7 +139,7 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                         currentSummaryMarkByCriteria.put(markElement.getCriteriaOfMark(), oldValue + markElement.getValue());
 
 
-                        //Оценки подробные
+                        //Оценки подробные +
                         cell = row.getCell(columnIndexForJuryMarks.get(markElement.getJury()));
                         if (markElement.getCriteriaOfMark() == MARKCRITERIA.VOCAL) {
                             cell.setCellValue(markElement.getValue());
