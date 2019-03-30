@@ -15,6 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -182,9 +184,7 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.VOCAL));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 1);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
-                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 2);
-                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 3);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.INDIVIDUALY));
@@ -225,7 +225,7 @@ indexOfSheet++;
             outFile.close();
             wb.close();
             fs.close();
-
+         //   Desktop.getDesktop().print(new File("FullStatement.xls"));
 
 
 
