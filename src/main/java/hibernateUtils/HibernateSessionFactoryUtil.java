@@ -1,7 +1,6 @@
-package utils;
+package hibernateUtils;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -19,9 +18,9 @@ public class HibernateSessionFactoryUtil {
     }
 
 
-    public static Session getSessionFactory() throws HibernateException {
+    public static SessionFactory getSessionFactory() throws HibernateException {
 
-        return sessionFactory.openSession();
+        return sessionFactory;
 
     }
 }
