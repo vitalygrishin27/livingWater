@@ -3,7 +3,6 @@ package repository;
 import authentication.Authentication;
 import entity.*;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.json.JSONObject;
 
@@ -151,23 +150,30 @@ public class Utils {
     }
 
 
-    public static void copyRow(HSSFWorkbook workbook, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
+    public static void copyRow(HSSFWorkbook workbook, HSSFSheet sourceSheet, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
         // Get the source / new row
+       // workbook.createSheet();
         HSSFRow newRow = worksheet.getRow(destinationRowNum);
-        HSSFRow sourceRow = worksheet.getRow(sourceRowNum);
+        HSSFRow sourceRow = sourceSheet.getRow(sourceRowNum);
 
         // If the row exist in destination, push down all rows by 1 else create a new row
         if (newRow != null) {
-            worksheet.shiftRows(destinationRowNum, worksheet.getLastRowNum(), 1);
+            worksheet.shiftRows(destinationRowNum, sourceSheet.getLastRowNum(), 1);
         } else {
             newRow = worksheet.createRow(destinationRowNum);
         }
 
+
+        newRow.setHeight(sourceRow.getHeight());
         // Loop through source columns to add to new row
         for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
             // Grab a copy of the old/new cell
             HSSFCell oldCell = sourceRow.getCell(i);
             HSSFCell newCell = newRow.createCell(i);
+
+
+          //  sourceSheet.getColumnWidth(0);
+            worksheet.setColumnWidth(i,sourceSheet.getColumnWidth(i));
 
             // If the old cell is null jump to next cell
             if (oldCell == null) {
@@ -178,7 +184,7 @@ public class Utils {
             // Copy style from old cell and apply to new cell
             HSSFCellStyle newCellStyle = workbook.createCellStyle();
             newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-            ;
+
             newCell.setCellStyle(newCellStyle);
 
             // If there is a cell comment, copy
@@ -220,8 +226,8 @@ public class Utils {
         }
 
         // If there are any merged regions in the source row, copy to new row
-        for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
-            CellRangeAddress cellRangeAddress = worksheet.getMergedRegion(i);
+        for (int i = 0; i < sourceSheet.getNumMergedRegions(); i++) {
+            CellRangeAddress cellRangeAddress = sourceSheet.getMergedRegion(i);
             if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
                 CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(),
                         (newRow.getRowNum() +
