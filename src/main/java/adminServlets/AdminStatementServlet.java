@@ -234,6 +234,7 @@ public class AdminStatementServlet extends HttpServlet {
                     cell.setCellValue(summaryMarksListForPlace.indexOf(summa) + 1);
                 }
 
+                summaryMarksListForPlace.clear();
 
                 //переход к следующей категории
                 indexOfSheet++;
