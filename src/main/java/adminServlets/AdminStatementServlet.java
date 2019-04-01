@@ -28,22 +28,33 @@ import static repository.Utils.copyRow;
 @WebServlet("/admin/statement")
 public class AdminStatementServlet extends HttpServlet {
 
-    static int SUMMARYCOLUMNINDEX = 26;
+    static int SUMMARYCOLUMNINDEX = 34;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (GET)");
+        System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (POST)");
         if (Authentication.isAdminInDbByCookies(req)) {
+            POIFSFileSystem fs = new POIFSFileSystem((new FileInputStream("statement.xls")));
+            HSSFWorkbook wb = new HSSFWorkbook(fs);
+            HSSFSheet sourceSheet = wb.getSheetAt(0);
+    int indexOfSheet=1;
+
             //Для всех категорий
             for (Category categoryElement : Authentication.getRepository().getAllCategoryFromDB()
             ) {
-                POIFSFileSystem fs = new POIFSFileSystem((new FileInputStream("statement.xls")));
-                HSSFWorkbook wb = new HSSFWorkbook(fs);
-                HSSFSheet sheet = wb.getSheetAt(0);
+                wb.createSheet();
+copyRow(wb,sourceSheet, wb.getSheetAt(indexOfSheet),0,0);
+copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),1,1);
+copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),2,2);
+copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
 
+                HSSFSheet sheet = wb.getSheetAt(indexOfSheet);
+              //  HSSFSheet sheet=wb.createSheet();
                 //Название категории
                 HSSFRow row = sheet.getRow(2);
-                HSSFCell cell = row.getCell(3);
+                //HSSFCell cell = row.getCell(3);
+
+                HSSFCell cell=row.getCell(3);
                 cell.setCellValue(categoryElement.getName());
 
                 //Количество участников в категории
@@ -54,9 +65,9 @@ public class AdminStatementServlet extends HttpServlet {
                 cell.setCellValue(listOfMembersWithConcreteCategory.size());
 
                 //добавление количества строк для всех участников
-                for (int i = 2; i < listOfMembersWithConcreteCategory.size() + 1; i++) {
+                for (int i = 1; i < listOfMembersWithConcreteCategory.size() + 1; i++) {
                     for (int j = 0; j < 4; j++) {
-                        copyRow(wb, sheet, 4 + j, (i * 4) + j);
+                        copyRow(wb, sourceSheet,sheet, 4 + j, (i * 4) + j);
                     }
                 }
 
@@ -128,7 +139,7 @@ public class AdminStatementServlet extends HttpServlet {
                         currentSummaryMarkByCriteria.put(markElement.getCriteriaOfMark(), oldValue + markElement.getValue());
 
 
-                        //Оценки подробные
+                        //Оценки подробные +
                         cell = row.getCell(columnIndexForJuryMarks.get(markElement.getJury()));
                         if (markElement.getCriteriaOfMark() == MARKCRITERIA.VOCAL) {
                             cell.setCellValue(markElement.getValue());
@@ -159,7 +170,9 @@ public class AdminStatementServlet extends HttpServlet {
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.VOCAL));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 1);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
+                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 2);
+                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 3);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.INDIVIDUALY));
@@ -190,13 +203,15 @@ public class AdminStatementServlet extends HttpServlet {
 
                     memberNumberInCategory++;
                 }
-                FileOutputStream outFile = new FileOutputStream(categoryElement.getName() + ".xls");
-                wb.write(outFile);
-                outFile.close();
-                wb.close();
-                fs.close();
 
+indexOfSheet++;
             }
+            FileOutputStream outFile = new FileOutputStream("statementTest.xls");
+            wb.write(outFile);
+            outFile.close();
+            wb.close();
+            fs.close();
+
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.append("message", "Файлы успешно сохранены.");

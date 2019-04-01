@@ -1,29 +1,53 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table (name = "members")
 public class Member {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    private String secondName;
+    @Column(name = "second_name", nullable = false)
+    private String secondName;///
+    @Column(name = "ensemble_name", nullable = false)
     private String ensembleName;
     private Date birth;
+    @Column(name = "count_of_members", nullable = false)
     private int countOfMembers;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 1)
     private Gender gender;
     private String office;
+    @Embedded
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Address address;
     private String passport;
     private String INN;
     private String boss;
+    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
+    @Embedded
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Song firstSong;
+    @Embedded
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_id")
     private Song secondSong;
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
     private boolean registration;
+    //номер выступления
     private int turnNumber;
 
 

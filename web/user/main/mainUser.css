@@ -26,7 +26,7 @@ float: left;
     margin: 0 auto;
     background: #E9E9E9;
 	border-radius: 10px;
-	padding: 40px 15px;
+	padding: 10px 15px;
 	width: 90%;
 }
 
@@ -54,11 +54,11 @@ border:none !important;
 	height: 100px;
 	cursor: default;
 	margin: 0 -40px auto !important;
-	text-align: center;	
+	text-align: center;
 	line-height: 35px;
 	color: #FFFFFF;
 	font-size: 15px;
-    
+
 }
 
 .ui-slider .ui-slider-handle .glyphicon {
@@ -98,10 +98,10 @@ border:none !important;
 /* Оценки итоги*/
 .price, .lead p {
 	font-weight: 600;
-	font-size: 62px;
+	font-size: 52px;
 	color: #ffff00;
 	text-align: center;
-	line-height: 60px;
+	line-height: 30px;
 }
 
 h4.great {
@@ -109,7 +109,7 @@ h4.great {
 	margin: 0 0 25px -60px;
 	padding: 7px 15px;
 	color: #ffffff;
-	font-size: 28px;
+	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
 	display: inline-block;
@@ -139,7 +139,7 @@ h4.great {
 }
 
 .price-slider {
-	margin-bottom: 60px;
+	margin-bottom: 10px;
 }
 
 .price-slider span {
@@ -309,10 +309,10 @@ font-family:Impact;
 
 
 .btn-circle.btn-xl {
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   padding: 10px 16px;
-  font-size: 34px;
+  font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
 }

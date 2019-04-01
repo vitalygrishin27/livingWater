@@ -1,6 +1,12 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "adresses")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String country;
     private String region;
@@ -9,13 +15,13 @@ public class Address {
     private String phone;
 
 
-    private Address(){
+    private Address() {
 
     }
 
 
     public static Address createAddress(BuilderAddress builderAddress) {
-        Address address=new Address();
+        Address address = new Address();
         address.id = builderAddress.getId();
         address.country = builderAddress.getCountry();
         address.region = builderAddress.getRegion();
@@ -24,8 +30,6 @@ public class Address {
         address.phone = builderAddress.getPhone();
         return address;
     }
-
-
 
 
     public int getId() {
