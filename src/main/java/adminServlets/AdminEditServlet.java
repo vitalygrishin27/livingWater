@@ -43,7 +43,7 @@ public class AdminEditServlet extends HttpServlet {
                 ) {
                     jsonObjectResponse.append("id", element.getId());
                     if (element.getEnsembleName().equals("")) {
-                        jsonObjectResponse.append("name", element.getLastName());
+                        jsonObjectResponse.append("name", element.getLastName()+" "+element.getFirstName()+" "+element.getSecondName());
                     } else {
                         jsonObjectResponse.append("name", element.getEnsembleName());
                     }
