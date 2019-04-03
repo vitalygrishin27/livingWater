@@ -107,6 +107,31 @@ public class AdminEditServlet extends HttpServlet {
 
             }
 
+            if (userJson.getString("command").equals("delete")) {
+                Authentication.getRepository().deleteMemberFromDBById(userJson.getInt("idMember"));
+                jsonObjectResponse.append("status","200").append("message", "Участник успешно удален из БД");
+
+            }
+
+            if (userJson.getString("command").equals("updateSolo")) {
+                Member newMember=Utils.getSoloMemberFromJson(userJson);
+                Member oldMember=Authentication.getRepository().getMemberById(userJson.getInt("idMember"));
+               Authentication.getRepository().updateMember(oldMember,newMember);
+                System.out.println("Updating member with "+oldMember.getId()+"("+oldMember.getLastName()+") is successful.");
+                jsonObjectResponse.append("status","200").append("message", "Данные участника соло успешно обновлены в БД.");
+            }
+            if (userJson.getString("command").equals("updateEnsemble")) {
+                Member newMember=Utils.getEnsembleFromJson(userJson);
+                Member oldMember=Authentication.getRepository().getMemberById(userJson.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember,newMember);
+                System.out.println("Updating member with "+oldMember.getId()+"("+oldMember.getEnsembleName()+") is successful.");
+                jsonObjectResponse.append("status","200").append("message", "Данные участника ансамбля успешно обновлены в БД.");
+            }
+
+
+
+
+
 
         } else {
             System.out.println("Access to page AdminEdit (POST) is denided. Authorization error.");

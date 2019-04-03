@@ -51,6 +51,14 @@ public interface IDAO {
 
     boolean saveNewMemberIntoDB(Member member);
 
+    boolean deleteMemberFromDBById(int idMember);
+
+    boolean deleteAddressFromDBById(int idAddress);
+
+    boolean deleteSongFromDBById(int idSong);
+
+    boolean deleteMarksFromDBByMemberId(int idMember);
+
    Category getCategoryByName(String name);
 
    boolean isLoginForNewJuryCorrect(String login);
@@ -78,6 +86,12 @@ public interface IDAO {
     List<Mark> getMarksByMember(Member member);
 
     List<MARKCRITERIA> getAllMarkCriteria();
+
+    boolean updateMember(Member oldMember, Member newMember);
+
+    boolean updateAddress(Address oldAddress, Address newAddress);
+
+    boolean updateSongName(Song oldSong, Song newSong);
 
   //  boolean saveNewEnsembleIntoDB(Member member);
 
