@@ -303,6 +303,103 @@ public class MongoDAO extends Repository {
         return true;
     }
 
+
+    @Override
+    public boolean deleteAddressFromDBById(int idAddress) {
+        addressMongoCollection.deleteOne(new Document("id",idAddress));
+        System.out.println("Address with id "+idAddress+" was deleted.");
+        return true;
+    }
+
+    @Override
+    public boolean deleteSongFromDBById(int idSong) {
+        songMongoCollection.deleteOne(new Document("id",idSong));
+        System.out.println("Song with id "+idSong+" was deleted.");
+        return true;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByMemberId(int idMember) {
+        markMongoCollection.deleteMany(new Document("memberId",idMember));
+        System.out.println("All marks with member Id "+idMember+" were deleted.");
+        return true;
+    }
+
+    @Override
+    public synchronized boolean deleteMemberFromDBById(int idMember) {
+        Member memberForDelete=getMemberById(idMember);
+        deleteAddressFromDBById(memberForDelete.getAddress().getId());
+        deleteMarksFromDBByMemberId(idMember);
+        deleteSongFromDBById(memberForDelete.getFirstSong().getId());
+        deleteSongFromDBById(memberForDelete.getSecondSong().getId());
+        memberMongoCollection.deleteOne(new Document("id", idMember));
+        return true;
+    }
+
+    @Override
+    public synchronized boolean updateMember(Member oldMember, Member newMember) {
+        newMember.setId(oldMember.getId());
+        //обновление адресса
+        newMember.getAddress().setId(oldMember.getAddress().getId());
+        updateAddress(oldMember.getAddress(),newMember.getAddress());
+        //обновление песен
+        newMember.getFirstSong().setId(oldMember.getFirstSong().getId());
+        updateSongName(oldMember.getFirstSong(),newMember.getFirstSong());
+        newMember.getSecondSong().setId(oldMember.getSecondSong().getId());
+        updateSongName(oldMember.getSecondSong(),newMember.getSecondSong());
+
+        memberMongoCollection.deleteOne(new Document("id",oldMember.getId()));
+
+        Member member=newMember;
+        memberMongoCollection.insertOne(new Document("id", member.getId())
+                .append("lastName", member.getLastName())
+                .append("firstName", member.getFirstName())
+                .append("secondName", member.getSecondName())
+                .append("birth", member.getBirth())
+                .append("ensembleName", member.getEnsembleName())
+                .append("countOfMembers", member.getCountOfMembers())
+                .append("gender", member.getGender().toString())
+                .append("office", member.getOffice())
+                .append("addressId", member.getAddress().getId())
+                .append("passport", member.getPassport())
+                .append("INN", member.getINN())
+                .append("boss", member.getBoss())
+                .append("category", member.getCategory().getName())
+                .append("firstSongId", member.getFirstSong().getId())
+                .append("secondSongId", member.getSecondSong().getId())
+                .append("registration", member.isRegistration())
+                .append("turnNumber", member.getTurnNumber()));
+
+        return true;
+    }
+
+
+    @Override
+    public synchronized  boolean updateAddress(Address oldAddress, Address address) {
+        address.setId(oldAddress.getId());
+        addressMongoCollection.deleteOne(new Document("id", oldAddress.getId()));
+        addressMongoCollection.insertOne(new Document("id", address.getId())
+                .append("country", address.getCountry())
+                .append("region", address.getRegion())
+                .append("district", address.getDistrict())
+                .append("city", address.getCity())
+                .append("phone", address.getPhone()));
+        System.out.println("Address successful updated into DB. (" + address.getId() + ").");
+        return true;
+    }
+
+    @Override
+    public synchronized boolean updateSongName(Song oldSong, Song song) {
+        song.setId(oldSong.getId());
+        songMongoCollection.deleteOne(new Document("id", oldSong.getId()));
+        songMongoCollection.insertOne(new Document("id", song.getId())
+                .append("name", song.getName()));
+        System.out.println("Song successful updated into DB. (" + song.getId() + " " + song.getName() + ").");
+        return false;
+    }
+
+
+
     // возвращает id
     private synchronized int saveAddressIntoDB(Address address) {
         int id = Authentication.getRepository().getFreeIdOfAddressDB();
@@ -616,7 +713,7 @@ public class MongoDAO extends Repository {
         for (Mark markElement : getAllMarksFromDB()
         ) {
             if (markElement.getMember().equals(member)) {
-                    result.add(markElement);
+                result.add(markElement);
             }
         }
         return result;
@@ -624,9 +721,9 @@ public class MongoDAO extends Repository {
 
     @Override
     public List<MARKCRITERIA> getAllMarkCriteria() {
-        List<MARKCRITERIA> result=new ArrayList<>();
-        for (Document doc: markCriteriaMongoCollection.find()
-             ) {
+        List<MARKCRITERIA> result = new ArrayList<>();
+        for (Document doc : markCriteriaMongoCollection.find()
+        ) {
             result.add(MARKCRITERIA.getMarkCriteriaByName(doc.getString("name")));
         }
         return result;

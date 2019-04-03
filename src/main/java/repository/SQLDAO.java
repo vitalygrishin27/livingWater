@@ -200,4 +200,39 @@ public class SQLDAO extends Repository {
         // ХЗ что хотел автор
         return null;
     }
+
+    @Override
+    public boolean deleteMemberFromDBById(int idMember) {
+        return false;
+    }
+
+    @Override
+    public boolean updateMember(Member notUpdatedMember, Member updatedMember) {
+        return false;
+    }
+
+    @Override
+    public boolean updateAddress(Address oldAddress, Address newAddress) {
+        return false;
+    }
+
+    @Override
+    public boolean updateSongName(Song oldSong, Song newSong) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteAddressFromDBById(int idAddress) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteSongFromDBById(int idSong) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByMemberId(int idMember) {
+        return false;
+    }
 }

@@ -2,25 +2,28 @@ package adminServlets;
 
 import authentication.Authentication;
 import entity.*;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.json.JSONObject;
 import repository.Utils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static repository.Utils.copyRow;
 
@@ -31,30 +34,41 @@ public class AdminStatementServlet extends HttpServlet {
     static int SUMMARYCOLUMNINDEX = 34;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (POST)");
         if (Authentication.isAdminInDbByCookies(req)) {
             POIFSFileSystem fs = new POIFSFileSystem((new FileInputStream("statement.xls")));
             HSSFWorkbook wb = new HSSFWorkbook(fs);
             HSSFSheet sourceSheet = wb.getSheetAt(0);
-    int indexOfSheet=1;
+            int indexOfSheet = 1;
+            List<Integer> summaryMarksListForPlace = new ArrayList<>();
 
             //Для всех категорий
             for (Category categoryElement : Authentication.getRepository().getAllCategoryFromDB()
             ) {
-                wb.createSheet();
-copyRow(wb,sourceSheet, wb.getSheetAt(indexOfSheet),0,0);
-copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),1,1);
-copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),2,2);
-copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
+
+                //Ориентация и поля листа для печати
+                wb.createSheet(categoryElement.getName());
+                wb.getSheetAt(indexOfSheet).getPrintSetup().setLandscape(true);
+                wb.getSheetAt(indexOfSheet).getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+                wb.getSheetAt(indexOfSheet).setMargin(Sheet.LeftMargin, wb.getSheetAt(0).getMargin(Sheet.LeftMargin));
+                wb.getSheetAt(indexOfSheet).setMargin(Sheet.RightMargin, wb.getSheetAt(0).getMargin(Sheet.RightMargin));
+                wb.getSheetAt(indexOfSheet).setMargin(Sheet.TopMargin, wb.getSheetAt(0).getMargin(Sheet.TopMargin));
+                wb.getSheetAt(indexOfSheet).setMargin(Sheet.BottomMargin, wb.getSheetAt(0).getMargin(Sheet.BottomMargin));
+
+
+                copyRow(wb, sourceSheet, wb.getSheetAt(indexOfSheet), 0, 0);
+                copyRow(wb, sourceSheet, wb.getSheetAt(indexOfSheet), 1, 1);
+                copyRow(wb, sourceSheet, wb.getSheetAt(indexOfSheet), 2, 2);
+                copyRow(wb, sourceSheet, wb.getSheetAt(indexOfSheet), 3, 3);
 
                 HSSFSheet sheet = wb.getSheetAt(indexOfSheet);
-              //  HSSFSheet sheet=wb.createSheet();
+                //  HSSFSheet sheet=wb.createSheet();
                 //Название категории
                 HSSFRow row = sheet.getRow(2);
                 //HSSFCell cell = row.getCell(3);
 
-                HSSFCell cell=row.getCell(3);
+                HSSFCell cell = row.getCell(3);
                 cell.setCellValue(categoryElement.getName());
 
                 //Количество участников в категории
@@ -67,7 +81,7 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                 //добавление количества строк для всех участников
                 for (int i = 1; i < listOfMembersWithConcreteCategory.size() + 1; i++) {
                     for (int j = 0; j < 4; j++) {
-                        copyRow(wb, sourceSheet,sheet, 4 + j, (i * 4) + j);
+                        copyRow(wb, sourceSheet, sheet, 4 + j, (i * 4) + j);
                     }
                 }
 
@@ -170,9 +184,7 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.VOCAL));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 1);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
-                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.REPERTOIRE));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 2);
-                    System.out.println(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.ARTISTIC));
                     cell = row.getCell(SUMMARYCOLUMNINDEX + 3);
                     cell.setCellValue(summaryMarkOfFirstSongByCriteria.get(MARKCRITERIA.INDIVIDUALY));
@@ -193,6 +205,8 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                     row = sheet.getRow((memberNumberInCategory * 4) + 3);
                     cell = row.getCell(SUMMARYCOLUMNINDEX);
                     cell.setCellValue(globalSummary);
+                    //записываем общую оценку в список для определения места
+                    summaryMarksListForPlace.add(globalSummary);
 
 
                     //Обнуление общих оценок
@@ -204,20 +218,57 @@ copyRow(wb,sourceSheet,wb.getSheetAt(indexOfSheet),3,3);
                     memberNumberInCategory++;
                 }
 
-indexOfSheet++;
+                //проставление мест
+                //удаляем повторяющиеся значения
+                Set<Integer> set = new HashSet<>(summaryMarksListForPlace);
+                summaryMarksListForPlace.clear();
+                summaryMarksListForPlace.addAll(set);
+                Collections.sort(summaryMarksListForPlace);
+                Collections.reverse(summaryMarksListForPlace);
+                for (int i = 1; i <= listOfMembersWithConcreteCategory.size(); i++) {
+                    row = sheet.getRow((i * 4) + 3);
+                    cell = row.getCell(SUMMARYCOLUMNINDEX);
+                    int summa = (int) cell.getNumericCellValue();
+                    row = sheet.getRow(i * 4);
+                    cell = row.getCell(SUMMARYCOLUMNINDEX + 4);
+                    cell.setCellValue(summaryMarksListForPlace.indexOf(summa) + 1);
+                }
+
+                summaryMarksListForPlace.clear();
+
+                //переход к следующей категории
+                indexOfSheet++;
+
+
             }
-            FileOutputStream outFile = new FileOutputStream("statementTest.xls");
+            //удаляем лист-рыбу
+            wb.removeSheetAt(0);
+
+
+            FileOutputStream outFile = new FileOutputStream("FullStatement.xls");
             wb.write(outFile);
             outFile.close();
             wb.close();
             fs.close();
+            //   Desktop.getDesktop().print(new File("FullStatement.xls"));
 
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.append("message", "Файлы успешно сохранены.");
-            resp.setContentType("application/json; charset=UTF-8");
-            resp.getWriter().write(String.valueOf(jsonObject));
-            resp.flushBuffer();
+            ServletContext context = getServletContext();
+            ServletOutputStream out = resp.getOutputStream();
+            byte[] byteArray = Files.readAllBytes(Paths.get("FullStatement.xls"));
+            //данный контент type говорит что будет файл в формате excel
+            resp.setContentType("application/vnd.ms-excel");
+            resp.setHeader("Content-Disposition", "attachment; filename=FullStatement.xls");
+            out.write(byteArray);
+            out.flush();
+            out.close();
+
+
+            //          JSONObject jsonObject = new JSONObject();
+            //          jsonObject.append("message", "Файлы успешно сохранены.");
+            //           resp.setContentType("application/json; charset=UTF-8");
+            //          resp.getWriter().write(String.valueOf(jsonObject));
+            //          resp.flushBuffer();
             //  req.getRequestDispatcher("/admin/statement/statement.html")
             //        .forward(req, resp);
         } else {
