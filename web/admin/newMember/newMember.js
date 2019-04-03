@@ -1,21 +1,89 @@
+$('#combobox').on('change', function() {
 
-$(document).ready(function(){
 
-$.ajax({
+//  alert($(this).children(":selected").attr("id"));
+//alert($(this).children(":selected").attr("id"));
+if($(this).children(":selected").attr("id")!=-1){
+ document.getElementById("registerSolo").style.display="none";
+ document.getElementById("registerEnsemble").style.display="none";
+
+
+    $.ajax({
 			 type: 'POST',
-			url: "/admin/newMember",
-			data: JSON.stringify({ sId:sId,command:"getCategory"}),
+			url: "/admin/edit",
+			data: JSON.stringify({ sId:sId,command:"getMemberInformation", idMember:$(this).children(":selected").attr("id")}),
 			success: function(data){
 
+    console.log(data);
 
-		console.log(data);
-	//	var s =document.getElementById("category");
-//var s =  document.getElementById('category').options;
-var s =  document.getElementById('category');
+document.getElementById('idMemberForUpdateOrDelete').innerHTML=data.id;
+
+if(data.countOfMembers==1){
+document.getElementById("home-tab").click();
+
+
+
+
+document.getElementById('firstname').value=data.firstName;
+document.getElementById('secondname').value=data.secondName ;
+document.getElementById('lastname').value=data.lastName;
+document.getElementById('birth').value=data.birth;
+document.getElementById('country').value=data.country;
+document.getElementById('district').value=data.district;
+document.getElementById('region').value=data.region;
+document.getElementById('city').value=data.city;
+
+if(data.gender=="M"){
+$('#genderMale').prop('checked', true);
+$('#genderFemale').prop('checked', false);
+//$('.myCheckbox').prop('checked', false);
+}else{
+$('#genderMale').prop('checked', false);
+$('#genderFemale').prop('checked', true);
+}
+
+
+document.getElementById('passport').value=data.passport;
+document.getElementById('office').value=data.office;
+document.getElementById('INN').value=data.INN;
+document.getElementById('boss').value=data.boss;
+document.getElementById('phone').value=data.phone;
+document.getElementById('category').value=data.category;
+document.getElementById('firstSong').value=data.firstSong;
+document.getElementById('secondSong').value=data.secondSong;
+
+document.getElementById("updateEnsemble").style.display="none";
+document.getElementById("deleteEnsemble").style.display="none";
+document.getElementById("updateSolo").style.display="block";
+document.getElementById("deleteSolo").style.display="block";
+
+
+}
+
+if(data.countOfMembers>1){
+document.getElementById("profile-tab").click();
+
+document.getElementById('ensemble_name').value=ensembleName;
+document.getElementById('ensemble_office').value=data.office;
+document.getElementById('ensemble_country').value=data.country;
+document.getElementById('ensemble_district').value=data.district;
+document.getElementById('ensemble_region').value=data.region;
+document.getElementById('ensemble_city').value=data.city;
+document.getElementById('ensemble_phone').value=data.phone;
+document.getElementById('ensemble_countOfMembers').value=data.countOfMembers;
+document.getElementById('ensemble_boss').value=data.boss;
+document.getElementById('ensemble_category').value=data.category;
+document.getElementById('ensemble_firstSong').value=data.firstSong;
+document.getElementById('ensemble_secondSong').value=data.secondSong;
+
+document.getElementById("updateSolo").style.display="none";
+document.getElementById("deleteSolo").style.display="none";
+document.getElementById("updateEnsemble").style.display="block";
+document.getElementById("deleteEnsemble").style.display="block";
+
+}
+/*var s =  document.getElementById('category');
 var s2 =  document.getElementById('ensemble_category');
-
-//s[s.length]= new Option(data[k],'teo',true);
-
 
 for(var i=0; i<data.category.length; i++){
 console.log(data.category[i]);
@@ -27,33 +95,129 @@ var opt2=document.createElement('option');
 opt2.value=data.category[i];
 opt2.innerHTML=data.category[i];
 s2.appendChild(opt2);
-//s2.appendChild(opt);
-
-
-//s[s.length]= new Option(data[i],data[i],true);
-}
-
-
-
-
-
-
-
-
+}*/
 
 }
-
 		  });
+
+
+
+  //  document.getElementById("updateSolo").style.display="block";
+ //   document.getElementById("deleteSolo").style.display="block";
+
+
+
+
+
+
+}else{
+ document.getElementById("updateSolo").style.display="none";
+ document.getElementById("updateEnsemble").style.display="none";
+ document.getElementById("deleteEnsemble").style.display="none";
+ document.getElementById("deleteSolo").style.display="none";
+ document.getElementById("registerSolo").style.display="block";
+ document.getElementById("registerEnsemble").style.display="block";
+
+document.getElementById('idMemberForUpdateOrDelete').innerHTML=-1;
+
+}
+
+
+
+
+
 
 
 
 
 });
 
+
+
+$(document).ready(function(){
+ document.getElementById("updateSolo").style.display="none";
+    document.getElementById("deleteSolo").style.display="none";
+     document.getElementById("updateEnsemble").style.display="none";
+     document.getElementById("deleteEnsemble").style.display="none";
+
+
+$.ajax({
+			 type: 'POST',
+			url: "/admin/newMember",
+			data: JSON.stringify({ sId:sId,command:"getCategory"}),
+			success: function(data){
+
+
+		console.log(data);
+var s =  document.getElementById('category');
+var s2 =  document.getElementById('ensemble_category');
+
+for(var i=0; i<data.category.length; i++){
+console.log(data.category[i]);
+var opt=document.createElement('option');
+opt.value=data.category[i];
+opt.innerHTML=data.category[i];
+s.appendChild(opt);
+var opt2=document.createElement('option');
+opt2.value=data.category[i];
+opt2.innerHTML=data.category[i];
+s2.appendChild(opt2);
+}
+
+}
+		  });
+
+updateListMember();
+
+
+
+
+});
+
+
+
+
+
  var sId=getCookie('LivingWaterSession');
 
+
+
+function updateListMember(){
+$("#combobox").empty();
+var emptyOption=document.createElement("option");
+emptyOption.value="";
+emptyOption.innerHTML="";
+emptyOption.id=-1;
+document.getElementById("combobox").appendChild(emptyOption);
+
+$.ajax({
+			 type: 'POST',
+			url: "/admin/edit",
+			data: JSON.stringify({ sId:sId,command:"getListOfMembers"}),
+			success: function(data){
+     		console.log(data);
+
+  for(var i=0; i<data.name.length; i++){
+     console.log(data.name[i]);
+
+var member=document.createElement("option");
+member.value=data.name[i];
+member.innerHTML=data.name[i];
+member.id=data.id[i];
+document.getElementById("combobox").appendChild(member);
+     }
+
+
+}
+		  });
+}
+
+
+
+
+
 function registerSolo(){
-     
+
  var sId=getCookie('LivingWaterSession');
 		  console.log("pushToServerNewMemberSolo");
 
@@ -114,7 +278,7 @@ var secondSong=document.getElementById('secondSong').value ;
 		console.log(data);
 		document.getElementById("message").innerHTML=data.message;
 		if(data.status=="200"){
-				reset();
+				clearForm();
 		}
 		else{
 			alert(data.message);
@@ -170,7 +334,7 @@ var secondSong=document.getElementById('ensemble_secondSong').value ;
 		console.log(data);
 		document.getElementById("message").innerHTML=data.message;
 		if(data.status=="200"){
-				reset();
+				clearForm();
 		}
 		else{
 			alert(data.message);
@@ -180,6 +344,60 @@ var secondSong=document.getElementById('ensemble_secondSong').value ;
 		}
 		  });
 
+
+
+}
+
+
+function clearForm(){
+$('#category').get(0).selectedIndex = 0;
+$('#ensemble_category').get(0).selectedIndex = 0;
+$('#combobox').get(0).selectedIndex = 0;
+
+ document.getElementById("updateSolo").style.display="none";
+ document.getElementById("updateEnsemble").style.display="none";
+ document.getElementById("deleteEnsemble").style.display="none";
+ document.getElementById("deleteSolo").style.display="none";
+ document.getElementById("registerSolo").style.display="block";
+ document.getElementById("registerEnsemble").style.display="block";
+
+document.getElementById('idMemberForUpdateOrDelete').innerHTML=-1;
+
+var elements = document.getElementsByTagName("input");
+for (var i = 0, element; element = elements[i++];) {
+    if (element.type === "text" ||  element.type ==="date")
+        element.value = "";
+      //  console.log("it an empty textfield")
+}
+
+}
+
+
+function deleteSolo(){
+            var sId=getCookie('LivingWaterSession');
+		  console.log("deleteSoloMember");
+
+	$.ajax({
+			 type: 'POST',
+			url: "/admin/edit",
+			data: JSON.stringify({sId:sId, command:"deleteSolo",idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML}),
+
+			success: function(data){
+		console.log(data);
+		document.getElementById("message").innerHTML=data.message;
+		if(data.status=="200"){
+				clearForm();
+		}
+		else{
+			alert(data.message);
+		}
+
+
+		}
+		  });
+
+
+//alert (document.getElementById('idMemberForUpdateOrDelete').innerHTML);
 
 
 }
