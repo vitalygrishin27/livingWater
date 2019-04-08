@@ -8,8 +8,6 @@ import java.util.Objects;
 @Table (name = "members")
 public class Member {
     @Id
-   //
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(name = "last_name", nullable = false)
     private String lastName;
