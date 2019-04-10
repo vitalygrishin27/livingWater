@@ -14,17 +14,17 @@ font-family: 'Numans', sans-serif;
 .register-left{
     text-align: center;
     color: #fff;
-    margin-top: 4%;
+    margin-top: 1%;
 }
 .register-left input{
     border: none;
     border-radius: 1.5rem;
-    padding: 2%;
+    padding: 1%;
     width: 60%;
     background: #f8f9fa;
     font-weight: bold;
     color: #383d41;
-    margin-top: 30%;
+    margin-top: 5%;
     margin-bottom: 3%;
     cursor: pointer;
 }
@@ -59,16 +59,61 @@ font-family: 'Numans', sans-serif;
 }
 .btnRegister{
     float: right;
-    margin-top: 10%;
+    margin-top: 1%;
     border: none;
     border-radius: 1.5rem;
     padding: 2%;
     background: #0062cc;
     color: #fff;
+    font-size: 11px;
     font-weight: 600;
-    width: 70%;
+    width: 100%;
     cursor: pointer;
 }
+
+.btnUpdate{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #009900;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+.btnDelete{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #990000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+.btnClear{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #9966FF;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
 .register .nav-tabs{
     margin-top: 3%;
     border: none;
@@ -101,3 +146,22 @@ font-family: 'Numans', sans-serif;
     margin-bottom: -15%;
     color: #495057;
 }
+
+/*combobox*/
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+  }

@@ -15,3 +15,48 @@ font-family: 'Numans', sans-serif;
 	background: rgba(255, 255, 255, 0.8);
 	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
 }
+
+
+
+.btnUpdate{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #009900;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+.btnDelete{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #990000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}
+
+.btnClear{
+    float: right;
+    margin-top: 1%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #9966FF;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+}

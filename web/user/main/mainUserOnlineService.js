@@ -1,4 +1,5 @@
 ﻿$(document).ready(function() {
+ //  skm_LockScreen('ОШИБКА. Оценка уже была выставлена ранее.\n Ожидание следующего участника.');
     getInfo();
     online();
 
@@ -51,6 +52,12 @@ function getInfo(){
 					document.getElementById("connect").style.display="block";
 						}
 				*/
+				if(document.getElementById("member").innerHTML=="undefined"){
+                					 skm_LockScreen('Ожидание сервера.');
+                				}
+                if(document.getElementById("butToFullScreen").style.display!="none"){
+                skm_UnLockScreen();
+}
 
 				},
 				error: function(){
