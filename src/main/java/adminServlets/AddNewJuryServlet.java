@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet("/admin/newJury")
@@ -28,7 +27,7 @@ public class AddNewJuryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println(Utils.getCurrentTime() + "/ START Admin add new Jury SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
@@ -48,23 +47,20 @@ public class AddNewJuryServlet extends HttpServlet {
                 if (Authentication.getRepository().isLoginForNewJuryCorrect(userJSon.getString("userName"))) {
                     //  201 Created («создано»)[2][3][4];
 
-                   Authentication.getRepository().saveNewJuryIntoDB(Utils.getJuryFromJson(userJSon));
-                    System.out.println("Add to DB new JURY is OK. ("+userJSon.get("userName")+")");
+                    Authentication.getRepository().saveNewJuryIntoDB(Utils.getJuryFromJson(userJSon));
+                    System.out.println("Add to DB new JURY is OK. (" + userJSon.get("userName") + ")");
                     jsonObjectResponse.append("status", "201");
                     jsonObjectResponse.append("message", "Новый член жюри добавлен в БД.");
 
 
-
-                }else{
-                    System.out.println(Utils.getCurrentTime()+ " / Add to DB new JURY Failed. Bad Login.");
+                } else {
+                    System.out.println(Utils.getCurrentTime() + " / Add to DB new JURY Failed. Bad Login.");
                     jsonObjectResponse.append("status", "406");
                     jsonObjectResponse.append("message", "Недопустимый логин.");
                 }
-             //   resp.getWriter().write(String.valueOf(jsonObjectResponse));
+                //   resp.getWriter().write(String.valueOf(jsonObjectResponse));
 
-          //      resp.flushBuffer();
-
-
+                //      resp.flushBuffer();
 
 
             } else {
