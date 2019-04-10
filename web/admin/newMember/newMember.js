@@ -6,9 +6,9 @@ if($(this).children(":selected").attr("id")!=-1){
 
 
     $.ajax({
-			 type: 'POST',
-			url: "/admin/edit",
-			data: JSON.stringify({ sId:sId,command:"getMemberInformation", idMember:$(this).children(":selected").attr("id")}),
+			 type: 'GET',
+			url: "/admin/gets",
+			data: { sId:sId,command:"getMemberInformation", idMember:$(this).children(":selected").attr("id")},
 			success: function(data){
 
     console.log(data);
@@ -109,9 +109,9 @@ $(document).ready(function(){
 
 
 $.ajax({
-			 type: 'POST',
-			url: "/admin/newMember",
-			data: JSON.stringify({ sId:sId,command:"getCategory"}),
+			 type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId,command:"getCategory"},
 			success: function(data){
 
 
@@ -154,9 +154,9 @@ emptyOption.id=-1;
 document.getElementById("combobox").appendChild(emptyOption);
 
 $.ajax({
-			 type: 'POST',
-			url: "/admin/edit",
-			data: JSON.stringify({ sId:sId,command:"getListOfMembers"}),
+			 type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId,command:"getListOfMembersOnlyNames"},
 			success: function(data){
      		console.log(data);
 

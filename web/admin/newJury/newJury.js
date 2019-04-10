@@ -34,3 +34,48 @@
 
 
   }
+
+
+  $(document).ready(function(){
+ //  document.getElementById("updateSolo").style.display="none";
+ //     document.getElementById("deleteSolo").style.display="none";
+ //      document.getElementById("updateEnsemble").style.display="none";
+ //      document.getElementById("deleteEnsemble").style.display="none";
+
+
+
+  updateListJury();
+
+
+  });
+
+
+  function updateListJury(){
+  var sId=getCookie('LivingWaterSession');
+  $("#combobox").empty();
+  var emptyOption=document.createElement("option");
+  emptyOption.value="";
+  emptyOption.innerHTML="";
+  emptyOption.id=-1;
+  document.getElementById("combobox").appendChild(emptyOption);
+
+  $.ajax({
+  			 type: 'GET',
+  			url: "/admin/gets",
+  			data: {sId:sId,command:"getListOfJuriesOnlyNames"},
+  			success: function(data){
+       		console.log(data);
+
+    for(var i=0; i<data.name.length; i++){
+       console.log(data.name[i]);
+
+  var jury=document.createElement("option");
+  jury.value=data.name[i];
+  jury.innerHTML=data.name[i];
+  jury.id=data.id[i];
+  document.getElementById("combobox").appendChild(jury);
+       }
+
+  }
+  		  });
+  }

@@ -609,6 +609,11 @@ public class MongoDAO extends Repository {
         } else {
             Collections.sort(usedId);
 
+
+            for (int i=0; i<usedId.size();i++){
+                if(usedId.get(i)!=i+1) return i+1;
+            }
+
             return (usedId.get(usedId.size() - 1)) + 1;
         }
     }

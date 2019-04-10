@@ -5,18 +5,13 @@ import entity.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.json.JSONObject;
 import repository.Utils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,7 +29,7 @@ public class AdminStatementServlet extends HttpServlet {
     static int SUMMARYCOLUMNINDEX = 34;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (POST)");
         if (Authentication.isAdminInDbByCookies(req)) {
             POIFSFileSystem fs = new POIFSFileSystem((new FileInputStream("statement.xls")));
@@ -253,7 +248,7 @@ public class AdminStatementServlet extends HttpServlet {
             //   Desktop.getDesktop().print(new File("FullStatement.xls"));
 
 
-            ServletContext context = getServletContext();
+            //   ServletContext context = getServletContext();
             ServletOutputStream out = resp.getOutputStream();
             byte[] byteArray = Files.readAllBytes(Paths.get("FullStatement.xls"));
             //данный контент type говорит что будет файл в формате excel
