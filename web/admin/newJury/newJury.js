@@ -37,10 +37,10 @@
 
 
   $(document).ready(function(){
- //  document.getElementById("updateSolo").style.display="none";
- //     document.getElementById("deleteSolo").style.display="none";
- //      document.getElementById("updateEnsemble").style.display="none";
- //      document.getElementById("deleteEnsemble").style.display="none";
+ document.getElementById("registerJury").style.display="block";
+  document.getElementById("deleteJury").style.display="none";
+  document.getElementById("updateJury").style.display="none";
+ //document.getElementById("clear").style.display="none";
 
 
 
@@ -79,3 +79,45 @@
   }
   		  });
   }
+
+
+  $('#combobox').on('change', function() {
+
+  if($(this).children(":selected").attr("id")!=-1){
+   document.getElementById("registerJury").style.display="none";
+      document.getElementById("updateJury").style.display="block";
+        document.getElementById("deleteJury").style.display="block";
+
+      $.ajax({
+  			 type: 'GET',
+  			url: "/admin/gets",
+  			data: {sId:sId,command:"getJuryInformation", idJury:$(this).children(":selected").attr("id")},
+  			success: function(data){
+
+      console.log(data);
+
+  document.getElementById('idJuryForUpdateOrDelete').innerHTML=data.id;
+
+  document.getElementById('firstName').value=data.firstName;
+  document.getElementById('secondName').value=data.secondName ;
+  document.getElementById('lastName').value=data.lastName;
+  document.getElementById('office').value=data.office;
+  document.getElementById('login').value=data.userName;
+  document.getElementById('password').value=data.password;
+
+
+  }
+  		  });
+
+  }else{
+   document.getElementById("updateJury").style.display="none";
+     document.getElementById("deleteJury").style.display="none";
+     document.getElementById("registerJury").style.display="block";
+
+  document.getElementById('idJuryForUpdateOrDelete').innerHTML=-1;
+
+  }
+
+
+
+  });
