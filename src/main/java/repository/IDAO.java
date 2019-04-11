@@ -53,11 +53,15 @@ public interface IDAO {
 
     boolean deleteMemberFromDBById(int idMember);
 
+    boolean deleteJuryFromDBByUserName(String userName);
+
     boolean deleteAddressFromDBById(int idAddress);
 
     boolean deleteSongFromDBById(int idSong);
 
     boolean deleteMarksFromDBByMemberId(int idMember);
+
+    boolean deleteMarksFromDBByJuryUserName(String userName);
 
    Category getCategoryByName(String name);
 

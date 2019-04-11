@@ -235,4 +235,14 @@ public class SQLDAO extends Repository {
     public boolean deleteMarksFromDBByMemberId(int idMember) {
         return false;
     }
+
+    @Override
+    public boolean deleteJuryFromDBByUserName(String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByJuryUserName(String userName) {
+        return false;
+    }
 }

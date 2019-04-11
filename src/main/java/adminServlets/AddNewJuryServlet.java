@@ -1,6 +1,7 @@
 package adminServlets;
 
 import authentication.Authentication;
+import entity.User;
 import org.json.JSONObject;
 import repository.Utils;
 
@@ -30,6 +31,7 @@ public class AddNewJuryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         System.out.println(Utils.getCurrentTime() + "/ START Admin add new Jury SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json; charset=UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
 
         JSONObject userJSon = Utils.getJsonFromRequest(req);
@@ -76,7 +78,48 @@ public class AddNewJuryServlet extends HttpServlet {
 
             resp.flushBuffer();
 
-        } else {
+        }
+
+
+        if (userJSon.getString("command").equals("updateJury")) {
+            System.out.println("sID with '" + userJSon.getString("sId") +
+                    "' want to update into DB jury.");
+
+            String messageToResponse = messageIsJsonCorrect(userJSon);
+            if (messageToResponse.equals("OK")) {
+
+                //проверка на логин если он существует значит продолжаем - так как єто обновление
+                User oldJury=Authentication.getRepository().getJuryByUserName(userJSon.getString("idOldJury"));
+                User newJury=Utils.getJuryFromJson(userJSon);
+               // newJury.setUserName(userJSon.getString("userName"));
+
+              Authentication.getRepository().deleteJuryFromDBByUserName(oldJury.getUserName());
+              Authentication.getRepository().saveNewJuryIntoDB(newJury);
+
+                System.out.println("Update to DB JURY is OK. (" + userJSon.get("userName") + ")");
+                jsonObjectResponse.append("status", "200");
+                jsonObjectResponse.append("message", "Информация обновлена.");
+
+            } else {
+                System.out.println("Update to DB crashed with not filled input boxes");
+                jsonObjectResponse.append("status", "406");
+                jsonObjectResponse.append("message", messageToResponse);
+                //  406 Not Acceptable («неприемлемо»)[2][3];
+
+            }
+
+
+            resp.getWriter().write(String.valueOf(jsonObjectResponse));
+
+            resp.flushBuffer();
+
+        }
+
+
+
+
+
+    /*    else {
             System.out.println("Access to page AdminAddNewJury (POST) is denided. Authorization error.");
             resp.setContentType("application/json; charset=UTF-8");
             jsonObjectResponse.append("status", "300");
@@ -85,7 +128,7 @@ public class AddNewJuryServlet extends HttpServlet {
 
             resp.flushBuffer();
 
-        }
+        }*/
 
     }
 
