@@ -237,12 +237,13 @@ public class SQLDAO extends Repository {
 
 
 
-    class А implements Runnable{
+    class А implements Runnable {
 
         @Override
         public void run() {
 
         }
+    }
     @Override
     public boolean deleteMemberFromDBById(int idMember) {
         return false;
