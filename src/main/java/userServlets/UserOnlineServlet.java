@@ -18,6 +18,7 @@ public class UserOnlineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START USER ONLINE SERVLET IS DONE! (POST)");
+        Authentication.log(req.getCookies()[0].getValue() + "  -  START USER ONLINE SERVLET.");
         JSONObject jsonObjectResponse = new JSONObject();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");

@@ -9,7 +9,13 @@ import repository.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Authentication {
 
@@ -23,13 +29,13 @@ public class Authentication {
     private static Member currentMemberForEvaluation;
     private static Song currentSongForEvaluation;
     private static Map<String, Long> juryPingMap;
-
+    private static Logger logger;
 
     static {
-        //System.out.println("Starting DB with MONGO");
-        //repository = Repository.getDAO("MONGO");
-        System.out.println("Starting DB with SQL");
-        repository = Repository.getDAO("SQL");
+        System.out.println("Starting DB with MONGO");
+        repository = Repository.getDAO("MONGO");
+        //  System.out.println("Starting DB with SQL");
+        //  repository = Repository.getDAO("SQL");
         //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
         listOfJuriesOnline = new ArrayList<>();
         //    roles = repository.getAllRolesFromDB();
@@ -37,6 +43,57 @@ public class Authentication {
         juryPingMap = new HashMap<>();
         currentMemberForEvaluation = null;
         currentSongForEvaluation = null;
+
+
+        logger = Logger.getLogger("MyLog");
+        FileHandler fh;
+
+        try {
+
+            // This block configure the logger with handler and formatter
+            fh = new FileHandler("livingWater."+System.currentTimeMillis()+".log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+           // fh.setFormatter(formatter);
+
+            fh.setFormatter(new java.util.logging.Formatter() {
+                @Override
+                public String format(LogRecord record) {
+                    SimpleDateFormat logTime = new SimpleDateFormat("dd--MM--yyyy HH:mm:ss");
+                    Calendar cal = new GregorianCalendar();
+                    cal.setTimeInMillis(record.getMillis());
+                    return record.getLevel()
+                            + " "+logTime.format(cal.getTime())
+                            + " || "
+                            + record.getSourceClassName().substring(
+                            record.getSourceClassName().lastIndexOf(".")+1,
+                            record.getSourceClassName().length())
+                            + "."
+                            + record.getSourceMethodName()
+                            + "() : "
+                            + record.getMessage() + "\n";
+                }
+            });
+
+
+
+
+
+            // the following statement is used to log any messages
+            logger.info("STARTING SERVER");
+
+            // Чтобы удалить обработчик консоли, используйте
+//            logger.setUseParentHandlers(false);
+
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void log(String message) {
+        logger.info(message);
     }
 
     public static void ping(String juryUserName) {
