@@ -72,6 +72,10 @@ public class User {
         this.role = role;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

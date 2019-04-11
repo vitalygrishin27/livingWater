@@ -236,11 +236,55 @@ public class SQLDAO extends Repository {
     }
 
 
+
     class А implements Runnable{
 
         @Override
         public void run() {
 
         }
+    @Override
+    public boolean deleteMemberFromDBById(int idMember) {
+        return false;
+    }
+
+    @Override
+    public boolean updateMember(Member notUpdatedMember, Member updatedMember) {
+        return false;
+    }
+
+    @Override
+    public boolean updateAddress(Address oldAddress, Address newAddress) {
+        return false;
+    }
+
+    @Override
+    public boolean updateSongName(Song oldSong, Song newSong) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteAddressFromDBById(int idAddress) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteSongFromDBById(int idSong) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByMemberId(int idMember) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteJuryFromDBByUserName(String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByJuryUserName(String userName) {
+        return false;
     }
 }

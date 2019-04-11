@@ -1,7 +1,6 @@
 package adminServlets;
 
 import authentication.Authentication;
-import entity.Category;
 import org.json.JSONObject;
 import repository.Utils;
 
@@ -10,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet("/admin/newMember")
@@ -96,23 +94,6 @@ public class AddNewMember extends HttpServlet {
                 resp.flushBuffer();
 
             }
-
-            if (userJSon.getString("command").equals("getCategory")) {
-                System.out.println("sID with '" + userJSon.getString("sId") +
-                        "' want to get category.");
-                resp.setContentType("application/json; charset=UTF-8");
-                for (Category element: Authentication.getRepository().getAllCategoryFromDB()
-                     ) {
-                    jsonObjectResponse.append("category",element.getName());
-                }
-                resp.getWriter().write(String.valueOf(jsonObjectResponse));
-
-                resp.flushBuffer();
-
-            }
-
-
-
 
         } else {
             System.out.println("Access to page AdminAddNewMember (POST) is denided. Authorization error.");

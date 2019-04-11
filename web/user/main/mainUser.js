@@ -68,6 +68,7 @@ function setValueFromFirst(val){
 
 
 $(document).ready(function() {
+         document.getElementById("push").style.display="none";
          reset();
 
       });
@@ -105,7 +106,55 @@ $(document).ready(function() {
 	  }
 
 	  
+
+	function validateForm(){
+	   clearStyleForLabelsWithError();
+	   var validate=true;
+	    if (document.getElementById("vocal-label").innerHTML==0){
+                        document.getElementById("greatVocal").style.backgroundColor= "#ff3333";
+                        document.getElementById("vocal-label").style.color="#ff3333";
+                        validate=false;
+	    }
+	    if (document.getElementById("repertoire-label").innerHTML==0){
+                       document.getElementById("greatRepertoire").style.backgroundColor= "#ff3333";
+                       document.getElementById("repertoire-label").style.color="#ff3333";
+                       validate=false;
+        	    }
+        if (document.getElementById("artistic-label").innerHTML==0){
+                        document.getElementById("greatArtistic").style.backgroundColor= "#ff3333";
+                        document.getElementById("artistic-label").style.color="#ff3333";
+                        validate=false;
+                	    }
+        if (document.getElementById("individualy-label").innerHTML==0){
+                        document.getElementById("greatIndividualy").style.backgroundColor= "#ff3333";
+                        document.getElementById("individualy-label").style.color="#ff3333";
+                        validate=false;
+                	    }
+
+        if(validate==true){
+         pushToServer();
+        }
+	}
+
+
+        function clearStyleForLabelsWithError(){
+        document.getElementById("vocal-label").style.color="#ffff00";
+        document.getElementById("repertoire-label").style.color="#ffff00";
+        document.getElementById("artistic-label").style.color="#ffff00";
+        document.getElementById("individualy-label").style.color="#ffff00";
+
+        document.getElementById("greatVocal").style.backgroundColor= "#00ac98";
+        document.getElementById("greatRepertoire").style.backgroundColor= "#00ac98";
+        document.getElementById("greatArtistic").style.backgroundColor= "#00ac98";
+        document.getElementById("greatIndividualy").style.backgroundColor= "#00ac98";
+        }
+
+
+
+
+
 	  function pushToServer(){
+		 // validateForm();
 		  var sId=getCookie('LivingWaterSession');
 		  console.log("pushToServer");
 
@@ -148,10 +197,10 @@ $(document).ready(function() {
 				reset();
 
 		}
-		else{
-			alert(data.message);
+	//	else{
+	//		alert(data.message);
 
-		}
+	//	}
 
 
 		}
@@ -180,8 +229,9 @@ function skm_LockScreen(str)
 
 
                            function fullScreenOn(){
-document.getElementById("butToFullScreen").style.display="none";
-document.getElementById("bod").webkitRequestFullscreen();
+            document.getElementById("butToFullScreen").style.display="none";
+            document.getElementById("bod").webkitRequestFullscreen();
+            document.getElementById("push").style.display="block";
 
 
                            }

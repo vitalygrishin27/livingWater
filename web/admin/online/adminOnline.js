@@ -7,10 +7,9 @@ $(document).ready(function(){
 function getMarksValueOfMemberThatEvaluate (){
     var sId=getCookie('LivingWaterSession');
      $.ajax({
-			type: 'POST',
-			url: "/admin/online",
-			data: JSON.stringify({    sId:sId,
-                                  	  command:"getMarksValueOfMemberThatEvaluate"}),
+			type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId,command:"getMarksValueOfMemberThatEvaluate"},
 		success: function(data){
 		console.log(data);
 		var tab=document.getElementById("members");
@@ -46,10 +45,9 @@ updateColorOfRowWhenLoadPage();
 function getCurrentMemberDataThatEvaluate(){
     var sId=getCookie('LivingWaterSession');
     $.ajax({
-			type: 'POST',
-			url: "/admin/online",
-			data: JSON.stringify({   sId:sId,
-                                  	 command:"getCurrentMemberDataThatEvaluate"}),
+			type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId, command:"getCurrentMemberDataThatEvaluate"},
             success: function(data){
 		    console.log(data);
             //перебор всех строк где idMember совпадает
@@ -101,9 +99,9 @@ function CreateTableFromJSON() {
     var sId=readCookie('LivingWaterSession');
 
     $.ajax({
-  			type: 'POST',
-  			url: "/admin/online",
-  			data: JSON.stringify({sId:sId, command:"getListOfMembers"}),
+  			type: 'GET',
+  			url: "/admin/gets",
+  			data: {sId:sId, command:"getListOfMembersFull"},
   			success: function(data){
   				console.log(data);
                 var list=data;

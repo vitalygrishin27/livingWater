@@ -17,7 +17,7 @@ public class AdminEditServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START ADMIN Registration member SERVLET IS DONE! (GET)");
+        System.out.println("START ADMIN Edit SERVLET IS DONE! (GET)");
 
         if (Authentication.isAdminInDbByCookies(req)) {
             req.getRequestDispatcher("/admin/edit/edit.html")
@@ -30,25 +30,38 @@ public class AdminEditServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! POST");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println(Utils.getCurrentTime() + " / START ADMIN Edit SERVLET IS DONE! POST");
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject userJson = Utils.getJsonFromRequest(req);
         JSONObject jsonObjectResponse = new JSONObject();
 
         if (Authentication.isAdminInDbByCookies(req)) {
-            if (userJson.getString("command").equals("getListOfMembers")) {
-                for (Member element : Authentication.getRepository().getAllMembersFromDB()
-                ) {
-                    jsonObjectResponse.append("id", element.getId());
-                    if (element.getEnsembleName().equals("")) {
-                        jsonObjectResponse.append("name", element.getLastName());
-                    } else {
-                        jsonObjectResponse.append("name", element.getEnsembleName());
-                    }
 
-                }
+            if (userJson.getString("command").equals("deleteMember")) {
+                Authentication.getRepository().deleteMemberFromDBById(userJson.getInt("idMember"));
+                jsonObjectResponse.append("status", "200").append("message", "Участник успешно удален из БД");
+
+            }
+            if (userJson.getString("command").equals("deleteJury")) {
+                Authentication.getRepository().deleteJuryFromDBByUserName(userJson.getString("idJury"));
+                jsonObjectResponse.append("status", "200").append("message", "Член жюри успешно удален из БД");
+
+            }
+            if (userJson.getString("command").equals("updateSolo")) {
+                Member newMember = Utils.getSoloMemberFromJson(userJson);
+                Member oldMember = Authentication.getRepository().getMemberById(userJson.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getLastName() + ") is successful.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника соло успешно обновлены в БД.");
+            }
+            if (userJson.getString("command").equals("updateEnsemble")) {
+                Member newMember = Utils.getEnsembleFromJson(userJson);
+                Member oldMember = Authentication.getRepository().getMemberById(userJson.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getEnsembleName() + ") is successful.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника ансамбля успешно обновлены в БД.");
             }
 
 
