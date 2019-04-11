@@ -4,23 +4,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class HibernateSessionFactoryUtil {
-    private static final SessionFactory sessionFactory;
+public final class HibernateSessionFactoryUtil {
+    private volatile static HibernateSessionFactoryUtil _instance = new HibernateSessionFactoryUtil();
 
-    static {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure();
-            sessionFactory = configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
+    private HibernateSessionFactoryUtil() {
     }
 
+    public static HibernateSessionFactoryUtil getInstance() {
+        return _instance;
+    }
 
-    public static SessionFactory getSessionFactory() throws HibernateException {
-
-        return sessionFactory;
-
+    public static SessionFactory getSession() {
+        return new Configuration().configure().buildSessionFactory();
     }
 }

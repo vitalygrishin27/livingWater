@@ -2,6 +2,7 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -11,20 +12,21 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String userName;
-    private String password;
+    public int id;
+    @Column (name = "username")
+    public String userName;
+    public String password;
     @Embedded
     @OneToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    private Role role;
+    public Role role;
     @Column (name = "first_name")
-    private String firstName;
+    public String firstName;
     @Column (name = "second_name")
-    private String secondName;
+    public String secondName;
     @Column (name = "last_name")
-    private String lastName;
-    private String office;
+    public String lastName;
+    public String office;
 
     public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
         this.userName = userName;
