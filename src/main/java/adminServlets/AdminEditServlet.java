@@ -39,12 +39,16 @@ public class AdminEditServlet extends HttpServlet {
 
         if (Authentication.isAdminInDbByCookies(req)) {
 
-            if (userJson.getString("command").equals("delete")) {
+            if (userJson.getString("command").equals("deleteMember")) {
                 Authentication.getRepository().deleteMemberFromDBById(userJson.getInt("idMember"));
                 jsonObjectResponse.append("status", "200").append("message", "Участник успешно удален из БД");
 
             }
+            if (userJson.getString("command").equals("deleteJury")) {
+                Authentication.getRepository().deleteJuryFromDBByUserName(userJson.getString("idJury"));
+                jsonObjectResponse.append("status", "200").append("message", "Член жюри успешно удален из БД");
 
+            }
             if (userJson.getString("command").equals("updateSolo")) {
                 Member newMember = Utils.getSoloMemberFromJson(userJson);
                 Member oldMember = Authentication.getRepository().getMemberById(userJson.getInt("idMember"));
@@ -59,6 +63,8 @@ public class AdminEditServlet extends HttpServlet {
                 System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getEnsembleName() + ") is successful.");
                 jsonObjectResponse.append("status", "200").append("message", "Данные участника ансамбля успешно обновлены в БД.");
             }
+
+
 
 
         } else {

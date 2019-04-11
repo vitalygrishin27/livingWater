@@ -104,6 +104,24 @@ public class GetsServlet extends HttpServlet {
         }
 
 
+        if (req.getParameter("command").equals("getJuryInformation")) {
+            User jury = Authentication.getRepository().getJuryByUserName(req.getParameter("idJury"));
+            for (Field fi : jury.getClass().getDeclaredFields()
+            ) {
+                fi.setAccessible(true);
+
+                try {
+                    System.out.println(fi.getName() + "   " + fi.get(jury));
+                    jsonObjectResponse.append(fi.getName(), fi.get(jury));
+                } catch (IllegalAccessException e) {
+                    System.out.println("Ошибка в преобразовании информации жюри.");
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+
         if (req.getParameter("command").equals("getListOfMembersFull")) {
             List<Map<String, String>> result = new ArrayList<>();
 
@@ -274,6 +292,7 @@ public class GetsServlet extends HttpServlet {
             jsonObjectResponse.append("freeTurnNumber", Authentication.getRepository().getFreeTurnNumberFromMemberDB());
 
         }
+
 
         resp.getWriter().write(String.valueOf(jsonObjectResponse));
         resp.flushBuffer();
