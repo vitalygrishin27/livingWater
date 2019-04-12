@@ -70,13 +70,13 @@ public class Authentication {
                     cal.setTimeInMillis(record.getMillis());
                     return record.getLevel()
                             + " " + logTime.format(cal.getTime())
-                            + " || "
-                            + record.getSourceClassName().substring(
-                            record.getSourceClassName().lastIndexOf(".") + 1,
-                            record.getSourceClassName().length())
-                            + "."
-                            + record.getSourceMethodName()
-                            + "() : "
+                       //     + " || "
+                      //      + record.getSourceClassName().substring(
+                        //    record.getSourceClassName().lastIndexOf(".") + 1,
+                     //       record.getSourceClassName().length())
+                        //    + "."
+                      //      + record.getSourceMethodName()
+                           + "   "
                             + record.getMessage() + "\n";
                 }
             });
@@ -99,7 +99,7 @@ public class Authentication {
             logger.info("STARTING SERVER");
 
             // Чтобы удалить обработчик консоли, используйте
-//            logger.setUseParentHandlers(false);
+         //   logger.setUseParentHandlers(false);
 
         } catch (SecurityException | IOException e) {
             e.printStackTrace();

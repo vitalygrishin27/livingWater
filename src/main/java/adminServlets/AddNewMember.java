@@ -39,7 +39,7 @@ public class AddNewMember extends HttpServlet {
         if (Authentication.isAdminInDbByCookies(req)) {
             JSONObject userJSon = Utils.getJsonFromRequest(req);
             //   System.out.println(userJSon);
-            Authentication.log(req.getCookies()[0].getValue() + "  -  receive JSON -  " + userJSon);
+        //    Authentication.log(req.getCookies()[0].getValue() + "  -  receive JSON -  " + userJSon);
             if (userJSon.getString("command").equals("registerSolo")) {
                 Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerSolo");
                 //  System.out.println("sID with '" + userJSon.getString("sId") +
