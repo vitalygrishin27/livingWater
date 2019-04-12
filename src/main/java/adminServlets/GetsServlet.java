@@ -21,10 +21,10 @@ public class GetsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("START GetServlet");
+        //   System.out.println("START GetServlet");
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
-
+        Authentication.log(req.getCookies()[0].getValue() + "  -  GetsServlet  -  command  -  " + (req.getParameter("command")));
         if (req.getParameter("command").equals("getCategory")) {
 
             for (Category element : Authentication.getRepository().getAllCategoryFromDB()

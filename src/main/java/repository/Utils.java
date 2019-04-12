@@ -18,21 +18,20 @@ public class Utils {
 
     public static JSONObject getJsonFromRequest(HttpServletRequest req) {
         JSONObject result;
-
         StringBuilder jb = new StringBuilder();
         String line;
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-
-
             result = new JSONObject(jb.toString());
-            System.out.println(result);
+            Authentication.log(req.getCookies()[0].getValue() + "  -  UTILS  -  getJsonFromRequest  -  " + result);
+       //     System.out.println(result);
 
             return result;
         } catch (Exception e) {
-            System.out.println("Error with buffered reader in getJsonFromRequest method.");
+            Authentication.log(req.getCookies()[0].getValue() + "  -  UTILS  -  getJsonFromRequest  -  Error with buffered reader in getJsonFromRequest method.");
+         //   System.out.println("Error with buffered reader in getJsonFromRequest method.");
         }
 
         return new JSONObject();
@@ -134,7 +133,8 @@ public class Utils {
         try {
             docDate = format.parse(d);
         } catch (ParseException e) {
-            System.out.println("Ошибка в приведении даты из строки (" + d + ")");
+          //  System.out.println("Ошибка в приведении даты из строки (" + d + ")");
+            Authentication.log("UTILS  -  getDateFromString  -  Error.");
             e.printStackTrace();
         }
         return docDate;

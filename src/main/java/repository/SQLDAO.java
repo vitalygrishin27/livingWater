@@ -1,5 +1,6 @@
 package repository;
 
+import authentication.Authentication;
 import entity.*;
 import hibernateUtils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ public class SQLDAO extends Repository {
     private static SQLDAO sqldao;
 
     public static Repository getDAO() {
+      //  Authentication.log("Starting DB with SQL.");
         if (single) {
             return sqldao;
         }

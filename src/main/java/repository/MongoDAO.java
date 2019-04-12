@@ -34,7 +34,9 @@ public class MongoDAO extends Repository {
     private static boolean single;
 
     public static Repository getDAO() {
+    //    Authentication.log("Starting DB with MONGO");
         if (single) {
+
             return mongoDAO;
         }
         return new MongoDAO();

@@ -7,7 +7,6 @@ import repository.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ public class AddNewJuryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //   System.out.println("START ADMIN Add new jury SERVLET IS DONE! (GET)");
 
-        Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewJuryServlet (GET)");
+     //   Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewJuryServlet (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
             Authentication.log(req.getCookies()[0].getValue() + "  -  Redirect to newJury.html");
             req.getRequestDispatcher("/admin/newJury/newJury.html")
@@ -35,7 +34,7 @@ public class AddNewJuryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //   System.out.println(Utils.getCurrentTime() + "/ START Admin add new Jury SERVLET IS DONE! POST");
-        Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewJuryServlet (POST)");
+     //   Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewJuryServlet (POST)");
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
@@ -87,9 +86,9 @@ public class AddNewJuryServlet extends HttpServlet {
 
 
         if (userJSon.getString("command").equals("updateJury")) {
-           // System.out.println("sID with '" + userJSon.getString("sId") +
-          //          "' want to update into DB jury.");
-       //     Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to ("+userJSon.getString("userName")+") have been created.");
+            // System.out.println("sID with '" + userJSon.getString("sId") +
+            //          "' want to update into DB jury.");
+            //     Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to ("+userJSon.getString("userName")+") have been created.");
             String messageToResponse = messageIsJsonCorrect(userJSon);
             if (messageToResponse.equals("OK")) {
 
@@ -101,14 +100,14 @@ public class AddNewJuryServlet extends HttpServlet {
                 Authentication.getRepository().deleteJuryFromDBByUserName(oldJury.getUserName());
                 Authentication.getRepository().saveNewJuryIntoDB(newJury);
 
-                Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to ("+userJSon.getString("userName")+") is successful.");
-              //  System.out.println("Update to DB JURY is OK. (" + userJSon.get("userName") + ")");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to (" + userJSon.getString("userName") + ") is successful.");
+                //  System.out.println("Update to DB JURY is OK. (" + userJSon.get("userName") + ")");
                 jsonObjectResponse.append("status", "200");
                 jsonObjectResponse.append("message", "Информация обновлена.");
 
             } else {
-             //   System.out.println("Update to DB crashed with not filled input boxes");
-                Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to ("+userJSon.getString("userName")+") crashed with not filled input boxes.");
+                //   System.out.println("Update to DB crashed with not filled input boxes");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to (" + userJSon.getString("userName") + ") crashed with not filled input boxes.");
                 jsonObjectResponse.append("status", "406");
                 jsonObjectResponse.append("message", messageToResponse);
                 //  406 Not Acceptable («неприемлемо»)[2][3];
@@ -116,7 +115,6 @@ public class AddNewJuryServlet extends HttpServlet {
             }
 
         }
-
 
 
         resp.getWriter().write(String.valueOf(jsonObjectResponse));

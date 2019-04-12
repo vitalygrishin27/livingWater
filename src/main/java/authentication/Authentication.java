@@ -1,5 +1,7 @@
 package authentication;
 
+import com.profesorfalken.jpowershell.PowerShell;
+import com.profesorfalken.jpowershell.PowerShellResponse;
 import entity.Member;
 import entity.Role;
 import entity.Song;
@@ -9,7 +11,9 @@ import repository.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.FileHandler;
@@ -32,7 +36,8 @@ public class Authentication {
     private static Logger logger;
 
     static {
-        System.out.println("Starting DB with MONGO");
+
+        //   System.out.println("Starting DB with MONGO");
         repository = Repository.getDAO("MONGO");
         //  System.out.println("Starting DB with SQL");
         //  repository = Repository.getDAO("SQL");
@@ -51,10 +56,11 @@ public class Authentication {
         try {
 
             // This block configure the logger with handler and formatter
-            fh = new FileHandler("livingWater."+System.currentTimeMillis()+".log");
+           String fileName="livingWater." + System.currentTimeMillis() + ".log";
+            fh = new FileHandler(fileName);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
-           // fh.setFormatter(formatter);
+            // fh.setFormatter(formatter);
 
             fh.setFormatter(new java.util.logging.Formatter() {
                 @Override
@@ -63,10 +69,10 @@ public class Authentication {
                     Calendar cal = new GregorianCalendar();
                     cal.setTimeInMillis(record.getMillis());
                     return record.getLevel()
-                            + " "+logTime.format(cal.getTime())
+                            + " " + logTime.format(cal.getTime())
                             + " || "
                             + record.getSourceClassName().substring(
-                            record.getSourceClassName().lastIndexOf(".")+1,
+                            record.getSourceClassName().lastIndexOf(".") + 1,
                             record.getSourceClassName().length())
                             + "."
                             + record.getSourceMethodName()
@@ -76,10 +82,20 @@ public class Authentication {
             });
 
 
-
+         //   String command = "powershell.exe d:\\1.txt";
+            // Executing the command
+        //    Process powerShellProcess = Runtime.getRuntime().exec(command);
+            // Getting the results
+         //   powerShellProcess.getOutputStream().close();
+        //    PowerShellResponse response = PowerShell.executeSingleCommand("Get-Content d:\\1.txt -Wait");
+       //     System.out.println("List Processes:" + response.getCommandOutput());
 
 
             // the following statement is used to log any messages
+     //       Runtime.getRuntime().exec("cmd.exe");
+       //     Runtime.getRuntime().exec("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+     //       Runtime.getRuntime().exec("calc.exe");
+          //  Runtime.getRuntime().exec("powerShell.exe Get-Content "+fileName+" -Wait -Tail 0");
             logger.info("STARTING SERVER");
 
             // Чтобы удалить обработчик консоли, используйте
