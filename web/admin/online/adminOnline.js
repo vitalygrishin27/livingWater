@@ -89,7 +89,7 @@ function sendPost(ths) {
                                    memberId:memberId}),
 		    success: function(data){
 		    console.log(data);
-            alert(data.message);
+      //      alert(data.message);
             }
      });
 }

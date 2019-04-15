@@ -23,7 +23,7 @@ public class AdminMainServlet extends HttpServlet {
                     .forward(req, resp);
         } else {
            // System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
-            Authentication.log(req.getCookies()[0].getValue() + "  -  AdminMainServlet (GET)  -  redirect to /adminLogin. Authorization error.");
+            Authentication.log("AdminMainServlet (GET)  -  redirect to /adminLogin. Authorization error.");
             resp.sendRedirect("/adminLogin");
         }
     }
