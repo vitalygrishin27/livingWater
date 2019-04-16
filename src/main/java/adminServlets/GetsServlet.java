@@ -21,10 +21,10 @@ public class GetsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        //   System.out.println("START GetServlet");
+        System.out.println("START GetServlet");
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
-        Authentication.log(req.getCookies()[0].getValue() + "  -  GetsServlet  -  command  -  " + (req.getParameter("command")));
+
         if (req.getParameter("command").equals("getCategory")) {
 
             for (Category element : Authentication.getRepository().getAllCategoryFromDB()
@@ -234,6 +234,85 @@ public class GetsServlet extends HttpServlet {
             return;
 
 
+        }
+
+
+
+        if (req.getParameter("command").equals("getListOfMembersOnlyMarkers")) {
+            List<Map<String, String>> result = new ArrayList<>();
+
+
+            for (Member element : Authentication.getRepository().getAllMembersFromDB()
+            ) {
+
+                //Добавление в мапу записи о первой песне исполнителя
+                Map<String, String> map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "1");
+                map.put("songName", element.getFirstSong().getName());
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+
+                  if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getFirstSong(),elementJury)){
+                      map.put(elementJury.getUserName(), "+");
+                  }else{
+                      map.put(elementJury.getUserName(), "0");
+                  }
+
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+                //Добавление в мапу записи о второй песне исполнителя
+                map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "2");
+                map.put("songName", element.getSecondSong().getName());
+
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+                    if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getSecondSong(),elementJury)){
+                        map.put(elementJury.getUserName(), "+");
+                    }else{
+                        map.put(elementJury.getUserName(), "0");
+                    }
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+            }
+            System.out.println(result);
+            resp.getWriter().write(String.valueOf(new JSONArray(result)));
+            resp.flushBuffer();
+            return;
         }
 
 
