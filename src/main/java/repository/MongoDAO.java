@@ -305,29 +305,29 @@ public class MongoDAO extends Repository {
 
 
     @Override
-    public boolean deleteAddressFromDBById(int idAddress) {
-        addressMongoCollection.deleteOne(new Document("id",idAddress));
-        System.out.println("Address with id "+idAddress+" was deleted.");
+    public synchronized boolean deleteAddressFromDBById(int idAddress) {
+        addressMongoCollection.deleteOne(new Document("id", idAddress));
+        System.out.println("Address with id " + idAddress + " was deleted.");
         return true;
     }
 
     @Override
-    public boolean deleteSongFromDBById(int idSong) {
-        songMongoCollection.deleteOne(new Document("id",idSong));
-        System.out.println("Song with id "+idSong+" was deleted.");
+    public synchronized boolean deleteSongFromDBById(int idSong) {
+        songMongoCollection.deleteOne(new Document("id", idSong));
+        System.out.println("Song with id " + idSong + " was deleted.");
         return true;
     }
 
     @Override
-    public boolean deleteMarksFromDBByMemberId(int idMember) {
-        markMongoCollection.deleteMany(new Document("memberId",idMember));
-        System.out.println("All marks with member Id "+idMember+" were deleted.");
+    public synchronized boolean deleteMarksFromDBByMemberId(int idMember) {
+        markMongoCollection.deleteMany(new Document("memberId", idMember));
+        System.out.println("All marks with member Id " + idMember + " were deleted.");
         return true;
     }
 
     @Override
     public synchronized boolean deleteMemberFromDBById(int idMember) {
-        Member memberForDelete=getMemberById(idMember);
+        Member memberForDelete = getMemberById(idMember);
         deleteAddressFromDBById(memberForDelete.getAddress().getId());
         deleteMarksFromDBByMemberId(idMember);
         deleteSongFromDBById(memberForDelete.getFirstSong().getId());
@@ -336,21 +336,36 @@ public class MongoDAO extends Repository {
         return true;
     }
 
+
+    @Override
+    public synchronized boolean deleteJuryFromDBByUserName(String userName) {
+        //  User jury=getJuryByUserName(userName);
+        deleteMarksFromDBByJuryUserName(userName);
+        juryMongoCollection.deleteOne(new Document("userName", userName));
+        return true;
+    }
+
+    @Override
+    public synchronized boolean deleteMarksFromDBByJuryUserName(String userName) {
+        markMongoCollection.deleteMany(new Document("juryUserName", userName));
+        return true;
+    }
+
     @Override
     public synchronized boolean updateMember(Member oldMember, Member newMember) {
         newMember.setId(oldMember.getId());
         //обновление адресса
         newMember.getAddress().setId(oldMember.getAddress().getId());
-        updateAddress(oldMember.getAddress(),newMember.getAddress());
+        updateAddress(oldMember.getAddress(), newMember.getAddress());
         //обновление песен
         newMember.getFirstSong().setId(oldMember.getFirstSong().getId());
-        updateSongName(oldMember.getFirstSong(),newMember.getFirstSong());
+        updateSongName(oldMember.getFirstSong(), newMember.getFirstSong());
         newMember.getSecondSong().setId(oldMember.getSecondSong().getId());
-        updateSongName(oldMember.getSecondSong(),newMember.getSecondSong());
+        updateSongName(oldMember.getSecondSong(), newMember.getSecondSong());
 
-        memberMongoCollection.deleteOne(new Document("id",oldMember.getId()));
+        memberMongoCollection.deleteOne(new Document("id", oldMember.getId()));
 
-        Member member=newMember;
+        Member member = newMember;
         memberMongoCollection.insertOne(new Document("id", member.getId())
                 .append("lastName", member.getLastName())
                 .append("firstName", member.getFirstName())
@@ -375,7 +390,7 @@ public class MongoDAO extends Repository {
 
 
     @Override
-    public synchronized  boolean updateAddress(Address oldAddress, Address address) {
+    public synchronized boolean updateAddress(Address oldAddress, Address address) {
         address.setId(oldAddress.getId());
         addressMongoCollection.deleteOne(new Document("id", oldAddress.getId()));
         addressMongoCollection.insertOne(new Document("id", address.getId())
@@ -397,7 +412,6 @@ public class MongoDAO extends Repository {
         System.out.println("Song successful updated into DB. (" + song.getId() + " " + song.getName() + ").");
         return false;
     }
-
 
 
     // возвращает id
@@ -610,8 +624,8 @@ public class MongoDAO extends Repository {
             Collections.sort(usedId);
 
 
-            for (int i=0; i<usedId.size();i++){
-                if(usedId.get(i)!=i+1) return i+1;
+            for (int i = 0; i < usedId.size(); i++) {
+                if (usedId.get(i) != i + 1) return i + 1;
             }
 
             return (usedId.get(usedId.size() - 1)) + 1;
@@ -734,45 +748,5 @@ public class MongoDAO extends Repository {
         return result;
     }
 
-    /*  @Override
-    public List<Member> getListOfMembers() {
-        List<Member> result = new ArrayList<>();
 
-        for (Document element : memberMongoCollection.find()
-        ) {
-            BuilderMember.getBuilderMember().setId(element.getInteger("id"))
-                                            .setLastName(element.getString("lastName"))
-                                            .setFirstName(element.getString("firstName"))
-                                            .setSecondName(element.getString("secondName"))
-                                            .setBirth(element.getDate("birth"))
-                                            .setEnsembleName(element.getString("ensembleName"))
-                                            .setCountOfMembers(element.getInteger("countOfMembers"))
-                                            .setGender(Gender.getGenderByChar(element.getString("gender")))
-                                            .setAddress(getAddressById())
-
-        }
-
-new Gender("M");
-
-        member.countOfMembers=builderMember.getCountOfMembers();
-        member.gender=builderMember.getGender();
-        member.address=builderMember.getAddress();
-        member.passport=builderMember.getPassport();
-        member.INN=builderMember.getINN();
-        member.boss=builderMember.getBoss();
-        member.category =builderMember.getCategory();
-        member.firstSong=builderMember.getFirstSong();
-        member.secondSong=builderMember.getSecondSong();
-        member.registration=builderMember.isRegistration();
-        member.turnNumber=builderMember.getTurnNumber();
-
-
-
-
-
-
-
-
-        return null;
-    }*/
 }

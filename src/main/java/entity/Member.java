@@ -8,7 +8,6 @@ import java.util.Objects;
 @Table (name = "members")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -16,7 +15,7 @@ public class Member {
     private String firstName;
     @Column(name = "second_name", nullable = false)
     private String secondName;///
-    @Column(name = "ensemble_name", nullable = false)
+    @Column(name = "ensemble_name", nullable = true)
     private String ensembleName;
     private Date birth;
     @Column(name = "count_of_members", nullable = false)

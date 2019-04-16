@@ -338,7 +338,7 @@ function deleteMember(){
             $.ajax({
 			    type: 'POST',
 			    url: "/admin/edit",
-			    data: JSON.stringify({sId:sId, command:"delete",idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML}),
+			    data: JSON.stringify({sId:sId, command:"deleteMember",idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML}),
                 success: function(data){
 		                console.log(data);
 		                document.getElementById("message").innerHTML=data.message;

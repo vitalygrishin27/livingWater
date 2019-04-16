@@ -1,60 +1,94 @@
 package repository;
 
 import entity.*;
-import org.hibernate.SessionFactory;
 import hibernateUtils.HibernateSessionFactoryUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SQLDAO extends Repository {
-    private static boolean single=false;
+    private static boolean single = false;
     private static SQLDAO sqldao;
+
     public static Repository getDAO() {
         if (single) {
             return sqldao;
         }
-        single=true;
+        single = true;
         return new SQLDAO();
     }
 
     private static SessionFactory sessionFactory;
-    public static void main(String[] args) {
-        SQLDAO sqlDAO = new SQLDAO();
+    private static Session session = null;
 
+    private static void getSessionForDb(){
+        SessionFactory getSession = null;
+        HibernateSessionFactoryUtil.getInstance();
+
+        try {
+            getSession = HibernateSessionFactoryUtil.getSession();
+            session = getSession.openSession();
+            Transaction transaction = session.beginTransaction();
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
-
-    private SQLDAO(){
-//Конструктор
-        sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
+    private SQLDAO() {
+        getSessionForDb();
     }
 
     @Override
     public boolean isUserAlreadyRegistered(User user) {
         //проверить есть ли юзер в базе
-        return false;
+        @SuppressWarnings("JpaQlInspection")
+        Query queryUserIsRegistered = session.createQuery("select userName FROM users where userName =  :paramName");
+        queryUserIsRegistered.setParameter("paramName",user.getUserName());
+        //return queryUserIsRegistered.list().isEmpty();
+        return true;
     }
+
 
     @Override
     public boolean isPasswordRight(User user) {
         //соответствует ли пассворд юзеру в базе
-        return false;
+/*
+        Query queryUserPass = session.createQuery("SELECT  password from users  where username = :paramName and  password = :paramPassword");
+        queryUserPass.setParameter("paramName",user.getUserName());
+        queryUserPass.setParameter("paramPassword",user.getPassword());
+        return !queryUserPass.list().isEmpty();*/
+         return true;
     }
 
     @Override
     public String getROLE(User user) {
-        //получить роль
-        return null;
+       /*
+        Query queryUserPass = session.createQuery("select role from entity.User role where role = :paramName");
+        queryUserPass.setParameter("paramName",user.getUserName());*/
+        return user.getRole().toString();
     }
 
     @Override
     public List<Role> getAllRolesFromDB() {
         //получить список всех ролей
-        return null;
+        List <Role> roleList = new ArrayList<>();
+        Query queryGetAllRoles = session.createQuery("select r from entity.Role r  ");
+        int listSize = queryGetAllRoles.list().size();
+        for (int i = 0; i < listSize ; i++) {
+            roleList.add((Role) queryGetAllRoles.list().get(i));
+        }
+
+        return roleList;
     }
 
     @Override
     public List<User> getAllFromDBByRole(Role role) {
         //получить всех юзеров по роли
+
         return null;
     }
 
@@ -141,7 +175,7 @@ public class SQLDAO extends Repository {
 
     @Override
     public boolean isMemberSoloByMemberId(int id) {
-       //если солист,то тру
+        //если солист,то тру
         //если название ансамбля пустое,то он солист
         return false;
     }
@@ -201,6 +235,14 @@ public class SQLDAO extends Repository {
         return null;
     }
 
+
+
+    class А implements Runnable{
+
+        @Override
+        public void run() {
+
+        }
     @Override
     public boolean deleteMemberFromDBById(int idMember) {
         return false;
@@ -233,6 +275,16 @@ public class SQLDAO extends Repository {
 
     @Override
     public boolean deleteMarksFromDBByMemberId(int idMember) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteJuryFromDBByUserName(String userName) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteMarksFromDBByJuryUserName(String userName) {
         return false;
     }
 }
