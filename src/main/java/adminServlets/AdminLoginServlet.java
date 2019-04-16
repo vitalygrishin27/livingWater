@@ -17,7 +17,7 @@ import java.io.IOException;
 public class AdminLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Authentication.log(req.getCookies()[0].getValue() + "  -  AdminLoginServlet (GET)  -- redirect to /admin/login/adminLogin.html.");
+     //   Authentication.log(req.getCookies()[0].getValue() + "  -  AdminLoginServlet (GET)  -- redirect to /admin/login/adminLogin.html.");
         //       System.out.println(Utils.getCurrentTime() + " / START ADMIN SERVLET IS DONE! (GET)");
         req.getRequestDispatcher("/admin/login/adminLogin.html").forward(req, resp);
     }
