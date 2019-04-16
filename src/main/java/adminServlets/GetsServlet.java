@@ -237,6 +237,85 @@ public class GetsServlet extends HttpServlet {
         }
 
 
+
+        if (req.getParameter("command").equals("getListOfMembersOnlyMarkers")) {
+            List<Map<String, String>> result = new ArrayList<>();
+
+
+            for (Member element : Authentication.getRepository().getAllMembersFromDB()
+            ) {
+
+                //Добавление в мапу записи о первой песне исполнителя
+                Map<String, String> map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "1");
+                map.put("songName", element.getFirstSong().getName());
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+
+                  if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getFirstSong(),elementJury)){
+                      map.put(elementJury.getUserName(), "+");
+                  }else{
+                      map.put(elementJury.getUserName(), "0");
+                  }
+
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+                //Добавление в мапу записи о второй песне исполнителя
+                map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "2");
+                map.put("songName", element.getSecondSong().getName());
+
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+                    if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getSecondSong(),elementJury)){
+                        map.put(elementJury.getUserName(), "+");
+                    }else{
+                        map.put(elementJury.getUserName(), "0");
+                    }
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+            }
+            System.out.println(result);
+            resp.getWriter().write(String.valueOf(new JSONArray(result)));
+            resp.flushBuffer();
+            return;
+        }
+
+
         if (req.getParameter("command").equals("getCurrentMemberDataThatEvaluate")
                 && Authentication.getCurrentMemberForEvaluation() != null
                 && Authentication.getCurrentSongForEvaluation() != null) {

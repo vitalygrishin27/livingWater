@@ -101,7 +101,8 @@ function CreateTableFromJSON() {
     $.ajax({
   			type: 'GET',
   			url: "/admin/gets",
-  			data: {sId:sId, command:"getListOfMembersFull"},
+  		//	data: {sId:sId, command:"getListOfMembersFull"},
+  			data: {sId:sId, command:"getListOfMembersOnlyMarkers"},
   			success: function(data){
   				console.log(data);
                 var list=data;

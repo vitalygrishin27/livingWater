@@ -245,4 +245,9 @@ public class SQLDAO extends Repository {
     public boolean deleteMarksFromDBByJuryUserName(String userName) {
         return false;
     }
+
+    @Override
+    public boolean isSongAlreadyEvaluatedByJury(Song song, User jury) {
+        return false;
+    }
 }
