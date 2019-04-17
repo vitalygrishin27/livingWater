@@ -159,17 +159,6 @@ $(document).ready(function() {
 		  console.log("pushToServer");
 
 
-		  //блокировка экрана до следующего участника
-
-
-
-
-
-
-
-
-
-	//	var poster=  $.ajax({
 		$.ajax({
 			 type: 'POST',
 			url: "/user",
@@ -190,6 +179,12 @@ $(document).ready(function() {
             reset();
 
 		}
+
+		if(data.message=="Участника нет в БД. Ожидание."){
+        				skm_LockScreen('ОШИБКА. Участника нет в БД.\n Ожидание следующего участника.');
+                    reset();
+
+        		}
 
 
 		if(data.status=="200"){
@@ -230,7 +225,7 @@ function skm_LockScreen(str)
 
                            function fullScreenOn(){
             document.getElementById("butToFullScreen").style.display="none";
-            document.getElementById("bod").webkitRequestFullscreen();
+        //    document.getElementById("bod").webkitRequestFullscreen();
             document.getElementById("push").style.display="block";
 
 

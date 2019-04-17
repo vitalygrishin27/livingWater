@@ -334,6 +334,9 @@ for (var i = 0, element; element = elements[i++];) {
 
 function deleteMember(){
     var sId=getCookie('LivingWaterSession');
+
+
+	if(confirm("Вы уверены в удалении?")){
 	console.log("deleteMember");
             $.ajax({
 			    type: 'POST',
@@ -352,6 +355,7 @@ function deleteMember(){
 
 		        }
 		     });
+		     }
 }
 
 function updateSolo(){

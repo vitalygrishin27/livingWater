@@ -141,7 +141,11 @@ public class GetsServlet extends HttpServlet {
                 int flagToControleFullMarks = 0;
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-                    for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+
+
+
+             //       for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getFirstSong())) {
@@ -187,7 +191,8 @@ public class GetsServlet extends HttpServlet {
                 flagToControleFullMarks = 0;
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-                    for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+               //     for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getSecondSong())) {
@@ -234,6 +239,85 @@ public class GetsServlet extends HttpServlet {
             return;
 
 
+        }
+
+
+
+        if (req.getParameter("command").equals("getListOfMembersOnlyMarkers")) {
+            List<Map<String, String>> result = new ArrayList<>();
+
+
+            for (Member element : Authentication.getRepository().getAllMembersFromDB()
+            ) {
+
+                //Добавление в мапу записи о первой песне исполнителя
+                Map<String, String> map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "1");
+                map.put("songName", element.getFirstSong().getName());
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+
+                  if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getFirstSong(),elementJury)){
+                      map.put(elementJury.getUserName(), "+");
+                  }else{
+                      map.put(elementJury.getUserName(), "0");
+                  }
+
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+                //Добавление в мапу записи о второй песне исполнителя
+                map = new LinkedHashMap<>();
+                map.put("id", String.valueOf(element.getId()));
+                map.put("category", element.getCategory().getName());
+                map.put("songNumber", "2");
+                map.put("songName", element.getSecondSong().getName());
+
+
+                for (User elementJury : Authentication.getAllJury()
+                ) {
+                    if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getSecondSong(),elementJury)){
+                        map.put(elementJury.getUserName(), "+");
+                    }else{
+                        map.put(elementJury.getUserName(), "0");
+                    }
+                }
+
+
+                //Если участник солист
+                if (element.getCountOfMembers() == 1) {
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+
+
+                }
+                //Если участник ансамбль
+                else {
+                    map.put("name", element.getEnsembleName());
+
+                }
+                result.add(map);
+
+            }
+            System.out.println(result);
+            resp.getWriter().write(String.valueOf(new JSONArray(result)));
+            resp.flushBuffer();
+            return;
         }
 
 

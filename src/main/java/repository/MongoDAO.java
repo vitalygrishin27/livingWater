@@ -748,5 +748,11 @@ public class MongoDAO extends Repository {
         return result;
     }
 
-
+    @Override
+    public boolean isSongAlreadyEvaluatedByJury(Song song, User jury) {
+        if (markMongoCollection.find(new Document("songId", song.getId()).append("juryUserName", jury.getUserName())).first() != null) {
+            return true;
+        }
+        return false;
+    }
 }

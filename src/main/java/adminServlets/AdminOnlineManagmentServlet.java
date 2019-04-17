@@ -18,17 +18,20 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! (GET)");
         if (Authentication.isAdminInDbByCookies(req)) {
+            Authentication.log(req.getCookies()[0].getValue() + "  -  AdminOnlineManagmentServlet (GET)  -  redirect to /admin/online/adminOnline.html");
             req.getRequestDispatcher("/admin/online/adminOnline.html")
                     .forward(req, resp);
         } else {
-            System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
+      //      System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
+            Authentication.log(req.getCookies()[0].getValue() + "  -  AdminOnlineManagmentServlet (GET)  -  redirect to /adminLogin. Authorization error.");
             resp.sendRedirect("/adminLogin");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! POST");
+      //  System.out.println(Utils.getCurrentTime() + " / START ADMIN ONLINE SERVLET IS DONE! POST");
+
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
         JSONObject userJson = Utils.getJsonFromRequest(req);
@@ -37,20 +40,21 @@ public class AdminOnlineManagmentServlet extends HttpServlet {
         if (Authentication.isAdminInDbByCookies(req)) {
 
             if (userJson.getString("command").equals("setMemberForEvaluation")) {
-
+                Authentication.log(req.getCookies()[0].getValue() + "  -  command  -  setMemberForEvaluation  --  OK.");
                 Authentication.setCurrentMemberForEvaluation(Authentication.getRepository().getMemberById(userJson.getInt("memberId")), Integer.valueOf(userJson.getString("songNumber")));
             }
 
 
         } else {
-            System.out.println("Access to page AdminOnline (POST) is denided. Authorization error.");
+        //    System.out.println("Access to page AdminOnline (POST) is denided. Authorization error.");
+            Authentication.log(req.getCookies()[0].getValue() + "  -  Access to page AdminOnline (POST) is denided. Authorization error.");
             jsonObjectResponse.append("status", "300");
             jsonObjectResponse.append("message", "Доступ запрещен. Нужна авторизация.");
-            resp.getWriter().write(String.valueOf(jsonObjectResponse));
 
-            resp.flushBuffer();
 
         }
+        resp.getWriter().write(String.valueOf(jsonObjectResponse));
+        resp.flushBuffer();
 
     }
 
