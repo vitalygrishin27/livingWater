@@ -141,7 +141,11 @@ public class GetsServlet extends HttpServlet {
                 int flagToControleFullMarks = 0;
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-                    for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+
+
+
+             //       for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getFirstSong())) {
@@ -187,7 +191,8 @@ public class GetsServlet extends HttpServlet {
                 flagToControleFullMarks = 0;
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-                    for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+               //     for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getSecondSong())) {

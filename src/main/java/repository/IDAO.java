@@ -99,6 +99,7 @@ public interface IDAO {
 
     boolean isSongAlreadyEvaluatedByJury(Song song, User jury);
 
+
   //  boolean saveNewEnsembleIntoDB(Member member);
 
     }

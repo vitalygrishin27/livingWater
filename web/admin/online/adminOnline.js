@@ -89,7 +89,7 @@ function sendPost(ths) {
                                    memberId:memberId}),
 		    success: function(data){
 		    console.log(data);
-            alert(data.message);
+        //    alert(data.message);
             }
      });
 }
@@ -101,8 +101,8 @@ function CreateTableFromJSON() {
     $.ajax({
   			type: 'GET',
   			url: "/admin/gets",
-  		//	data: {sId:sId, command:"getListOfMembersFull"},
-  			data: {sId:sId, command:"getListOfMembersOnlyMarkers"},
+  			data: {sId:sId, command:"getListOfMembersFull"},
+  		//	data: {sId:sId, command:"getListOfMembersOnlyMarkers"},
   			success: function(data){
   				console.log(data);
                 var list=data;
