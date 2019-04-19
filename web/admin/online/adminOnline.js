@@ -197,7 +197,7 @@ function updateColorOfRowWhenLoadPage(){
     var countOfZeros=0;
     var countOfJuryFields=0;
     for(var r=1; r<tab.rows.length; r++){
-        for (var i=5; i<tab.rows[0].cells.length-1; i++){
+        for (var i=6; i<tab.rows[0].cells.length-1; i++){
                 countOfJuryFields++;
             if(tab.rows[r].cells[i].innerHTML=="0"){
                 countOfZeros++;
