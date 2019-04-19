@@ -109,6 +109,7 @@ function CreateTableFromJSON() {
                 // EXTRACT VALUE FOR HTML HEADER.
                 var col = [];
                 for (var i = 0; i < 1; i++) {
+                      col.push("turnNumber");
                       col.push("id");
                       col.push("name");
                       col.push("category");

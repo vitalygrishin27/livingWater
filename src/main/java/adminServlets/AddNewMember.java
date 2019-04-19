@@ -1,6 +1,7 @@
 package adminServlets;
 
 import authentication.Authentication;
+import entity.Member;
 import org.json.JSONObject;
 import repository.Utils;
 
@@ -82,6 +83,37 @@ public class AddNewMember extends HttpServlet {
                     //  406 Not Acceptable («неприемлемо»)[2][3];
                 }
             }
+
+
+
+            if (userJSon.getString("command").equals("deleteMember")) {
+                Authentication.getRepository().deleteMemberFromDBById(userJSon.getInt("idMember"));
+                Authentication.log(req.getCookies()[0].getValue() + "  -  deleteMember  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Участник успешно удален из БД");
+
+            }
+
+
+            if (userJSon.getString("command").equals("updateSolo")) {
+                Member newMember = Utils.getSoloMemberFromJson(userJSon);
+                Member oldMember = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                //      System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getLastName() + ") is successful.");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  updateSolo  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника соло успешно обновлены в БД.");
+            }
+            if (userJSon.getString("command").equals("updateEnsemble")) {
+                Member newMember = Utils.getEnsembleFromJson(userJSon);
+                Member oldMember = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                //  System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getEnsembleName() + ") is successful.");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  updateEnsemble  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника ансамбля успешно обновлены в БД.");
+            }
+
+
+
+
             resp.getWriter().write(String.valueOf(jsonObjectResponse));
             resp.flushBuffer();
 

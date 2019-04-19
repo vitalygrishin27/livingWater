@@ -97,8 +97,8 @@ public class AddNewJuryServlet extends HttpServlet {
                 User newJury = Utils.getJuryFromJson(userJSon);
                 // newJury.setUserName(userJSon.getString("userName"));
 
-                Authentication.getRepository().deleteJuryFromDBByUserName(oldJury.getUserName());
-                Authentication.getRepository().saveNewJuryIntoDB(newJury);
+                Authentication.getRepository().updateJuryInDB(oldJury,newJury);
+              //  Authentication.getRepository().saveNewJuryIntoDB(newJury);
 
                 Authentication.log(req.getCookies()[0].getValue() + "  -  update Jury (" + userJSon.getString("idOldJury") + ") to (" + userJSon.getString("userName") + ") is successful.");
                 //  System.out.println("Update to DB JURY is OK. (" + userJSon.get("userName") + ")");
@@ -113,6 +113,14 @@ public class AddNewJuryServlet extends HttpServlet {
                 //  406 Not Acceptable («неприемлемо»)[2][3];
 
             }
+
+        }
+
+
+        if (userJSon.getString("command").equals("deleteJury")) {
+            Authentication.getRepository().deleteJuryFromDBByUserName(userJSon.getString("idJury"));
+            Authentication.log(req.getCookies()[0].getValue() + "  -  deleteJury  -- OK.");
+            jsonObjectResponse.append("status", "200").append("message", "Член жюри успешно удален из БД");
 
         }
 

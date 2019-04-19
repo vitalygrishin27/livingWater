@@ -37,6 +37,7 @@ public class GetsServlet extends HttpServlet {
             for (Member element : Authentication.getRepository().getAllMembersFromDB()
             ) {
                 jsonObjectResponse.append("id", element.getId());
+                jsonObjectResponse.append("turnNumber",element.getTurnNumber());
                 if (element.getEnsembleName().equals("")) {
                     jsonObjectResponse.append("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
                 } else {
@@ -135,7 +136,7 @@ public class GetsServlet extends HttpServlet {
                 map.put("category", element.getCategory().getName());
                 map.put("songNumber", "1");
                 map.put("songName", element.getFirstSong().getName());
-
+                map.put("turnNumber",String.valueOf(element.getTurnNumber()));
                 int summaryMarkValue = 0;
                 //считает количество оценок, должно быть равно количеству критериев оценивая
                 int flagToControleFullMarks = 0;
@@ -149,7 +150,7 @@ public class GetsServlet extends HttpServlet {
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getFirstSong())) {
-                                System.out.println("Контроль суммарной оценки." + elementMark.getValue());
+                           //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
                                 flagToControleFullMarks++;
                                 summaryMarkValue += elementMark.getValue();
                             }
@@ -159,7 +160,7 @@ public class GetsServlet extends HttpServlet {
 
 
                     }
-                    System.out.println("Full mark consists in " + flagToControleFullMarks);
+            //        System.out.println("Full mark consists in " + flagToControleFullMarks);
                     map.put(elementJury.getUserName(), String.valueOf(summaryMarkValue));
                     summaryMarkValue = 0;
                     flagToControleFullMarks = 0;
@@ -185,7 +186,7 @@ public class GetsServlet extends HttpServlet {
                 map.put("category", element.getCategory().getName());
                 map.put("songNumber", "2");
                 map.put("songName", element.getSecondSong().getName());
-
+                map.put("turnNumber",String.valueOf(element.getTurnNumber()));
                 summaryMarkValue = 0;
                 //считает количество оценок, должно быть равно количеству критериев оценивая
                 flagToControleFullMarks = 0;
@@ -196,7 +197,7 @@ public class GetsServlet extends HttpServlet {
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getSecondSong())) {
-                                System.out.println("Контроль суммарной оценки." + elementMark.getValue());
+                           //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
                                 flagToControleFullMarks++;
                                 summaryMarkValue += elementMark.getValue();
                             }
@@ -206,7 +207,7 @@ public class GetsServlet extends HttpServlet {
 
 
                     }
-                    System.out.println("Full mark consists in " + flagToControleFullMarks);
+               //     System.out.println("Full mark consists in " + flagToControleFullMarks);
                     map.put(elementJury.getUserName(), String.valueOf(summaryMarkValue));
                     summaryMarkValue = 0;
                     flagToControleFullMarks = 0;
