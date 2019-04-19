@@ -134,6 +134,7 @@ function CreateTableFromJSON() {
                 for (var i = 0; i < col.length; i++) {
                      var th = document.createElement("th");      // TABLE HEADER.
                        th.innerHTML = col[i];
+                       if(col[i]=="turnNumber") th.innerHTML = "Номер";
                        if(col[i]=="name") th.innerHTML = "Конкурсант";
                        if(col[i]=="songName") th.innerHTML = "Название песни";
                        if(col[i]=="id") th.innerHTML = "ID";
@@ -238,3 +239,4 @@ function deleteBlueColor(){
     }
 
 }
+

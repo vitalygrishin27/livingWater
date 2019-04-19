@@ -37,9 +37,11 @@ public class GetsServlet extends HttpServlet {
             for (Member element : Authentication.getRepository().getAllMembersFromDB()
             ) {
                 jsonObjectResponse.append("id", element.getId());
-                jsonObjectResponse.append("turnNumber",element.getTurnNumber());
+                jsonObjectResponse.append("turnNumber", element.getTurnNumber());
                 if (element.getEnsembleName().equals("")) {
-                    jsonObjectResponse.append("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                    jsonObjectResponse
+                            .append("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                                    .getSecondName());
                 } else {
                     jsonObjectResponse.append("name", element.getEnsembleName());
                 }
@@ -51,7 +53,8 @@ public class GetsServlet extends HttpServlet {
             for (User element : Authentication.getAllJury()
             ) {
                 jsonObjectResponse.append("id", element.getUserName());
-                jsonObjectResponse.append("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                jsonObjectResponse.append("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                        .getSecondName());
             }
         }
 
@@ -70,14 +73,16 @@ public class GetsServlet extends HttpServlet {
                             ) {
                                 addressField.setAccessible(true);
                                 if (!addressField.getName().equals("id"))
-                                    jsonObjectResponse.append(addressField.getName(), addressField.get(member.getAddress()));
+                                    jsonObjectResponse
+                                            .append(addressField.getName(), addressField.get(member.getAddress()));
                             }
                             break;
                         case "category":
                             jsonObjectResponse.append("category", member.getCategory().getName());
                             break;
                         case "birth":
-                            LocalDateTime ldt = LocalDateTime.ofInstant(member.getBirth().toInstant(), ZoneId.systemDefault());
+                            LocalDateTime ldt = LocalDateTime
+                                    .ofInstant(member.getBirth().toInstant(), ZoneId.systemDefault());
                             DateTimeFormatter formmat1 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                             String formatter = formmat1.format(ldt);
                             jsonObjectResponse.append("birth", formatter);
@@ -136,7 +141,7 @@ public class GetsServlet extends HttpServlet {
                 map.put("category", element.getCategory().getName());
                 map.put("songNumber", "1");
                 map.put("songName", element.getFirstSong().getName());
-                map.put("turnNumber",String.valueOf(element.getTurnNumber()));
+                map.put("turnNumber", String.valueOf(element.getTurnNumber()));
                 int summaryMarkValue = 0;
                 //считает количество оценок, должно быть равно количеству критериев оценивая
                 int flagToControleFullMarks = 0;
@@ -144,13 +149,12 @@ public class GetsServlet extends HttpServlet {
                 ) {
 
 
-
-             //       for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
-                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
+                    //       for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark : Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getFirstSong())) {
-                           //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
+                                //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
                                 flagToControleFullMarks++;
                                 summaryMarkValue += elementMark.getValue();
                             }
@@ -160,7 +164,7 @@ public class GetsServlet extends HttpServlet {
 
 
                     }
-            //        System.out.println("Full mark consists in " + flagToControleFullMarks);
+                    //        System.out.println("Full mark consists in " + flagToControleFullMarks);
                     map.put(elementJury.getUserName(), String.valueOf(summaryMarkValue));
                     summaryMarkValue = 0;
                     flagToControleFullMarks = 0;
@@ -169,7 +173,8 @@ public class GetsServlet extends HttpServlet {
 
                 //Если участник солист
                 if (element.getCountOfMembers() == 1) {
-                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                            .getSecondName());
 
 
                 }
@@ -186,18 +191,18 @@ public class GetsServlet extends HttpServlet {
                 map.put("category", element.getCategory().getName());
                 map.put("songNumber", "2");
                 map.put("songName", element.getSecondSong().getName());
-                map.put("turnNumber",String.valueOf(element.getTurnNumber()));
+                map.put("turnNumber", String.valueOf(element.getTurnNumber()));
                 summaryMarkValue = 0;
                 //считает количество оценок, должно быть равно количеству критериев оценивая
                 flagToControleFullMarks = 0;
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-               //     for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
-                    for (Mark elementMark :  Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
+                    //     for (Mark elementMark : Authentication.getRepository().getAllMarksFromDB()
+                    for (Mark elementMark : Authentication.getRepository().getListOfMarksBySong(element.getFirstSong())
                     ) {
                         if (elementMark.getJury().equals(elementJury)) {
                             if (elementMark.getSong().equals(element.getSecondSong())) {
-                           //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
+                                //     System.out.println("Контроль суммарной оценки." + elementMark.getValue());
                                 flagToControleFullMarks++;
                                 summaryMarkValue += elementMark.getValue();
                             }
@@ -207,7 +212,7 @@ public class GetsServlet extends HttpServlet {
 
 
                     }
-               //     System.out.println("Full mark consists in " + flagToControleFullMarks);
+                    //     System.out.println("Full mark consists in " + flagToControleFullMarks);
                     map.put(elementJury.getUserName(), String.valueOf(summaryMarkValue));
                     summaryMarkValue = 0;
                     flagToControleFullMarks = 0;
@@ -216,7 +221,8 @@ public class GetsServlet extends HttpServlet {
 
                 //Если участник солист
                 if (element.getCountOfMembers() == 1) {
-                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                            .getSecondName());
 
 
                 }
@@ -235,13 +241,17 @@ public class GetsServlet extends HttpServlet {
 
 
             System.out.println(result);
+
+
+
+
+
             resp.getWriter().write(String.valueOf(new JSONArray(result)));
             resp.flushBuffer();
             return;
 
 
         }
-
 
 
         if (req.getParameter("command").equals("getListOfMembersOnlyMarkers")) {
@@ -261,18 +271,20 @@ public class GetsServlet extends HttpServlet {
                 for (User elementJury : Authentication.getAllJury()
                 ) {
 
-                  if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getFirstSong(),elementJury)){
-                      map.put(elementJury.getUserName(), "+");
-                  }else{
-                      map.put(elementJury.getUserName(), "0");
-                  }
+                    if (Authentication.getRepository()
+                                      .isSongAlreadyEvaluatedByJury(element.getFirstSong(), elementJury)) {
+                        map.put(elementJury.getUserName(), "+");
+                    } else {
+                        map.put(elementJury.getUserName(), "0");
+                    }
 
                 }
 
 
                 //Если участник солист
                 if (element.getCountOfMembers() == 1) {
-                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                            .getSecondName());
 
 
                 }
@@ -293,9 +305,10 @@ public class GetsServlet extends HttpServlet {
 
                 for (User elementJury : Authentication.getAllJury()
                 ) {
-                    if (Authentication.getRepository().isSongAlreadyEvaluatedByJury(element.getSecondSong(),elementJury)){
+                    if (Authentication.getRepository()
+                                      .isSongAlreadyEvaluatedByJury(element.getSecondSong(), elementJury)) {
                         map.put(elementJury.getUserName(), "+");
-                    }else{
+                    } else {
                         map.put(elementJury.getUserName(), "0");
                     }
                 }
@@ -303,7 +316,8 @@ public class GetsServlet extends HttpServlet {
 
                 //Если участник солист
                 if (element.getCountOfMembers() == 1) {
-                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element.getSecondName());
+                    map.put("name", element.getLastName() + " " + element.getFirstName() + " " + element
+                            .getSecondName());
 
 
                 }
@@ -326,10 +340,12 @@ public class GetsServlet extends HttpServlet {
                 && Authentication.getCurrentMemberForEvaluation() != null
                 && Authentication.getCurrentSongForEvaluation() != null) {
             resp.setContentType("application/json; charset=UTF-8");
-            if (Authentication.getCurrentMemberForEvaluation().getFirstSong().equals(Authentication.getCurrentSongForEvaluation())) {
+            if (Authentication.getCurrentMemberForEvaluation().getFirstSong()
+                              .equals(Authentication.getCurrentSongForEvaluation())) {
                 jsonObjectResponse.append("songNumber", 1);
             }
-            if (Authentication.getCurrentMemberForEvaluation().getSecondSong().equals(Authentication.getCurrentSongForEvaluation())) {
+            if (Authentication.getCurrentMemberForEvaluation().getSecondSong()
+                              .equals(Authentication.getCurrentSongForEvaluation())) {
                 jsonObjectResponse.append("songNumber", 2);
             }
 
@@ -354,7 +370,9 @@ public class GetsServlet extends HttpServlet {
 
             for (Mark element : Authentication.getRepository().getListOfMarksBySong(song)
             ) {
-                markByJury.put(element.getJury().getUserName(), markByJury.get(element.getJury().getUserName()) + element.getValue());
+                markByJury
+                        .put(element.getJury().getUserName(), markByJury.get(element.getJury().getUserName()) + element
+                                .getValue());
 
             }
 
@@ -383,5 +401,24 @@ public class GetsServlet extends HttpServlet {
         resp.flushBuffer();
 
 
+    }
+}
+
+
+class ValueComparator implements Comparator<String> {
+    Map<String, String> base;
+
+    public ValueComparator(Map<String, String> base) {
+        this.base = base;
+    }
+
+    // Note: this comparator imposes orderings that are inconsistent with
+    // equals.
+    public int compare(String a, String b) {
+        if (Integer.valueOf(base.get(a)) >= Integer.valueOf(base.get(b))) {
+            return -1;
+        } else {
+            return 1;
+        } // returning 0 would merge keys
     }
 }
