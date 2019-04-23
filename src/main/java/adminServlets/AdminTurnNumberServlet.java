@@ -44,25 +44,31 @@ public class AdminTurnNumberServlet extends HttpServlet {
         System.out.println(userJSon);
         if (Authentication.isAdminInDbByCookies(req)) {
             if (userJSon.getString("command").equals("setTurnNumberForMember")) {
-                Member member = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
 
-                Authentication.getRepository().updateTurnNumberForMember(member, userJSon.getInt("turnNumber"));
-
-
-                jsonObjectResponse.append("status", "200");
-                jsonObjectResponse.append("message", "Номер жеребъевки установлен");
+                if(Authentication.getRepository().isTurnNumberFree(userJSon.getInt("turnNumber"))){
 
 
-            } else {
-                //   System.out.println("Access to page AdminEdit (POST) is denided. Authorization error.");
-                Authentication.log(req.getCookies()[0].getValue() + "  -  Access to page AdminEdit (POST) is denided. Authorization error.");
-                jsonObjectResponse.append("status", "300");
-                jsonObjectResponse.append("message", "Доступ запрещен. Нужна авторизация.");
+                    Member member = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
+
+                    Authentication.getRepository().updateTurnNumberForMember(member, userJSon.getInt("turnNumber"));
+
+
+                    jsonObjectResponse.append("status", "200");
+                    jsonObjectResponse.append("message", "Номер жеребъевки установлен");
+                }else{
+                    jsonObjectResponse.append("status", "400");
+                    jsonObjectResponse.append("message", "Номер уже занят");
+
+
+
+                }
+
 
 
             }
-            resp.getWriter().write(String.valueOf(jsonObjectResponse));
-            resp.flushBuffer();
+
         }
+        resp.getWriter().write(String.valueOf(jsonObjectResponse));
+        resp.flushBuffer();
     }
 }

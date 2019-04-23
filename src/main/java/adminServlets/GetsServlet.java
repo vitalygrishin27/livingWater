@@ -34,7 +34,7 @@ public class GetsServlet extends HttpServlet {
         }
 
         if (req.getParameter("command").equals("getListOfMembersOnlyNames")) {
-            for (Member element : Authentication.getRepository().getAllMembersFromDB()
+            for (Member element : sortMembersListByTurnNumber(Authentication.getRepository().getAllMembersFromDB())
             ) {
                 jsonObjectResponse.append("id", element.getId());
                 jsonObjectResponse.append("turnNumber", element.getTurnNumber());
@@ -130,7 +130,7 @@ public class GetsServlet extends HttpServlet {
 
         if (req.getParameter("command").equals("getListOfMembersFull")) {
             List<Map<String, String>> result = new ArrayList<>();
-
+            //   List<Integer> turnNumberList = new ArrayList<>();
 
             for (Member element : Authentication.getRepository().getAllMembersFromDB()
             ) {
@@ -142,6 +142,8 @@ public class GetsServlet extends HttpServlet {
                 map.put("songNumber", "1");
                 map.put("songName", element.getFirstSong().getName());
                 map.put("turnNumber", String.valueOf(element.getTurnNumber()));
+
+                //     turnNumberList.add(element.getTurnNumber());
                 int summaryMarkValue = 0;
                 //считает количество оценок, должно быть равно количеству критериев оценивая
                 int flagToControleFullMarks = 0;
@@ -243,10 +245,7 @@ public class GetsServlet extends HttpServlet {
             System.out.println(result);
 
 
-
-
-
-            resp.getWriter().write(String.valueOf(new JSONArray(result)));
+            resp.getWriter().write(String.valueOf(new JSONArray(sortByTurnNumber(result))));
             resp.flushBuffer();
             return;
 
@@ -272,7 +271,7 @@ public class GetsServlet extends HttpServlet {
                 ) {
 
                     if (Authentication.getRepository()
-                                      .isSongAlreadyEvaluatedByJury(element.getFirstSong(), elementJury)) {
+                            .isSongAlreadyEvaluatedByJury(element.getFirstSong(), elementJury)) {
                         map.put(elementJury.getUserName(), "+");
                     } else {
                         map.put(elementJury.getUserName(), "0");
@@ -306,7 +305,7 @@ public class GetsServlet extends HttpServlet {
                 for (User elementJury : Authentication.getAllJury()
                 ) {
                     if (Authentication.getRepository()
-                                      .isSongAlreadyEvaluatedByJury(element.getSecondSong(), elementJury)) {
+                            .isSongAlreadyEvaluatedByJury(element.getSecondSong(), elementJury)) {
                         map.put(elementJury.getUserName(), "+");
                     } else {
                         map.put(elementJury.getUserName(), "0");
@@ -341,11 +340,11 @@ public class GetsServlet extends HttpServlet {
                 && Authentication.getCurrentSongForEvaluation() != null) {
             resp.setContentType("application/json; charset=UTF-8");
             if (Authentication.getCurrentMemberForEvaluation().getFirstSong()
-                              .equals(Authentication.getCurrentSongForEvaluation())) {
+                    .equals(Authentication.getCurrentSongForEvaluation())) {
                 jsonObjectResponse.append("songNumber", 1);
             }
             if (Authentication.getCurrentMemberForEvaluation().getSecondSong()
-                              .equals(Authentication.getCurrentSongForEvaluation())) {
+                    .equals(Authentication.getCurrentSongForEvaluation())) {
                 jsonObjectResponse.append("songNumber", 2);
             }
 
@@ -402,23 +401,65 @@ public class GetsServlet extends HttpServlet {
 
 
     }
-}
+
+    private static List<Map<String, String>> sortByTurnNumber(List<Map<String, String>> list) {
+        List<Integer> turnNumberList = new LinkedList<>();
+        for (Member element : Authentication.getRepository().getAllMembersFromDB()
+        ) {
+            if (!turnNumberList.contains(element.getTurnNumber())) {
+                turnNumberList.add(element.getTurnNumber());
+            }
 
 
-class ValueComparator implements Comparator<String> {
-    Map<String, String> base;
+        }
 
-    public ValueComparator(Map<String, String> base) {
-        this.base = base;
+        Collections.sort(turnNumberList);
+
+        List<Map<String, String>> sorted_result = new LinkedList<>();
+
+        for (Integer element_turnNumber : turnNumberList
+        ) {
+
+            for (Map<String, String> element_map : list
+            ) {
+
+                if (Integer.valueOf(element_map.get("turnNumber")).equals(element_turnNumber)) {
+                    sorted_result.add(element_map);
+                }
+            }
+
+
+        }
+        return sorted_result;
+
     }
 
-    // Note: this comparator imposes orderings that are inconsistent with
-    // equals.
-    public int compare(String a, String b) {
-        if (Integer.valueOf(base.get(a)) >= Integer.valueOf(base.get(b))) {
-            return -1;
-        } else {
-            return 1;
-        } // returning 0 would merge keys
+    private static List<Member> sortMembersListByTurnNumber(List<Member> list) {
+        List<Integer> turnNumberList = new LinkedList<>();
+        for (Member element : list
+        ) {
+            if (!turnNumberList.contains(element.getTurnNumber())) {
+                turnNumberList.add(element.getTurnNumber());
+            }
+
+
+        }
+        Collections.sort(turnNumberList);
+        List<Member> sorted_result = new LinkedList<>();
+        for (Integer element_turnNumber : turnNumberList
+        ) {
+
+            for (Member element : list
+            ) {
+
+                if (Integer.valueOf(element.getTurnNumber()).equals(element_turnNumber)) {
+                    sorted_result.add(element);
+                }
+            }
+
+
+        }
+        return sorted_result;
     }
+
 }

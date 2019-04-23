@@ -57,7 +57,7 @@ function updateList(){
            memberId=this.id;
 
             var result=prompt("Введите номер жеребъевки");
-            if(result!=null || result!=""){
+            if(result!=null && result!=""){
                 if(result>=0 && result<1000){
               // alert ("OK >0 <1000");
                 setTurnNumberForMember(result,memberId);

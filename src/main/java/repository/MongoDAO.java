@@ -759,11 +759,11 @@ public class MongoDAO extends Repository {
 
     @Override
     public boolean updateTurnNumberForMember(Member member, Integer turnNumber) {
-        memberMongoCollection.findOneAndUpdate(new Document("id",member.getId()),new Document("$set",new Document("turnNumber",turnNumber)));
+        memberMongoCollection.findOneAndUpdate(new Document("id", member.getId()), new Document("$set", new Document("turnNumber", turnNumber)));
 
-    //    Member newMember = getMemberById(member.getId());
-     //   newMember.setTurnNumber(turnNumber);
-  //      updateMember(member, newMember);
+        //    Member newMember = getMemberById(member.getId());
+        //   newMember.setTurnNumber(turnNumber);
+        //      updateMember(member, newMember);
         // memberMongoCollection.findOneAndUpdate(new Document("id", member.getId()), new Document("turnNumber", turnNumber));
         return true;
     }
@@ -772,20 +772,27 @@ public class MongoDAO extends Repository {
     public boolean updateJuryInDB(User oldJury, User newJury) {
 
         juryMongoCollection.findOneAndUpdate(new Document("userName", oldJury.getUserName()),
-                new Document( "$set",new Document ()
+                new Document("$set", new Document()
                         .append("userName", newJury.getUserName())
                         .append("password", newJury.getPassword())
                         .append("firstName", newJury.getFirstName())
                         .append("secondName", newJury.getSecondName())
                         .append("lastName", newJury.getLastName())
                         .append("office", newJury.getOffice())
-                        ));
+                ));
 
 
-        markMongoCollection.updateMany(new Document("juryUserName",oldJury.getUserName()),new Document("$set",new Document("juryUserName",newJury.getUserName())));
+        markMongoCollection.updateMany(new Document("juryUserName", oldJury.getUserName()), new Document("$set", new Document("juryUserName", newJury.getUserName())));
 
 
-        return  true;
+        return true;
 
+    }
+
+    @Override
+    public boolean isTurnNumberFree(Integer turnNumber) {
+        // Нулевое значение означает, что жеребъевка еще не прошла
+        if(turnNumber==0) return true;
+        return memberMongoCollection.find(new Document("turnNumber", turnNumber)).first() == null;
     }
 }

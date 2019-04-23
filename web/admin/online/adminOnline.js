@@ -71,8 +71,8 @@ function getCurrentMemberDataThatEvaluate(){
 function sendPost(ths) {
     var sId=getCookie('LivingWaterSession');
     var tr = ths.parentNode.parentNode;
-    songNumber = tr.getElementsByTagName("td")[3].innerHTML;
-    memberId = tr.getElementsByTagName("td")[0].innerHTML;
+    songNumber = tr.getElementsByTagName("td")[4].innerHTML;
+    memberId = tr.getElementsByTagName("td")[1].innerHTML;
     //Обесцветить неактуальную синию строку
     deleteBlueColor();
     for(var i=0;i<tr.parentNode.rows[0].cells.length;i++){

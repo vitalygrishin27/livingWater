@@ -260,4 +260,9 @@ public class SQLDAO extends Repository {
     public boolean updateJuryInDB(User oldJury, User newJury) {
         return false;
     }
+
+    @Override
+    public boolean isTurnNumberFree(Integer turnNumber) {
+        return false;
+    }
 }

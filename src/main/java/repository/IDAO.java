@@ -103,6 +103,8 @@ public interface IDAO {
 
     boolean updateJuryInDB (User oldJury, User newJury);
 
+    boolean isTurnNumberFree (Integer turnNumber);
+
 
   //  boolean saveNewEnsembleIntoDB(Member member);
 
