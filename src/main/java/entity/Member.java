@@ -17,38 +17,40 @@ public class Member {
     private String secondName;///
     @Column(name = "ensemble_name", nullable = true)
     private String ensembleName;
+    @Column (name = "birth")
     private Date birth;
     @Column(name = "count_of_members", nullable = false)
     private int countOfMembers;
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
     private Gender gender;
+    @Column (name = "office")
     private String office;
-    @Embedded
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "song_id")
+    @JoinColumn(name = "address_id")
     private Address address;
+    @Column (name = "passport")
     private String passport;
+    @Column (name = "INN")
     private String INN;
+    @Column (name = "boss")
     private String boss;
-    @Embedded
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
-    @Embedded
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "song_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "firstSong_id")
     private Song firstSong;
-    @Embedded
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "song_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "secondSong_id")
     private Song secondSong;
     //  private Mark firstMarkId;
     // private Mark secondMarkId;
+    @Column (name ="registration")
     private boolean registration;
     //номер выступления
+    @Column (name ="turnNumber")
     private int turnNumber;
-
 
     private Member() {
 

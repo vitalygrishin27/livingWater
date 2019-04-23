@@ -29,7 +29,7 @@ public interface IDAO {
 
     List<User> getAllFromDBByRole(Role role);
 
-    List<Member> getAllMembersFromDB();
+    List getAllMembersFromDB();
 
     User getJuryByUserName(String name);
 

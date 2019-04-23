@@ -14,10 +14,10 @@ import java.util.*;
 public class Authentication {
 
     private static List<User> listOfJuriesOnline;
- //   private static List<User> listOfJury;
- //   private static List<User> admins;
+    //   private static List<User> listOfJury;
+    //   private static List<User> admins;
     //private static List<Role> roles;
- //   private static Map<String, User> sIds = new HashMap<>();
+    //   private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
     private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
@@ -28,31 +28,31 @@ public class Authentication {
     static {
         //System.out.println("Starting DB with MONGO");
         //repository = Repository.getDAO("MONGO");
-       System.out.println("Starting DB with SQL");
-       repository = Repository.getDAO("SQL");
-    //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
+        System.out.println("Starting DB with SQL");
+        repository = Repository.getDAO("SQL");
+        //  listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
         listOfJuriesOnline = new ArrayList<>();
-    //    roles = repository.getAllRolesFromDB();
-      //  listOfMembers = repository.getAllMembersFromDB();
+        //    roles = repository.getAllRolesFromDB();
+        //  listOfMembers = repository.getAllMembersFromDB();
         juryPingMap = new HashMap<>();
-        currentMemberForEvaluation=null;
-        currentSongForEvaluation=null;
+        currentMemberForEvaluation = null;
+        currentSongForEvaluation = null;
     }
 
     public static void ping(String juryUserName) {
-        Date date=new Date();
+        Date date = new Date();
         System.out.println(date.getTime());
         juryPingMap.put(juryUserName, date.getTime());
     }
 
     public static Long getSecondsAfterPingJury(String juryUserName) {
-        Date date=new Date();
+        Date date = new Date();
 
         long timeElapseAfterPing;
-    //   new TimeUnit().convert()
+        //   new TimeUnit().convert()
 
         if (juryPingMap.containsKey(juryUserName)) {
-            timeElapseAfterPing = date.getTime()-juryPingMap.get(juryUserName);
+            timeElapseAfterPing = date.getTime() - juryPingMap.get(juryUserName);
         } else {
             timeElapseAfterPing = 0;
         }
@@ -71,11 +71,11 @@ public class Authentication {
     }
 
     public static void setCurrentMemberForEvaluation(Member currentMemberForEvaluation, int songNumber) {
-        System.out.println(Utils.getCurrentTime()+" / Set to current Member successful.");
+        System.out.println(Utils.getCurrentTime() + " / Set to current Member successful.");
 
         Authentication.currentMemberForEvaluation = currentMemberForEvaluation;
-        if(songNumber==1) Authentication.currentSongForEvaluation=currentMemberForEvaluation.getFirstSong();
-        if(songNumber==2) Authentication.currentSongForEvaluation=currentMemberForEvaluation.getSecondSong();
+        if (songNumber == 1) Authentication.currentSongForEvaluation = currentMemberForEvaluation.getFirstSong();
+        if (songNumber == 2) Authentication.currentSongForEvaluation = currentMemberForEvaluation.getSecondSong();
     }
 
     public static void addToListOfJuriesOnline(User user) {
@@ -138,7 +138,7 @@ public class Authentication {
         return result;
     }
 
-    public static List<User> getAllJury(){
+    public static List<User> getAllJury() {
         return repository.getAllFromDBByRole(new Role(3, "JURY"));
     }
 /*
@@ -197,9 +197,9 @@ public class Authentication {
     }
 */
 
- //   public static List<User> getAllJuryFromDB() {
- //       return repository.getAllFromDBByRole(new Role(3, "JURY"));
- //   }
+    //   public static List<User> getAllJuryFromDB() {
+    //       return repository.getAllFromDBByRole(new Role(3, "JURY"));
+    //   }
 
     //   public static User getJuryByUserNameFromDB(String userName) {
     //       return repository.getJuryByUserName(userName);

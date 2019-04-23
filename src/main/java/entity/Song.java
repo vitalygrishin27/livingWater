@@ -5,14 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "songs")
-@Embeddable
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column (name = "name", nullable = false)
     private String name;
-
     public Song() {
     }
 
