@@ -8,6 +8,7 @@ import hibernateUtils.HibernateSessionFactoryUtil;
 import org.hibernate.TransactionException;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +76,6 @@ public class SQLDAO extends Repository {
 
     @Override
     public String getROLE(User user) {
-        //получить роль
         session.beginTransaction();
         Query getRoleQuery = session.createQuery("select r.name from Role r, User u where r.id = u.role.id and u.userName = :paramName");
         getRoleQuery.setParameter("paramName", user.getUserName());
@@ -89,25 +89,20 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Role> getAllRolesFromDB() {
-      //  session.beginTransaction();
         Query allRoles = session.createQuery(" from Role r ");
         List<Role> roles = allRoles.getResultList();
-      // session.getTransaction().commit();
         return roles;
 
     }
 
     @Override
     public List<User> getAllFromDBByRole(Role role) {
-        //получить всех юзеров по роли
         List<User> users = null;
         try {
-          //  session.beginTransaction();
             Query getUsersByRole = session.createQuery("select u.userName,u.password,u.firstName" +
                     ",u.secondName,u.lastName,u.office from User u  where u.role = :paramRole");
             getUsersByRole.setParameter("paramRole", role.getId());
             users = getUsersByRole.getResultList();
-         //   session.getTransaction().commit();
         } catch (HibernateException ex) {
             ex.getStackTrace();
         }
@@ -127,7 +122,6 @@ public class SQLDAO extends Repository {
         List<Object[]> users = null;
 
         try {
-          //  session.beginTransaction();
             Query queryUserByName = session.createQuery(" select u.userName,u.firstName" +
                     ",u.secondName,u.lastName,u.office,u.password from User u where u.userName = :paramName");
             queryUserByName.setParameter("paramName", name);
@@ -142,7 +136,6 @@ public class SQLDAO extends Repository {
                         .setOffice((String) result[4])
                         .setPassword((String) result[5]).build();
             }
-         //   session.getTransaction().commit();
         } catch (HibernateException ex) {
             ex.getStackTrace();
         }
@@ -152,12 +145,7 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Member> getAllMembersFromDB() {
-        //получаем всех участников
-      //  session.beginTransaction();
         List<Member> members = session.createQuery("From Member").list();
-       // session.getTransaction().commit();
-
-
         return members;
 
     }
@@ -170,72 +158,52 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Mark> getAllMarksFromDB() {
-        //получаем все оценки(все данные: кто поставил....) и создаем список
-      //  session.beginTransaction();
         List<Mark> marks = session.createQuery("From Mark").list();
-      //  session.getTransaction().commit();
         return marks;
     }
 
     @Override
     public synchronized int getFreeIdOfMembersDB() {
-        //для создания Id Member
-        //сейчас стоит у меня автогенерация. Отключить. И самой получать последний Id и инкрементить его. Мне знать Id заранее обязательно!
-      //  session.beginTransaction();
         List<Object> members = session.createQuery("select m.id From Member m").list();
-   //     session.getTransaction().commit();
         return getFreeNumber(members);
     }
 
     @Override
     public synchronized int getFreeIdOfAddressDB() {
-        //аналогино с мемберсами
-      //  session.beginTransaction();
-        //noinspection JpaQlInspection
         List<Object> addresses = session.createQuery("select  a.id From Address a").list();
-     //   session.getTransaction().commit();
         return getFreeNumber(addresses);
     }
 
     @Override
     public synchronized int getFreeIdOfSongDB() {
-
-     //   session.beginTransaction();
-        //noinspection JpaQlInspection
         List<Object> songs = session.createQuery("select  s.id From Song s").list();
-      //  session.getTransaction().commit();
         return getFreeNumber(songs);
     }
 
 
     @Override
     public synchronized int getFreeTurnNumberFromMemberDB() {
-        //аналогично с получением ИД у Мемберсов,но поле TurnNumber
-     //   session.beginTransaction();
-        //noinspection JpaQlInspection
         List<Object> members = session.createQuery("select m.turnNumber From Member m").list();
-      //  session.getTransaction().commit();
-       return getFreeNumber(members);
+        return getFreeNumber(members);
 
     }
 
-    private synchronized int getFreeNumber( List<Object> members){
+    private synchronized int getFreeNumber(List<Object> members) {
         int max = Integer.MIN_VALUE;
         if (members.isEmpty()) {
             return 1;
         }
-        for (Object memb:members) {
+        for (Object memb : members) {
             int cur = (Integer) memb;
             if (cur > max) {
                 max = cur;
             }
         }
-        return max+1;
+        return max + 1;
     }
 
     @Override
     public synchronized boolean saveNewMemberIntoDB(Member member) {
-        //сохраняем Мембера в БД
         try {
             session.beginTransaction();
             session.save(member);
@@ -252,12 +220,9 @@ public class SQLDAO extends Repository {
     public Category getCategoryByName(String name) {
         List<Object[]> categories = null;
         try {
-           // session.beginTransaction();
-            //noinspection JpaQlInspection
             Query queryCategories = session.createQuery("select c.id, c.name From Category c where c.name = :paramName");
             queryCategories.setParameter("paramName", name);
             categories = queryCategories.list();
-          //  session.getTransaction().commit();
             for (Object[] c : categories) {
                 return new Category((Integer) c[0], (String) c[1]);
             }
@@ -271,14 +236,11 @@ public class SQLDAO extends Repository {
     @Override
     public boolean isLoginForNewJuryCorrect(String login) {
         List users = null;
-        //когда регестрируем нового жюри,проверяем перед добавлением уникальный ли логин,так как это первичный ключ
         try {
-          //  session.beginTransaction();
-            @SuppressWarnings("JpaQlInspection")
+
             Query queryUserByName = session.createQuery(" select u.userName from User u where u.userName = :paramName");
             queryUserByName.setParameter("paramName", login);
             users = queryUserByName.list();
-         //   session.getTransaction().commit();
             if (users.isEmpty())
                 return true;
             else
@@ -307,10 +269,7 @@ public class SQLDAO extends Repository {
 
     @Override
     public synchronized int getFreeIdOfJuryDB() {
-     //   session.beginTransaction();
-        //noinspection JpaQlInspection
         List<Object> jury = session.createQuery("select  u.id From User u").list();
-     //   session.getTransaction().commit();
         int min = Integer.MAX_VALUE;
         return getFreeNumber(jury);
     }
@@ -318,9 +277,8 @@ public class SQLDAO extends Repository {
     @Override
     public Role createRoleByName(String name) {
         List<Object[]> roles = null;
-        //noinspection JpaQlInspection
         Query queryRoles = session.createQuery("select r.id, r.name From Role r where r.name = :paramName");
-        queryRoles.setParameter("paramName",name);
+        queryRoles.setParameter("paramName", name);
         roles = queryRoles.list();
 
         for (Object[] r : roles) {
@@ -331,17 +289,12 @@ public class SQLDAO extends Repository {
 
     @Override
     public boolean isMemberSoloByMemberId(int id) {
-        //если солист,то тру
-        //если название ансамбля пустое,то он солист
         List<Object> members = null;
         String result = null;
         try {
-          //  session.beginTransaction();
-        //    @SuppressWarnings("JpaQlInspection")
             Query queryMembers = session.createQuery(" select m.ensembleName from Member m where m.id = :id");
             queryMembers.setParameter("id", id);
             members = queryMembers.list();
-        //    session.getTransaction().commit();
         } catch (HibernateException ex) {
             ex.getStackTrace();
         }
@@ -362,8 +315,6 @@ public class SQLDAO extends Repository {
         List<Object[]> members = null;
 
         try {
-          //  session.beginTransaction();
-          //  @SuppressWarnings("JpaQlInspection")
             Query queryMemberById =
                     session.createQuery
                             (" select m.id,m.firstName,m.secondName,m.lastName,m.birth" +
@@ -372,7 +323,6 @@ public class SQLDAO extends Repository {
                                     ",m.secondSong,m.registration,m.turnNumber from Member m where m.id = :paramID");
             queryMemberById.setParameter("paramID", id);
             members = queryMemberById.list();
-          //  session.getTransaction().commit();
         } catch (HibernateException ex) {
             ex.getStackTrace();
         }
@@ -406,7 +356,6 @@ public class SQLDAO extends Repository {
     private Address getAddressById(int id) {
 
         List<Object[]> addresses = null;
-        //noinspection JpaQlInspection
         Query queryAddresses = session.createQuery("select a.id,a.country,a.region,a.district,a.city,a.phone From Address a");
         addresses = queryAddresses.list();
         for (Object[] address : addresses) {
@@ -426,17 +375,13 @@ public class SQLDAO extends Repository {
 
     @Override
     public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
-        //смотрим в таблицу Оценок(марк)
-        //берем все оценки, отбираем по жюри, мемберу и номеру песни. Если такая запись есть,то тру
-       // session.beginTransaction();
+
         List<Mark> memberMarks = null;
-        //noinspection JpaQlInspection
         Query queryMemberMarks = session.createQuery("From Mark m where m.jury = :paramJury and m.member = :paramMemberID and m.song = :paramSongId");
         queryMemberMarks.setParameter("paramJury", juryUserName);
         queryMemberMarks.setParameter("paramMemberID", memberId);
         queryMemberMarks.setParameter("paramSongId", songNumber);
         memberMarks = queryMemberMarks.list();
-      //  session.getTransaction().commit();
         return !memberMarks.isEmpty();
 
     }
@@ -444,18 +389,13 @@ public class SQLDAO extends Repository {
     @Override
     public List<Category> getAllCategoryFromDB() {
         List<Category> result;
-      //  session.beginTransaction();
-        //noinspection JpaQlInspection
         result = session.createQuery("from Category").list();
-     //   session.getTransaction().commit();
         return result;
 
     }
 
     @Override
     public synchronized boolean saveMark(Member member, User jury, MARKCRITERIA markcriteria, Song song, int value) {
-        // сохраняем оценку в таблицу Марк,если все ок то ТРУ
-      //  session.beginTransaction();
         Mark mark = BuilderMark.getNewBuilderMark()
                 .setMember(member)
                 .setJury(jury)
@@ -480,7 +420,6 @@ public class SQLDAO extends Repository {
         Song result = new Song();
         result.setId(id);
         List<Object> songs = null;
-        //noinspection JpaQlInspection
         Query querySongs = session.createQuery("select s.name From Song s where s.id = :paramId");
         querySongs.setParameter("paramId", id);
         songs = querySongs.list();
@@ -495,92 +434,65 @@ public class SQLDAO extends Repository {
 
     @Override
     public synchronized int getFreeIdOfMarkDB() {
-        return 0;
+        List<Object> marks = session.createQuery("select m.id From Mark m").list();
+        return getFreeNumber(marks);
     }
 
     @Override
     public List<Mark> getListOfMarksBySong(Song song) {
-        return null;
+        List<Mark> result = null;
+        Query queryMarks = session.createQuery("select m.id,m.jury,m.member,m.criteriaOfMark,m.song,m.value  From Mark m where m.song = :paramId");
+        queryMarks.setParameter("paramId", song);
+        List<Object[]> marks = queryMarks.list();
+        for (Object[] m : marks) {
+            result.add(BuilderMark.getNewBuilderMark()
+                    .setId((Integer) m[0])
+                    .setJury(getJuryByUserName((String) m[1]))
+                    .setMember(getMemberById((Integer) m[2]))
+                    .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName((String) m[3]))
+                    .setSong(song)
+                    .setValue((Integer) m[4])
+                    .build());
+
+        }
+        return result;
     }
 
     @Override
     public List<Member> getMembersByCategory(Category category) {
-        return null;
+        List<Member> result = new ArrayList<>();
+        for (Member memberElement : getAllMembersFromDB()
+        ) {
+            if (memberElement.getCategory().equals(category)) {
+                result.add(memberElement);
+            }
+        }
+        return result;
     }
 
     @Override
     public List<Mark> getMarksByMember(Member member) {
-        return null;
+        List<Mark> result = new ArrayList<>();
+        for (Mark markElement : getAllMarksFromDB()
+        ) {
+            if (markElement.getMember().equals(member)) {
+                result.add(markElement);
+            }
+        }
+        return result;
     }
 
     @Override
     public List<MARKCRITERIA> getAllMarkCriteria() {
-        List<MARKCRITERIA> result;
-       // session.beginTransaction();
-        //noinspection JpaQlInspection
-        result = session.createQuery("from MARKCRITERIA").list();
-      //  session.getTransaction().commit();
+        List<MARKCRITERIA> result = null;
+        result.add(MARKCRITERIA.VOCAL);
+        result.add(MARKCRITERIA.REPERTOIRE);
+        result.add(MARKCRITERIA.ARTISTIC);
+        result.add(MARKCRITERIA.INDIVIDUALY);
         return result;
 
     }
 
-   /* @Override
-    public synchronized boolean deleteMemberFromDBById(int idMember) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean updateMember(Member notUpdatedMember, Member updatedMember) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean updateAddress(Address oldAddress, Address newAddress) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean updateSongName(Song oldSong, Song newSong) {
-        return false;
-    }
-
-    @Override
-    public boolean isSongAlreadyEvaluatedByJury(Song song, User jury) {
-
-        session.beginTransaction();
-        //noinspection JpaQlInspection
-        Query queryMarks = session.createQuery("From Mark m where m.song = :paramSongId and m.jury = :paramJuryId");
-        queryMarks.setParameter("paramSongId", song.getId());
-        queryMarks.setParameter("paramJuryId", jury.getId());
-        List marks = queryMarks.list();
-        session.getTransaction().commit();
-        return !marks.isEmpty();
-    }
-
-    @Override
-    public synchronized boolean deleteAddressFromDBById(int idAddress) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean deleteSongFromDBById(int idSong) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean deleteMarksFromDBByMemberId(int idMember) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean deleteJuryFromDBByUserName(String userName) {
-        return false;
-    }
-
-    @Override
-    public synchronized boolean deleteMarksFromDBByJuryUserName(String userName) {
-        return false;
-    }*/
 
 
 }
