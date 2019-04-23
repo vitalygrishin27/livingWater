@@ -8,10 +8,15 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column (name = "country")
     private String country;
+    @Column (name = "region")
     private String region;
+    @Column (name = "district")
     private String district;
+    @Column (name = "city")
     private String city;
+    @Column (name = "phone")
     private String phone;
 
 

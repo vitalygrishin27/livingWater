@@ -5,26 +5,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import javax.persistence.*;
 import java.util.Objects;
 
-@JsonPropertyOrder({"userName", "password", "role"})
+//@JsonPropertyOrder({"userName", "password", "role"})
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String userName;
-    private String password;
-    @Embedded
-    @OneToOne (fetch = FetchType.LAZY)
+    public int id;
+    @Column(name = "username")
+    public String userName;
+    @Column(name = "password")
+    public String password;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    private Role role;
-    @Column (name = "first_name")
-    private String firstName;
-    @Column (name = "second_name")
-    private String secondName;
-    @Column (name = "last_name")
-    private String lastName;
-    private String office;
+    public Role role;
+    @Column(name = "first_name")
+    public String firstName;
+    @Column(name = "second_name")
+    public String secondName;
+    @Column(name = "last_name")
+    public String lastName;
+    @Column(name = "office")
+    public String office;
+
 
     public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
         this.userName = userName;
@@ -52,6 +55,9 @@ public class User {
 
     }
 
+    public int getId() {
+        return id;
+    }
 
     public String getUserName() {
         return userName;

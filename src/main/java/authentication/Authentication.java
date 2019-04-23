@@ -26,8 +26,10 @@ public class Authentication {
 
 
     static {
-        System.out.println("Starting DB with MONGO");
-        repository = Repository.getDAO("MONGO");
+        /*System.out.println("Starting DB with MONGO");
+        repository = Repository.getDAO("MONGO");*/
+        System.out.println("Starting DB with SQL");
+        repository = Repository.getDAO("SQL");
     //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
         listOfJuriesOnline = new ArrayList<>();
     //    roles = repository.getAllRolesFromDB();

@@ -1,17 +1,20 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Embeddable
 public class Role {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column (name = "name", nullable = false)
-    private String name;
+    @Column(name = "id")
+    public int id;
+    @Column(name = "name")
+    public String name;
+
+    @OneToMany(mappedBy = "role")
+    public Set<User> users = new HashSet<User>();
 
     public Role() {
     }
