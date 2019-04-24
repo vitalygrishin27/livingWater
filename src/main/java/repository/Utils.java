@@ -3,7 +3,6 @@ package repository;
 import authentication.Authentication;
 import entity.*;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.json.JSONObject;
 
@@ -19,21 +18,20 @@ public class Utils {
 
     public static JSONObject getJsonFromRequest(HttpServletRequest req) {
         JSONObject result;
-
         StringBuilder jb = new StringBuilder();
         String line;
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-
-
             result = new JSONObject(jb.toString());
-            System.out.println(result);
+            Authentication.log(req.getCookies()[0].getValue() + "  -  UTILS  -  getJsonFromRequest  -  " + result);
+       //     System.out.println(result);
 
             return result;
         } catch (Exception e) {
-            System.out.println("Error with buffered reader in getJsonFromRequest method.");
+            Authentication.log(req.getCookies()[0].getValue() + "  -  UTILS  -  getJsonFromRequest  -  Error with buffered reader in getJsonFromRequest method.");
+         //   System.out.println("Error with buffered reader in getJsonFromRequest method.");
         }
 
         return new JSONObject();
@@ -63,13 +61,21 @@ public class Utils {
     }
 
     public static Member getEnsembleFromJson(JSONObject jsonObject) {
+    int countOfMembers=0;
+        try{
+        countOfMembers=jsonObject.getInt("countOfMembers");
+      }catch (Exception e){
+            countOfMembers=2;
+      }
+
         return BuilderMember.getBuilderMember().setId(Authentication.getRepository().getFreeIdOfMembersDB())
                 .setFirstName("")
                 .setSecondName("")
                 .setLastName("")
                 .setBirth(getDateFromString("1985-03-27"))
                 .setEnsembleName(jsonObject.getString("ensembleName"))
-                .setCountOfMembers(jsonObject.getInt("countOfMembers"))
+            //    .setCountOfMembers(jsonObject.getInt("countOfMembers"))
+                .setCountOfMembers(countOfMembers)
                 .setGender(Gender.getGenderByChar("M"))
                 .setOffice(jsonObject.getString("ensembleOffice"))
                 .setAddress(getAddressForSoloMemberFromJson(jsonObject))
@@ -135,7 +141,8 @@ public class Utils {
         try {
             docDate = format.parse(d);
         } catch (ParseException e) {
-            System.out.println("Ошибка в приведении даты из строки (" + d + ")");
+          //  System.out.println("Ошибка в приведении даты из строки (" + d + ")");
+            Authentication.log("UTILS  -  getDateFromString  -  Error.");
             e.printStackTrace();
         }
         return docDate;
@@ -151,23 +158,31 @@ public class Utils {
     }
 
 
-    public static void copyRow(HSSFWorkbook workbook, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
+    public static void copyRow(HSSFWorkbook workbook, HSSFSheet sourceSheet, HSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
         // Get the source / new row
+       // workbook.createSheet();
         HSSFRow newRow = worksheet.getRow(destinationRowNum);
-        HSSFRow sourceRow = worksheet.getRow(sourceRowNum);
+        HSSFRow sourceRow = sourceSheet.getRow(sourceRowNum);
 
+        HSSFCellStyle newCellStyle = workbook.createCellStyle();
         // If the row exist in destination, push down all rows by 1 else create a new row
         if (newRow != null) {
-            worksheet.shiftRows(destinationRowNum, worksheet.getLastRowNum(), 1);
+            worksheet.shiftRows(destinationRowNum, sourceSheet.getLastRowNum(), 1);
         } else {
             newRow = worksheet.createRow(destinationRowNum);
         }
 
+
+        newRow.setHeight(sourceRow.getHeight());
         // Loop through source columns to add to new row
         for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
             // Grab a copy of the old/new cell
             HSSFCell oldCell = sourceRow.getCell(i);
             HSSFCell newCell = newRow.createCell(i);
+
+
+          //  sourceSheet.getColumnWidth(0);
+            worksheet.setColumnWidth(i,sourceSheet.getColumnWidth(i));
 
             // If the old cell is null jump to next cell
             if (oldCell == null) {
@@ -176,9 +191,11 @@ public class Utils {
             }
 
             // Copy style from old cell and apply to new cell
-            HSSFCellStyle newCellStyle = workbook.createCellStyle();
+        //    HSSFCellStyle newCellStyle = workbook.createCellStyle();
+       //      newCellStyle = workbook.createCellStyle();
+           newCellStyle=oldCell.getCellStyle();
             newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-            ;
+
             newCell.setCellStyle(newCellStyle);
 
             // If there is a cell comment, copy
@@ -220,8 +237,8 @@ public class Utils {
         }
 
         // If there are any merged regions in the source row, copy to new row
-        for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
-            CellRangeAddress cellRangeAddress = worksheet.getMergedRegion(i);
+        for (int i = 0; i < sourceSheet.getNumMergedRegions(); i++) {
+            CellRangeAddress cellRangeAddress = sourceSheet.getMergedRegion(i);
             if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
                 CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(),
                         (newRow.getRowNum() +

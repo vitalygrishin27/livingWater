@@ -1,16 +1,15 @@
 
 $(document).ready(function(){
         CreateTableFromJSON();
-        setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000);
+        setInterval(()=> getMarksValueOfMemberThatEvaluate(), 10000);
 });
 
 function getMarksValueOfMemberThatEvaluate (){
     var sId=getCookie('LivingWaterSession');
      $.ajax({
-			type: 'POST',
-			url: "/admin/online",
-			data: JSON.stringify({    sId:sId,
-                                  	  command:"getMarksValueOfMemberThatEvaluate"}),
+			type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId,command:"getMarksValueOfMemberThatEvaluate"},
 		success: function(data){
 		console.log(data);
 		var tab=document.getElementById("members");
@@ -46,10 +45,9 @@ updateColorOfRowWhenLoadPage();
 function getCurrentMemberDataThatEvaluate(){
     var sId=getCookie('LivingWaterSession');
     $.ajax({
-			type: 'POST',
-			url: "/admin/online",
-			data: JSON.stringify({   sId:sId,
-                                  	 command:"getCurrentMemberDataThatEvaluate"}),
+			type: 'GET',
+			url: "/admin/gets",
+			data: {sId:sId, command:"getCurrentMemberDataThatEvaluate"},
             success: function(data){
 		    console.log(data);
             //перебор всех строк где idMember совпадает
@@ -73,8 +71,8 @@ function getCurrentMemberDataThatEvaluate(){
 function sendPost(ths) {
     var sId=getCookie('LivingWaterSession');
     var tr = ths.parentNode.parentNode;
-    songNumber = tr.getElementsByTagName("td")[3].innerHTML;
-    memberId = tr.getElementsByTagName("td")[0].innerHTML;
+    songNumber = tr.getElementsByTagName("td")[4].innerHTML;
+    memberId = tr.getElementsByTagName("td")[1].innerHTML;
     //Обесцветить неактуальную синию строку
     deleteBlueColor();
     for(var i=0;i<tr.parentNode.rows[0].cells.length;i++){
@@ -91,7 +89,7 @@ function sendPost(ths) {
                                    memberId:memberId}),
 		    success: function(data){
 		    console.log(data);
-            alert(data.message);
+        //    alert(data.message);
             }
      });
 }
@@ -101,15 +99,17 @@ function CreateTableFromJSON() {
     var sId=readCookie('LivingWaterSession');
 
     $.ajax({
-  			type: 'POST',
-  			url: "/admin/online",
-  			data: JSON.stringify({sId:sId, command:"getListOfMembers"}),
+  			type: 'GET',
+  			url: "/admin/gets",
+  			data: {sId:sId, command:"getListOfMembersFull"},
+  		//	data: {sId:sId, command:"getListOfMembersOnlyMarkers"},
   			success: function(data){
   				console.log(data);
                 var list=data;
                 // EXTRACT VALUE FOR HTML HEADER.
                 var col = [];
                 for (var i = 0; i < 1; i++) {
+                      col.push("turnNumber");
                       col.push("id");
                       col.push("name");
                       col.push("category");
@@ -134,6 +134,7 @@ function CreateTableFromJSON() {
                 for (var i = 0; i < col.length; i++) {
                      var th = document.createElement("th");      // TABLE HEADER.
                        th.innerHTML = col[i];
+                       if(col[i]=="turnNumber") th.innerHTML = "Номер";
                        if(col[i]=="name") th.innerHTML = "Конкурсант";
                        if(col[i]=="songName") th.innerHTML = "Название песни";
                        if(col[i]=="id") th.innerHTML = "ID";
@@ -197,7 +198,7 @@ function updateColorOfRowWhenLoadPage(){
     var countOfZeros=0;
     var countOfJuryFields=0;
     for(var r=1; r<tab.rows.length; r++){
-        for (var i=5; i<tab.rows[0].cells.length-1; i++){
+        for (var i=6; i<tab.rows[0].cells.length-1; i++){
                 countOfJuryFields++;
             if(tab.rows[r].cells[i].innerHTML=="0"){
                 countOfZeros++;
@@ -238,3 +239,4 @@ function deleteBlueColor(){
     }
 
 }
+

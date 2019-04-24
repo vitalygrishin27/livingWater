@@ -2,6 +2,7 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int id;
+
     @Column(name = "username")
     public String userName;
     @Column(name = "password")
@@ -27,6 +29,7 @@ public class User {
     public String lastName;
     @Column(name = "office")
     public String office;
+
 
 
     public User(String userName, String password, String firstName, String secondName, String lastName, String office, Role role) {
@@ -74,6 +77,10 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

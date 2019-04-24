@@ -18,9 +18,23 @@
 
 <body>
 <div class="container">
+
+
+
+
         <div class="row centered-form">
+
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+
         	<div class="panel panel-default">
+				<center><label>Зарегистрированные: </label>
+				<p id="idJuryForUpdateOrDelete" hidden></p>
+				<select id="combobox" class="custom-combobox">
+
+					<option id="-1"></option>
+
+				</select>
+				</center>
         		<div class="panel-heading">
 			    		<h3 class="panel-title">Регистрация нового члена жюри <small></small></h3>
 			 			</div>
@@ -49,7 +63,7 @@
 			    			</div>
 
 			    			<div class="form-group">
-			    				<input type="text" name="office"" id="office" class="form-control input-sm" placeholder="Должность, звания *">
+			    				<input type="text" name="office" id="office" class="form-control input-sm" placeholder="Должность, звания *">
 			    			</div>
 
 			    			<div class="row">
@@ -65,8 +79,14 @@
 			    				</div>
 			    			</div>
 			    			
-			    			<input type="button" value="Зарегистрировать" onClick={registerNewJury()} class="btn btn-info btn-block">
-			    		
+			    			<input  id="registerJury" type="button" value="Зарегистрировать" onClick={registerNewJury()} class="btn btn-info btn-block">
+							<input id="updateJury" type="button" class="btn btn-info btn-block" onClick={updJury()} value="Обновить">
+							<input id="deleteJury" type="button" class="btn btn-danger btn-block" onClick={delJury()} value="Удалить">
+							<input type="button" class="btn btn-info btn-block" onClick={clearForm()} value="Отменить">
+
+
+
+
 			    		</form>
 			    	
 					<center>

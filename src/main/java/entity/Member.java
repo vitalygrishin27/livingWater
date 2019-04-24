@@ -15,6 +15,7 @@ public class Member {
     private String firstName;
     @Column(name = "second_name")
     private String secondName;///
+
     @Column(name = "ensemble_name")
     private String ensembleName;
     @Column (name = "birth")
