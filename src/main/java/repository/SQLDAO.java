@@ -98,17 +98,24 @@ public class SQLDAO extends Repository {
     @Override
     public List<User> getAllFromDBByRole(Role role) {
         List<User> users = null;
+        List<User> result = null;
+        User user = null;
         try {
-            Query getUsersByRole = session.createQuery("select u.userName,u.password,u.firstName" +
-                    ",u.secondName,u.lastName,u.office from User u  where u.role = :paramRole");
+            Query getUsersByRole = session.createQuery("from User u  where u.role = :paramRole");
             getUsersByRole.setParameter("paramRole", role.getId());
             users = getUsersByRole.getResultList();
+            for (User usr: users){
+                user = new User(usr.getUserName(),usr.getPassword(),usr.getFirstName(),usr.getSecondName(),usr.getLastName(),usr.getOffice(),role);
+                result.add(user);
+            }
+            return result;
         } catch (HibernateException ex) {
             ex.getStackTrace();
+            System.out.println("Error in the getting List<User> by role "+role.getName());
         }
 
 
-        return users;
+        return result;
     }
 
     @Override
@@ -138,6 +145,7 @@ public class SQLDAO extends Repository {
             }
         } catch (HibernateException ex) {
             ex.getStackTrace();
+            System.out.println("Error in the getting user by name "+ name);
         }
 
         return null;
@@ -145,7 +153,9 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Member> getAllMembersFromDB() {
-        List<Member> members = session.createQuery("From Member").list();
+        List<Member> members;
+        Query queryMembers = session.createQuery("From Member");
+        members = queryMembers.list();
         return members;
 
     }
@@ -158,7 +168,9 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Mark> getAllMarksFromDB() {
-        List<Mark> marks = session.createQuery("From Mark").list();
+        List<Mark> marks;
+        Query queryMarks = session.createQuery("From Mark");
+        marks = queryMarks.list();
         return marks;
     }
 
@@ -388,10 +400,10 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Category> getAllCategoryFromDB() {
-        List<Category> result;
-        result = session.createQuery("from Category").list();
-        return result;
-
+        List<Category> categories;
+        Query queryCategories = session.createQuery("from Category");
+        categories = queryCategories.list();
+        return categories;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Member {
     private Gender gender;
     @Column (name = "office")
     private String office;
-    @ManyToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne (cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
     @Column (name = "passport")
@@ -35,13 +35,13 @@ public class Member {
     private String INN;
     @Column (name = "boss")
     private String boss;
-    @ManyToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
-    @ManyToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "firstSong_id")
     private Song firstSong;
-    @ManyToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "secondSong_id")
     private Song secondSong;
     //  private Mark firstMarkId;
@@ -52,7 +52,7 @@ public class Member {
     @Column (name ="turnNumber")
     private int turnNumber;
 
-    private Member() {
+    public Member() {
 
     }
 
