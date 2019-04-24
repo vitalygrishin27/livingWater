@@ -38,6 +38,7 @@ public class Authentication {
         //  System.out.println("Starting DB with SQL");
         //  repository = Repository.getDAO("SQL");
         //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
+
         listOfJuriesOnline = new ArrayList<>();
         //    roles = repository.getAllRolesFromDB();
         //  listOfMembers = repository.getAllMembersFromDB();

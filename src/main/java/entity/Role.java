@@ -1,12 +1,21 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "roles")
 public class Role {
+    @Id
+    @Column(name = "id")
+    public int id;
+    @Column(name = "name")
+    public String name;
 
-    private int id;
-    private String name;
+    @OneToMany(mappedBy = "role")
+    public Set<User> users = new HashSet<User>();
+
 
     public Role() {
     }
