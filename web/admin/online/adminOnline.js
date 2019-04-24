@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
         CreateTableFromJSON();
-        setInterval(()=> getMarksValueOfMemberThatEvaluate(), 5000);
+        setInterval(()=> getMarksValueOfMemberThatEvaluate(), 10000);
 });
 
 function getMarksValueOfMemberThatEvaluate (){

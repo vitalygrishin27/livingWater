@@ -25,7 +25,7 @@ public class Authentication {
     //private static List<Role> roles;
     //   private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
-    private static List<Member> listOfMembers;
+  //  private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
     private static Song currentSongForEvaluation;
     private static Map<String, Long> juryPingMap;

@@ -225,7 +225,7 @@ function skm_LockScreen(str)
 
                            function fullScreenOn(){
             document.getElementById("butToFullScreen").style.display="none";
-        //    document.getElementById("bod").webkitRequestFullscreen();
+            document.getElementById("bod").webkitRequestFullscreen();
             document.getElementById("push").style.display="block";
 
 
