@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role {
     @Id
-    @Column(name = "id")
+    @Column(name = "role_id")
     public int id;
     @Column(name = "name")
     public String name;
@@ -28,6 +28,13 @@ public class Role {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

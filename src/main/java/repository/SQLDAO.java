@@ -7,9 +7,7 @@ import org.hibernate.SessionFactory;
 import hibernateUtils.HibernateSessionFactoryUtil;
 import org.hibernate.TransactionException;
 import org.hibernate.query.Query;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SQLDAO extends Repository {
@@ -45,7 +43,7 @@ public class SQLDAO extends Repository {
     public boolean isUserAlreadyRegistered(User user) {
         //проверить есть ли юзер в базе
         session.beginTransaction();
-        Query queryUserByName = session.createQuery(" from User s where s.userName = :paramName");
+        Query queryUserByName = session.createQuery(" select s from User s where s.userName = :paramName");
         queryUserByName.setParameter("paramName", user.getUserName());
         List<User> users = queryUserByName.getResultList();
         session.getTransaction().commit();
@@ -62,7 +60,7 @@ public class SQLDAO extends Repository {
     public boolean isPasswordRight(User user) {
         //соответствует ли пассворд юзеру в базе
         session.beginTransaction();
-        Query checkedPassword = session.createQuery(" from User s where s.password = :paramPass and s.userName = :paramName");
+        Query checkedPassword = session.createQuery(" select s from User s where s.password = :paramPass and s.userName = :paramName");
         checkedPassword.setParameter("paramPass", user.getPassword());
         checkedPassword.setParameter("paramName", user.getUserName());
         List<User> users = checkedPassword.getResultList();
@@ -89,24 +87,26 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Role> getAllRolesFromDB() {
-        Query allRoles = session.createQuery(" from Role r ");
+        Query allRoles = session.createQuery(" select r from Role r ");
         List<Role> roles = allRoles.getResultList();
         return roles;
 
     }
 
     @Override
-    public List<User> getAllFromDBByRole(Role role) {
-        List<User> users = null;
-        List<User> result = null;
+    public synchronized List<User> getAllFromDBByRole(Role role) {
+        List<User> users = new ArrayList<>();
+        List<User> result = new ArrayList<>();
         User user = null;
         try {
-            Query getUsersByRole = session.createQuery("from User u  where u.role = :paramRole");
-            getUsersByRole.setParameter("paramRole", role.getId());
+            Query getUsersByRole = session.createQuery("select u from User u");
+            //getUsersByRole.setParameter("paramRole", role.getId());
             users = getUsersByRole.getResultList();
             for (User usr: users){
-                user = new User(usr.getUserName(),usr.getPassword(),usr.getFirstName(),usr.getSecondName(),usr.getLastName(),usr.getOffice(),role);
-                result.add(user);
+                if(usr.getRole().getId() == role.id) {
+                    user = new User(usr.getUserName(), usr.getPassword(), usr.getFirstName(), usr.getSecondName(), usr.getLastName(), usr.getOffice(), role);
+                    result.add(user);
+                }
             }
             return result;
         } catch (HibernateException ex) {
@@ -125,27 +125,29 @@ public class SQLDAO extends Repository {
 
     }
 
-    private User getUser(String name) {
-        List<Object[]> users = null;
+    private synchronized User getUser(String name) {
+        List<User> users = new ArrayList<>();
 
         try {
-            Query queryUserByName = session.createQuery(" select u.userName,u.firstName" +
-                    ",u.secondName,u.lastName,u.office,u.password from User u where u.userName = :paramName");
+            Query queryUserByName = session.createQuery("select u from User u where u.userName = :paramName");
             queryUserByName.setParameter("paramName", name);
             users = queryUserByName.list();
-            for (Object[] result : users) {
+
+            if (!users.isEmpty())
                 return BuilderUserJury
                         .getBuilderUserJury()
-                        .setUserName((String) result[0])
-                        .setFirstName((String) result[1])
-                        .setSecondName((String) result[2])
-                        .setLastName((String) result[3])
-                        .setOffice((String) result[4])
-                        .setPassword((String) result[5]).build();
-            }
+                        .setUserName(users.get(0).getUserName())
+                        .setFirstName(users.get(0).getFirstName())
+                        .setSecondName(users.get(0).getSecondName())
+                        .setLastName(users.get(0).getLastName())
+                        .setOffice(users.get(0).getOffice())
+                        .setPassword(users.get(0).getPassword()).build();
+            return null;
+
         } catch (HibernateException ex) {
+            System.err.println("Error in the getting user by name "+ name);
             ex.getStackTrace();
-            System.out.println("Error in the getting user by name "+ name);
+
         }
 
         return null;
@@ -154,7 +156,7 @@ public class SQLDAO extends Repository {
     @Override
     public List<Member> getAllMembersFromDB() {
         List<Member> members;
-        Query queryMembers = session.createQuery("From Member");
+        Query queryMembers = session.createQuery("select m From Member m");
         members = queryMembers.list();
         return members;
 
@@ -168,8 +170,8 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Mark> getAllMarksFromDB() {
-        List<Mark> marks;
-        Query queryMarks = session.createQuery("From Mark");
+        List<Mark> marks = new ArrayList<>();
+        Query queryMarks = session.createQuery("SELECT m From Mark m");
         marks = queryMarks.list();
         return marks;
     }
@@ -324,45 +326,42 @@ public class SQLDAO extends Repository {
 
     @Override
     public Member getMemberById(int id) {
-        List<Object[]> members = null;
+        List<Member> members = new ArrayList<>();
 
         try {
-            Query queryMemberById =
-                    session.createQuery
-                            (" select m.id,m.firstName,m.secondName,m.lastName,m.birth" +
-                                    ",m.ensembleName,m.countOfMembers,m.gender" +
-                                    ",m.office,m.address,m.passport,m.INN,m.boss,m.category,m.firstSong" +
-                                    ",m.secondSong,m.registration,m.turnNumber from Member m where m.id = :paramID");
+            Query queryMemberById =  session.createQuery(" select m from Member m where m.id = :paramID");
             queryMemberById.setParameter("paramID", id);
             members = queryMemberById.list();
         } catch (HibernateException ex) {
             ex.getStackTrace();
         }
 
-        for (Object[] result : members) {
+        if (members.isEmpty())
+            return null;
+
+        else
             return BuilderMember.getBuilderMember()
-                    .setId((Integer) result[0])
-                    .setFirstName((String) result[1])
-                    .setSecondName((String) result[2])
-                    .setLastName((String) result[3])
-                    .setBirth((Date) result[4])
-                    .setEnsembleName((String) result[5])
-                    .setCountOfMembers((Integer) result[6])
-                    .setGender((Gender) result[7])
-                    .setOffice((String) result[8])
-                    .setAddress(getAddressById((Integer) result[9]))
-                    .setPassport((String) result[10])
-                    .setINN((String) result[11])
-                    .setBoss((String) result[12])
-                    .setCategory(getCategoryByName((String) result[13]))
-                    .setFirstSong(getSongById((Integer) result[14]))
-                    .setSecondSong(getSongById((Integer) result[15]))
-                    .setRegistration((Boolean) result[16])
-                    .setTurnNumber((Integer) result[17])
+                    .setId(members.get(0).getId())
+                    .setFirstName(members.get(0).getFirstName())
+                    .setSecondName(members.get(0).getSecondName())
+                    .setLastName(members.get(0).getLastName())
+                    .setBirth(members.get(0).getBirth())
+                    .setEnsembleName(members.get(0).getEnsembleName())
+                    .setCountOfMembers(members.get(0).getCountOfMembers())
+                    .setGender(members.get(0).getGender())
+                    .setOffice(members.get(0).getOffice())
+                    .setAddress(members.get(0).getAddress())
+                    .setPassport(members.get(0).getPassport())
+                    .setINN(members.get(0).getINN())
+                    .setBoss(members.get(0).getBoss())
+                    .setCategory(members.get(0).getCategory())
+                    .setFirstSong(members.get(0).getFirstSong())
+                    .setSecondSong(members.get(0).getSecondSong())
+                    .setRegistration(members.get(0).isRegistration())
+                    .setTurnNumber(members.get(0).getTurnNumber())
                     .build();
 
-        }
-        return null;
+
     }
 
     private Address getAddressById(int id) {
@@ -388,8 +387,8 @@ public class SQLDAO extends Repository {
     @Override
     public boolean isMemberAlreadyEvaluated(String juryUserName, int memberId, int songNumber) {
 
-        List<Mark> memberMarks = null;
-        Query queryMemberMarks = session.createQuery("From Mark m where m.jury = :paramJury and m.member = :paramMemberID and m.song = :paramSongId");
+        List<Mark> memberMarks = new ArrayList<>();
+        Query queryMemberMarks = session.createQuery("select m From Mark m where m.jury = :paramJury and m.member = :paramMemberID and m.song = :paramSongId");
         queryMemberMarks.setParameter("paramJury", juryUserName);
         queryMemberMarks.setParameter("paramMemberID", memberId);
         queryMemberMarks.setParameter("paramSongId", songNumber);
@@ -401,7 +400,7 @@ public class SQLDAO extends Repository {
     @Override
     public List<Category> getAllCategoryFromDB() {
         List<Category> categories;
-        Query queryCategories = session.createQuery("from Category");
+        Query queryCategories = session.createQuery("select c from Category c");
         categories = queryCategories.list();
         return categories;
     }
@@ -421,6 +420,7 @@ public class SQLDAO extends Repository {
             session.getTransaction().commit();
         } catch (TransactionException ex) {
 
+            System.out.println("Marks was not saved");
             ex.getStackTrace();
             return false;
         }
@@ -452,18 +452,18 @@ public class SQLDAO extends Repository {
 
     @Override
     public List<Mark> getListOfMarksBySong(Song song) {
-        List<Mark> result = null;
-        Query queryMarks = session.createQuery("select m.id,m.jury,m.member,m.criteriaOfMark,m.song,m.value  From Mark m where m.song = :paramId");
+        List<Mark> result = new ArrayList<>();
+        Query queryMarks = session.createQuery("select m  From Mark m where m.song = :paramId");
         queryMarks.setParameter("paramId", song);
-        List<Object[]> marks = queryMarks.list();
-        for (Object[] m : marks) {
+        List<Mark> marks = queryMarks.list();
+        for (Mark  m : marks) {
             result.add(BuilderMark.getNewBuilderMark()
-                    .setId((Integer) m[0])
-                    .setJury(getJuryByUserName((String) m[1]))
-                    .setMember(getMemberById((Integer) m[2]))
-                    .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName((String) m[3]))
+                    .setId(m.getId())
+                    .setJury(getJuryByUserName(m.getJury().userName))
+                    .setMember(getMemberById(m.getId()))
+                    .setCriteriaOfMark(MARKCRITERIA.getMarkCriteriaByName(m.getCriteriaOfMark().name()))
                     .setSong(song)
-                    .setValue((Integer) m[4])
+                    .setValue(m.getValue())
                     .build());
 
         }
