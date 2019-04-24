@@ -250,4 +250,19 @@ public class SQLDAO extends Repository {
     public boolean isSongAlreadyEvaluatedByJury(Song song, User jury) {
         return false;
     }
+
+    @Override
+    public boolean updateTurnNumberForMember(Member member, Integer turnNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean updateJuryInDB(User oldJury, User newJury) {
+        return false;
+    }
+
+    @Override
+    public boolean isTurnNumberFree(Integer turnNumber) {
+        return false;
+    }
 }

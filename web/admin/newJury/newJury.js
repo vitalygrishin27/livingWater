@@ -158,7 +158,7 @@ function delJury(){
 	console.log("deleteJury");
             $.ajax({
 			    type: 'POST',
-			    url: "/admin/edit",
+			    url: "/admin/newJury",
 			    data: JSON.stringify({sId:sId, command:"deleteJury",idJury:document.getElementById('idJuryForUpdateOrDelete').innerHTML}),
                 success: function(data){
 		                console.log(data);

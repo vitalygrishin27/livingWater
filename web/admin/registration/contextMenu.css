@@ -1,5 +1,5 @@
 /* Generic context menu styles */
-.contextMenu {
+/*.contextMenu {
 	position: absolute;
 	width: 220px;
 	z-index: 99999;
@@ -14,6 +14,7 @@
 	list-style: none;
 	padding: 0px;
 	margin: 0px;
+
 }
 
 .contextMenu A {
@@ -27,6 +28,7 @@
 	outline: none;
 	padding: 1px 5px;
 	padding-left: 28px;
+
 }
 
 .contextMenu LI.hover A {
@@ -53,7 +55,7 @@
 	You can add icons to the context menu by adding
 	classes to the respective LI element(s)
 */
-
+/*
 .contextMenu LI.edit A { background-image: url(images/page_white_edit.png); }
 .contextMenu LI.cut A { background-image: url(images/cut.png); }
 .contextMenu LI.copy A { background-image: url(images/page_white_copy.png); }
@@ -61,68 +63,7 @@
 .contextMenu LI.delete A { background-image: url(images/page_white_delete.png); }
 .contextMenu LI.quit A { background-image: url(images/door.png); }
 
+*/
 
 
-BODY,
-			HTML {
-				padding: 0px;
-				margin: 0px;
-			}
-			BODY {
-				font-family: Verdana, Arial, Helvetica, sans-serif;
-				font-size: 11px;
-				background: #FFF;
-				padding: 15px;
-			}
 
-			H1 {
-				font-family: Georgia, serif;
-				font-size: 20px;
-				font-weight: normal;
-			}
-
-			H2 {
-				font-family: Georgia, serif;
-				font-size: 16px;
-				font-weight: normal;
-				margin: 0px 0px 10px 0px;
-			}
-
-			#myDiv {
-				width: 150px;
-				border: solid 1px #2AA7DE;
-				background: #6CC8EF;
-				text-align: center;
-				padding: 4em .5em;
-				margin: 1em;
-				float: left;
-			}
-
-			#myList {
-				margin: 1em;
-				float: left;
-			}
-
-			#myList UL {
-				padding: 0px;
-				margin: 0em 1em;
-			}
-
-			#myList LI {
-				width: 100px;
-				border: solid 1px #2AA7DE;
-				background: #6CC8EF;
-				padding: 5px 5px;
-				margin: 2px 0px;
-				list-style: none;
-			}
-
-			#options {
-				clear: left;
-			}
-
-			#options INPUT {
-				font-family: Verdana, Arial, Helvetica, sans-serif;
-				font-size: 11px;
-				width: 150px;
-			}

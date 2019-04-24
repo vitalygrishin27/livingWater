@@ -1,7 +1,5 @@
 package authentication;
 
-import com.profesorfalken.jpowershell.PowerShell;
-import com.profesorfalken.jpowershell.PowerShellResponse;
 import entity.Member;
 import entity.Role;
 import entity.Song;
@@ -11,9 +9,7 @@ import repository.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.FileHandler;
@@ -29,7 +25,7 @@ public class Authentication {
     //private static List<Role> roles;
     //   private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
-    private static List<Member> listOfMembers;
+  //  private static List<Member> listOfMembers;
     private static Member currentMemberForEvaluation;
     private static Song currentSongForEvaluation;
     private static Map<String, Long> juryPingMap;

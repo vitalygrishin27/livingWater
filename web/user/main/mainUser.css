@@ -222,13 +222,13 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 50px;
+  font-size: 30px;
   background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
   
   text-align: center;
-  line-height: 70px;
+  line-height: 40px;
   letter-spacing: 0 px;
 }
 
@@ -237,13 +237,13 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 30px;
+  font-size: 20px;
   background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
 
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
   letter-spacing: 0 px;
 }
 
@@ -258,6 +258,7 @@ font-family:Impact;
   text-align: center;
   text-transform: uppercase;
   padding-top: 10px;
+
 }
 
 

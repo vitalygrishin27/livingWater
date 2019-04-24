@@ -298,7 +298,7 @@ public class MongoDAO extends Repository {
                 .append("firstSongId", member.getFirstSong().getId())
                 .append("secondSongId", member.getSecondSong().getId())
                 .append("registration", member.isRegistration())
-                .append("turnNumber", member.getTurnNumber()));
+                .append("turnNumber", 0));
 
         return true;
     }
@@ -353,6 +353,7 @@ public class MongoDAO extends Repository {
 
     @Override
     public synchronized boolean updateMember(Member oldMember, Member newMember) {
+
         newMember.setId(oldMember.getId());
         //обновление адресса
         newMember.getAddress().setId(oldMember.getAddress().getId());
@@ -754,5 +755,44 @@ public class MongoDAO extends Repository {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean updateTurnNumberForMember(Member member, Integer turnNumber) {
+        memberMongoCollection.findOneAndUpdate(new Document("id", member.getId()), new Document("$set", new Document("turnNumber", turnNumber)));
+
+        //    Member newMember = getMemberById(member.getId());
+        //   newMember.setTurnNumber(turnNumber);
+        //      updateMember(member, newMember);
+        // memberMongoCollection.findOneAndUpdate(new Document("id", member.getId()), new Document("turnNumber", turnNumber));
+        return true;
+    }
+
+    @Override
+    public boolean updateJuryInDB(User oldJury, User newJury) {
+
+        juryMongoCollection.findOneAndUpdate(new Document("userName", oldJury.getUserName()),
+                new Document("$set", new Document()
+                        .append("userName", newJury.getUserName())
+                        .append("password", newJury.getPassword())
+                        .append("firstName", newJury.getFirstName())
+                        .append("secondName", newJury.getSecondName())
+                        .append("lastName", newJury.getLastName())
+                        .append("office", newJury.getOffice())
+                ));
+
+
+        markMongoCollection.updateMany(new Document("juryUserName", oldJury.getUserName()), new Document("$set", new Document("juryUserName", newJury.getUserName())));
+
+
+        return true;
+
+    }
+
+    @Override
+    public boolean isTurnNumberFree(Integer turnNumber) {
+        // Нулевое значение означает, что жеребъевка еще не прошла
+        if(turnNumber==0) return true;
+        return memberMongoCollection.find(new Document("turnNumber", turnNumber)).first() == null;
     }
 }

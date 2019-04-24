@@ -1,7 +1,6 @@
 package adminServlets;
 
 import authentication.Authentication;
-import repository.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
