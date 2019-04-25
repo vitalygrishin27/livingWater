@@ -24,7 +24,7 @@ public class Mark {
     private int value;
 
 
-    private Mark() {
+    public Mark() {
 
     }
 

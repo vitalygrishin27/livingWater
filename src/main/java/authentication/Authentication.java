@@ -22,7 +22,9 @@ public class Authentication {
     private static List<User> listOfJuriesOnline;
     //   private static List<User> listOfJury;
     //   private static List<User> admins;
+
     //private static List<Role> roles;
+
     //   private static Map<String, User> sIds = new HashMap<>();
     private static Repository repository;
   //  private static List<Member> listOfMembers;
@@ -32,12 +34,12 @@ public class Authentication {
     private static Logger logger;
 
     static {
-
-        //   System.out.println("Starting DB with MONGO");
+ //   System.out.println("Starting DB with MONGO");
         repository = Repository.getDAO("MONGO");
         //  System.out.println("Starting DB with SQL");
         //  repository = Repository.getDAO("SQL");
         //    listOfJury=repository.getAllFromDBByRole(new Role(3, "JURY"));
+
 
         listOfJuriesOnline = new ArrayList<>();
         //    roles = repository.getAllRolesFromDB();
@@ -45,6 +47,7 @@ public class Authentication {
         juryPingMap = new HashMap<>();
         currentMemberForEvaluation = null;
         currentSongForEvaluation = null;
+
 
 
         logger = Logger.getLogger("MyLog");

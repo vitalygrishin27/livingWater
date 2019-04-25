@@ -20,7 +20,7 @@ public class Address {
     private String phone;
 
 
-    private Address() {
+    public Address() {
 
     }
 
