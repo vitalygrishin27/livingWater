@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        System.out.println(Utils.getCurrentTime() + " / Request received to userServlets.LoginServlet (Jury).");
+      //  System.out.println(Utils.getCurrentTime() + " / Request received to userServlets.LoginServlet (Jury).");
         JSONObject jsonObject = Utils.getJsonFromRequest(req);
         JSONObject jsonObjectResponse = new JSONObject();
         resp.setCharacterEncoding("UTF-8");
@@ -25,11 +25,10 @@ public class LoginServlet extends HttpServlet {
 
         User user = Authentication.getRepository().getJuryByUserName(jsonObject.getString("userName"));
 
-
         if (user == null) {
             jsonObjectResponse.append("status", "ERROR");
             jsonObjectResponse.append("message", "Invalid userName");
-            System.out.println(Utils.getCurrentTime() + " / Jury with login '" + jsonObject
+            Authentication.log(req.getCookies()[0].getValue() +  " / Jury with login '" + jsonObject
                     .getString("userName") + "' is missing in DB.");
         } else {
 
@@ -40,14 +39,14 @@ public class LoginServlet extends HttpServlet {
                 }
                 jsonObjectResponse.append("status", "200");
                 jsonObjectResponse.append("message", "You are login in!");
-                System.out.println(Utils.getCurrentTime() + " / Jury with login '" + jsonObject
+                Authentication.log(req.getCookies()[0].getValue() +  " / Jury with login '" + jsonObject
                         .getString("userName") + "' is registered.");
 
 
             } else {
                 jsonObjectResponse.append("status", "ERROR");
                 jsonObjectResponse.append("message", "Invalid password");
-                System.out.println(Utils.getCurrentTime() + " / Jury with login '" + jsonObject
+                Authentication.log(req.getCookies()[0].getValue() + " / Jury with login '" + jsonObject
                         .getString("userName") + "' has not correct password.");
             }
         }

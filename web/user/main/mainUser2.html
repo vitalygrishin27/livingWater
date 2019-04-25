@@ -16,7 +16,7 @@
 <div class="container" >
 
 
-   <button id="butToFullScreen" onclick="fullScreenOn()">ПОЛНОЭКРАННЫЙ РЕЖИМ</button>
+   <center><button id="butToFullScreen" onclick="fullScreenOn()">ЗАПУСК</button></center>
     <!-- START -->
     <div class="price-box">
         <section class="title banner py-4 bg-success text-white" id="title-banner">
@@ -47,7 +47,7 @@
         <div class="form-horizontal form-pricing" role="form">
             <div class="sub-entry-left">
                 <div align="left" class="price-slider">
-                    <h4  class="great">Вокал</h4>
+                    <h4  id="greatVocal" class="great">Вокал</h4>
                 <!--    <span>Чистота интонации, качество звучания</span>  -->
                     <div class="col-sm-12">
                         <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(1,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div align="left" class="price-slider">
-                    <h4 class="great">Репертуар</h4>
+                    <h4  id="greatRepertoire"  class="great">Репертуар</h4>
                     <!--    <span>Соответствие репертуара возрасту учасника и его образу</span>  -->
                        <div class="col-sm-12">
                            <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(2,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -70,7 +70,7 @@
                        </div>
                    </div>
                    <div align="left" class="price-slider">
-                       <h4 class="great">Артистичность</h4>
+                       <h4  id="greatArtistic" class="great">Артистичность</h4>
 
                               <div class="col-sm-12">
                                   <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(3,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -81,7 +81,7 @@
                               </div>
                           </div>
                           <div align="left" class="price-slider">
-                                   <h4 class="great">Индивидуальность</h4>
+                                   <h4  id="greatIndividualy" class="great">Индивидуальность</h4>
                                    <span></span>
                                    <div class="col-sm-12">
                                        <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(4,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -91,7 +91,7 @@
                                        <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(4,5)">5<i class="glyphicon glyphicon-list"></i></button>
                                    </div>
                                </div>
-                <button onClick={pushToServer()} class="btn btn-primary btn-lg btn-block">Отправить <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button>
+                <button id="push" onClick={validateForm()} class="btn btn-primary btn-lg btn-block">Отправить <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button>
                            </div>
 
                            <div class="sub-entry-right">
@@ -150,11 +150,13 @@
 
 
                            </div>
+
                        </div>
+        <center><p>-----</p></center>
 
-
-      <!--  <button onClick={pushToServer()} class="btn btn-primary btn-lg btn-block">Отправить <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button> -->
-                          <p class="text-center" style="padding-top:10px;font-size:12px;color:#2c3e50;font-style:italic;">Created by VID. © 2019 <a href="https://www.facebook.com/vitaly.grishin.1" target="_blank">VitalyGrishin</a></p>
+      <!--  <button onClick={pushToServer()} class="btn btn-primary btn-lg btn-block">Отправить <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button>
+                          <p class="text-center" style="padding-top:10px;font-size:12px;color:#2c3e50;font-style:italic;">Created by VID. © 2019 <a href="https://www.facebook.com/vitaly.grishin.1" target="_blank">VitalyGrishin</a></p>-->
+                          <p class="text-center" style="padding-top:10px;font-size:12px;color:#2c3e50;font-style:italic;">Created by VID. © 2019</p>
 
     </div>
 

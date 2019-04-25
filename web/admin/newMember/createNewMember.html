@@ -11,18 +11,61 @@
 
 <link rel="stylesheet" type="text/css" href="/admin/newMember/newMember.css">
 
+
+
+
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+
+
 </head>
 <body>
 <div class="container register">
                 <div class="row">
                     <div class="col-md-3 register-left">
-                          <div id="message"></div>
-						<img src="/admin/newMember/kluch.png" width=500 alt=""/>
-                        <h3>Выйти в главный раздел</h3>
-                        <p>Несохраненная информация на странице будет утеряна.</p>
-                        <input type="button" onclick="history.back();" value="Назад"/>
-						<!-- <input type="submit" name="" value="Назад"/><br/> -->
+
+                        <div class="ui-widget">
+                            <label>Участники: </label>
+                            <p id="idMemberForUpdateOrDelete" hidden></p>
+                            <select id="combobox" class="custom-combobox">
+
+                                <option id="-1"></option>
+                           <!--     <option value="Ultrasound Knee Right">Ultrasound Knee Right</option>
+                                <option value="Ultrasound Knee Left">Ultrasound Knee Left</option>
+                                <option value="Ultrasound Forearm/Elbow Right">Ultrasound Forearm/  Elbow Right</option>
+                                <option value="Ultrasound Forearm/Elbow Left">Ultrasound Forearm/Elbow Left</option>
+                                <option value="MRI Knee Right">MRI Knee Right</option>
+                                <option value="MRI Knee Left">MRI Knee Left</option>
+                                <option value="MRI Forearm/Elbow Right">MRI Forearm/Elbow Right</option>
+                                <option value="MRI Forearm/Elbow Left">MRI Forearm/Elbow Left</option>
+                                <option value="CT Knee Right">CT Knee Right</option>
+                                <option value="CT Knee Left">CT Knee Left</option>
+                                <option value="CT Forearm/Elbow Right">CT Forearm/Elbow Right</option>
+                                <option value="CT Forearm/Elbow Left">CT Forearm/Elbow Left</option> -->
+                            </select>
+                        </div>
+
+
+                            <div id="message"></div>
+                           <img src="/admin/newMember/kluch.png" width=500 alt=""/>
+                           <h3>Выйти в главный раздел</h3>
+                           <p>Несохраненная информация на странице будет утеряна.</p>
+                           <input type="button" onclick="history.back();" value="Назад"/>
+
+
+
+
+
+
                     </div>
+
+
+
                     <div class="col-md-9 register-right">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -30,6 +73,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Ансамбли</a>
+
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -37,7 +81,7 @@
                                 
 								<h3 class="register-heading">Добавление нового участника</h3>
                               
-								<div class="row register-form">
+								<div class="row register-form" id="registerForm">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" id="lastname" class="form-control" placeholder="Фамилия *" value="" />
@@ -74,10 +118,10 @@
                                             <div class="maxl">
                                                 <label class="radio inline">
                                                     <input type="radio" id="genderMale" name="gender" value="male" checked>
-                                                    <span> Муж </span>
+                                                    <span>Муж </span>
                                                 </label>
                                                 <label class="radio inline">
-                                                    <input type="radio" name="gender" value="female">
+                                                    <input type="radio" id="genderFemale" name="gender" value="female">
                                                     <span>Жен </span>
                                                 </label>
                                             </div>
@@ -109,7 +153,13 @@
 										<div class="form-group">
                                             <input type="text" id="secondSong" class="form-control" placeholder="Песня на выбор *" value="" />
                                         </div>
-										<button type="submit" class="btnRegister" onClick={registerSolo()} value="ЗАРЕГИСТРИРОВАТЬ">ЗАРЕГИСТРИРОВАТЬ</button>
+                                     <!--   <div class="form-group">
+                                            <input type="text" id="turnNumber" class="form-control" placeholder="Номер жеребъевки (необязательно)" value="" />
+                                        </div>-->
+										<button id="registerSolo" type="submit" class="btnRegister" onClick={registerSolo()} value="ЗАРЕГИСТРИРОВАТЬ">ЗАРЕГИСТРИРОВАТЬ</button>
+										<button id="updateSolo" type="submit" class="btnUpdate" onClick={updateSolo()} value="Обновить">Обновить</button>
+										<button id="deleteSolo" type="submit" class="btnDelete" onClick={deleteMember()} value="Удалить">Удалить</button>
+										<button type="submit" class="btnClear" onClick={clearForm()} value="Отменитьу">Отменить и очистить форму</button>
                                    <!--     <input type="submit" class="btnRegister"  value="ЗАРЕГИСТРИРОВАТЬ"/> -->
                                     </div>
                                 </div>
@@ -163,9 +213,17 @@
                                         <div class="form-group">
                                             <input type="text" id="ensemble_secondSong" class="form-control" placeholder="Песня на выбор *" value="" />
                                         </div>
+                                     <!--   <div class="form-group">
+                                            <input type="text" id="ensemble_turnNumber" class="form-control" placeholder="Номер жеребъевки (необязательно)" value="" />
+                                        </div> -->
 
 
-                                        <button type="submit" class="btnRegister" onClick={registerEnsemble()} value="ЗАРЕГИСТРИРОВАТЬ">ЗАРЕГИСТРИРОВАТЬ</button>
+                                        <button id="registerEnsemble" type="submit" class="btnRegister" onClick={registerEnsemble()} value="ЗАРЕГИСТРИРОВАТЬ">ЗАРЕГИСТРИРОВАТЬ</button>
+                                        <button id="updateEnsemble" type="submit" class="btnUpdate" onClick={updateEnsemble()} value="Обновить">Обновить</button>
+                                        <button id="deleteEnsemble" type="submit" class="btnDelete" onClick={deleteMember()} value="Удалить">Удалить</button>
+                                        <button type="submit" class="btnClear" onClick={clearForm()} value="Отменить">Отменить и очистить форму</button>
+
+
                                       <!--  <input type="submit" class="btnRegister"  value="Register"/> -->
                                     </div>
                                 </div>
@@ -176,5 +234,6 @@
 
             </div>
 			<script src="/admin/newMember/newMember.js" ></script>
+
 			</body>
 			</html>
