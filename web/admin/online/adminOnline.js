@@ -6,6 +6,7 @@ $(document).ready(function(){
 
 function getMarksValueOfMemberThatEvaluate (){
     var sId=getCookie('LivingWaterSession');
+     console.log("getMarksValueOfMemberThatEvaluate");
      $.ajax({
 			type: 'GET',
 			url: "/admin/gets",
@@ -24,7 +25,7 @@ function getMarksValueOfMemberThatEvaluate (){
                 if(tab.rows[0].cells[j].innerHTML==k){
                     //Поиск нужной строки по MemberId
                     for(var i=0; i<tab.rows.length;i++){
-                         if(tab.rows[i].cells[0].innerHTML==data.memberId && tab.rows[i].cells[3].innerHTML==data.songNumber){
+                         if(tab.rows[i].cells[1].innerHTML==data.memberId && tab.rows[i].cells[4].innerHTML==data.songNumber){
                          //Проверка нужной песни
 
                             //  console.log(data[k]);
@@ -44,6 +45,7 @@ updateColorOfRowWhenLoadPage();
 
 function getCurrentMemberDataThatEvaluate(){
     var sId=getCookie('LivingWaterSession');
+    console.log("getCurrentMemberDataThatEvaluate!!!!!!!!");
     $.ajax({
 			type: 'GET',
 			url: "/admin/gets",
@@ -53,8 +55,8 @@ function getCurrentMemberDataThatEvaluate(){
             //перебор всех строк где idMember совпадает
             var tab=document.getElementById("members");
             for (var i=1; i<tab.rows.length; i++){
-                if(tab.rows[i].cells[0].innerHTML==data.memberId){
-                     if(tab.rows[i].cells[3].innerHTML==data.songNumber){
+                if(tab.rows[i].cells[1].innerHTML==data.memberId){
+                     if(tab.rows[i].cells[4].innerHTML==data.songNumber){
                         //выделение синим цветом
                         for(var j=0; j<tab.rows[0].cells.length; j++){
                                    tab.rows[i].cells[j].style.backgroundColor = "blue";

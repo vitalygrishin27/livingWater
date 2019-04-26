@@ -21,11 +21,11 @@ public class UserMainServlet extends HttpServlet {
       //  System.out.println(Utils.getCurrentTime() + " / START USER SERVLET IS DONE! (GET)");
 
         if (Authentication.isJuryInDbByCookies(req)) {
-            Authentication.log(req.getCookies()[0].getValue() +  "  -  UserMainServlet (GET)  -  redirect to /user/main/mainUser2.html");
+     //       Authentication.log(req.getCookies()[0].getValue() +  "  -  UserMainServlet (GET)  -  redirect to /user/main/mainUser2.html");
             req.getRequestDispatcher("/user/main/mainUser2.html").forward(req, resp);
         } else {
            // System.out.println(Utils.getCurrentTime() + " / Error with authorization. Redirect to login page. (Jury).");
-            Authentication.log(req.getCookies()[0].getValue() +  "  -  UserMainServlet (GET) -  redirect to / . Authorization error.");
+//            Authentication.log(req.getCookies()[0].getValue() +  "  -  UserMainServlet (GET) -  redirect to / . Authorization error.");
             resp.sendRedirect("/");
         }
     }
