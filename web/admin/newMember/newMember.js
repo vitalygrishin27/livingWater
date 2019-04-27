@@ -334,10 +334,13 @@ for (var i = 0, element; element = elements[i++];) {
 
 function deleteMember(){
     var sId=getCookie('LivingWaterSession');
+
+
+	if(confirm("Вы уверены в удалении?")){
 	console.log("deleteMember");
             $.ajax({
 			    type: 'POST',
-			    url: "/admin/edit",
+			    url: "/admin/newMember",
 			    data: JSON.stringify({sId:sId, command:"deleteMember",idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML}),
                 success: function(data){
 		                console.log(data);
@@ -352,6 +355,7 @@ function deleteMember(){
 
 		        }
 		     });
+		     }
 }
 
 function updateSolo(){
@@ -388,7 +392,7 @@ function updateSolo(){
 
         $.ajax({
 			    type: 'POST',
-			    url: "/admin/edit",
+			    url: "/admin/newMember",
 			    data: JSON.stringify({sId:sId,
 			                            command:"updateSolo",
 			                            idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML,
@@ -446,7 +450,7 @@ function updateEnsemble(){
 
      $.ajax({
     			    type: 'POST',
-    			    url: "/admin/edit",
+    			    url: "/admin/newMember",
     			    data: JSON.stringify({sId:sId,
     			                            command:"updateEnsemble",
     			                            idMember:document.getElementById('idMemberForUpdateOrDelete').innerHTML,

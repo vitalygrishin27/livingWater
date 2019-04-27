@@ -97,6 +97,15 @@ public interface IDAO {
 
     boolean updateSongName(Song oldSong, Song newSong);
 
+    boolean isSongAlreadyEvaluatedByJury(Song song, User jury);
+
+    boolean updateTurnNumberForMember(Member member,Integer turnNumber);
+
+    boolean updateJuryInDB (User oldJury, User newJury);
+
+    boolean isTurnNumberFree (Integer turnNumber);
+
+
   //  boolean saveNewEnsembleIntoDB(Member member);
 
     }

@@ -13,11 +13,11 @@ font-family: 'Numans', sans-serif;
 
 
 .sub-entry-left {
-width:70%;
+width:80%;
 float: left;
 }
 .sub-entry-right {
-width:30%;
+width:20%;
 float: left;
 }
 
@@ -63,7 +63,7 @@ border:none !important;
 
 .ui-slider .ui-slider-handle .glyphicon {
 	color: #FFFFFF;
-	margin: 0 3px; 
+	margin: 0 3px;
 	font-size: 11px;
 	opacity: 0.5;
 }
@@ -103,6 +103,18 @@ border:none !important;
 	text-align: center;
 	line-height: 30px;
 }
+
+/* For phone*/
+/*
+.price, .lead p {
+	font-weight: 600;
+	font-size: 52px;
+	color: #ffff00;
+	text-align: center;
+	line-height: 20px;
+}
+*/
+
 
 h4.great {
 	background: #00ac98;
@@ -222,13 +234,13 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 30px;
+  font-size: 50px;
   background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
-  
+
   text-align: center;
-  line-height: 40px;
+  line-height: 70px;
   letter-spacing: 0 px;
 }
 
@@ -237,13 +249,13 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 20px;
+  font-size: 30px;
   background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
 
   text-align: center;
-  line-height: 30px;
+  line-height: 40px;
   letter-spacing: 0 px;
 }
 
@@ -258,7 +270,6 @@ font-family:Impact;
   text-align: center;
   text-transform: uppercase;
   padding-top: 10px;
-
 }
 
 
@@ -318,4 +329,14 @@ font-family:Impact;
   border-radius: 35px;
 }
 
-
+/*
+.btn-circle.btn-xl {
+  width: 20px;
+  height: 30px;
+  padding: 5px 16px;
+  padding-bottom: 2px;
+  font-size: 30px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+*/

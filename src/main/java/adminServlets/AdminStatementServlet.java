@@ -5,7 +5,6 @@ import entity.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Sheet;
-import repository.Utils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +29,9 @@ public class AdminStatementServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (POST)");
+    //    System.out.println(Utils.getCurrentTime() + " / START ADMIN STATEMENT SERVLET IS DONE! (POST)");
         if (Authentication.isAdminInDbByCookies(req)) {
+            Authentication.log(req.getCookies()[0].getValue() + "  -  AdminStatementServlet (GET). Start create statement.");
             POIFSFileSystem fs = new POIFSFileSystem((new FileInputStream("statement.xls")));
             HSSFWorkbook wb = new HSSFWorkbook(fs);
             HSSFSheet sourceSheet = wb.getSheetAt(0);
@@ -266,8 +266,10 @@ public class AdminStatementServlet extends HttpServlet {
             //          resp.flushBuffer();
             //  req.getRequestDispatcher("/admin/statement/statement.html")
             //        .forward(req, resp);
+            Authentication.log(req.getCookies()[0].getValue() + "  -  Create statement  --  OK!");
         } else {
-            System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
+            Authentication.log(req.getCookies()[0].getValue() + "  -  Not authorization. Return to login page.");
+            //System.out.println(Utils.getCurrentTime() + " / Not authorization. Return to login page.");
             resp.sendRedirect("/adminLogin");
         }
     }

@@ -1,6 +1,7 @@
 package adminServlets;
 
 import authentication.Authentication;
+import entity.Member;
 import org.json.JSONObject;
 import repository.Utils;
 
@@ -16,96 +17,115 @@ public class AddNewMember extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("START ADMIN Registration member SERVLET IS DONE! (GET)");
+     //   Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewMember (GET)");
+        //    System.out.println("START ADMIN Registration member SERVLET IS DONE! (GET)");
 
         if (Authentication.isAdminInDbByCookies(req)) {
+            Authentication.log(req.getCookies()[0].getValue() + "  -  redirect /admin/newMember/createNewMember.html");
             req.getRequestDispatcher("/admin/newMember/createNewMember.html")
                     .forward(req, resp);
-
         } else {
+            Authentication.log(req.getCookies()[0].getValue() + "  -  redirect /. Error authorization.");
             resp.sendRedirect("/");
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("START Admin registration member SERVLET IS DONE! POST");
+        //  System.out.println("START Admin registration member SERVLET IS DONE! POST");
+    //    Authentication.log(req.getCookies()[0].getValue() + "  -  AddNewMember (POST).");
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json; charset=UTF-8");
         JSONObject jsonObjectResponse = new JSONObject();
-
         if (Authentication.isAdminInDbByCookies(req)) {
-
             JSONObject userJSon = Utils.getJsonFromRequest(req);
-            System.out.println(userJSon);
-
+            //   System.out.println(userJSon);
+        //    Authentication.log(req.getCookies()[0].getValue() + "  -  receive JSON -  " + userJSon);
             if (userJSon.getString("command").equals("registerSolo")) {
-                System.out.println("sID with '" + userJSon.getString("sId") +
-                        "' want to add into DB solo member.");
-                resp.setContentType("application/json; charset=UTF-8");
-
+                Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerSolo");
+                //  System.out.println("sID with '" + userJSon.getString("sId") +
+                //         "' want to add into DB solo member.");
                 String messageToResponse = messageIsJsonCorrect(userJSon);
                 if (messageToResponse.equals("OK")) {
                     //  201 Created («создано»)[2][3][4];
                     Authentication.getRepository().saveNewMemberIntoDB(Utils.getSoloMemberFromJson(userJSon));
-                    System.out.println("Add to DB new solo member is OK.");
+                    Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerSolo  -  Status OK  -  201");
+                    //  System.out.println("Add to DB new solo member is OK.");
                     jsonObjectResponse.append("status", "201");
                     jsonObjectResponse.append("message", "Новый солист добавлен в БД.");
                 } else {
-                    System.out.println("Add to DB crashed with not filled input boxes");
+                    //  System.out.println("Add to DB crashed with not filled input boxes");
+                    Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerSolo  -  Add to DB crashed with not filled input boxes.");
                     jsonObjectResponse.append("status", "406");
                     jsonObjectResponse.append("message", messageToResponse);
                     //  406 Not Acceptable («неприемлемо»)[2][3];
-
                 }
-
-
-                resp.getWriter().write(String.valueOf(jsonObjectResponse));
-
-                resp.flushBuffer();
-
             }
 
-
             if (userJSon.getString("command").equals("registerEnsemble")) {
-                System.out.println("sID with '" + userJSon.getString("sId") +
-                        "' want to add into DB ensemble member.");
+                //  System.out.println("sID with '" + userJSon.getString("sId") +
+                //             "' want to add into DB ensemble member.");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerEnsemble");
                 resp.setContentType("application/json; charset=UTF-8");
-
                 String messageToResponse = messageIsJsonCorrect(userJSon);
                 if (messageToResponse.equals("OK")) {
-
                     Authentication.getRepository().saveNewMemberIntoDB(Utils.getEnsembleFromJson(userJSon));
                     //  201 Created («создано»)[2][3][4];
-                    System.out.println("Add to DB new ensemble member is OK.");
+                    // System.out.println("Add to DB new ensemble member is OK.");
+                    Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerEnsemble  -  Status OK  -  201");
                     jsonObjectResponse.append("status", "201");
                     jsonObjectResponse.append("message", "Новый ансамбль добавлен в БД.");
                 } else {
-                    System.out.println("Add to DB crashed with not filled input boxes");
+                    //   System.out.println("Add to DB crashed with not filled input boxes");
+                    Authentication.log(req.getCookies()[0].getValue() + "  -  command -  registerEnsemble  -  Add to DB crashed with not filled input boxes.");
                     jsonObjectResponse.append("status", "406");
                     jsonObjectResponse.append("message", messageToResponse);
                     //  406 Not Acceptable («неприемлемо»)[2][3];
-
                 }
+            }
 
 
-                resp.getWriter().write(String.valueOf(jsonObjectResponse));
 
-                resp.flushBuffer();
+            if (userJSon.getString("command").equals("deleteMember")) {
+                Authentication.getRepository().deleteMemberFromDBById(userJSon.getInt("idMember"));
+                Authentication.log(req.getCookies()[0].getValue() + "  -  deleteMember  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Участник успешно удален из БД");
 
             }
 
+
+            if (userJSon.getString("command").equals("updateSolo")) {
+                Member newMember = Utils.getSoloMemberFromJson(userJSon);
+                Member oldMember = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                //      System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getLastName() + ") is successful.");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  updateSolo  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника соло успешно обновлены в БД.");
+            }
+            if (userJSon.getString("command").equals("updateEnsemble")) {
+                Member newMember = Utils.getEnsembleFromJson(userJSon);
+                Member oldMember = Authentication.getRepository().getMemberById(userJSon.getInt("idMember"));
+                Authentication.getRepository().updateMember(oldMember, newMember);
+                //  System.out.println("Updating member with " + oldMember.getId() + "(" + oldMember.getEnsembleName() + ") is successful.");
+                Authentication.log(req.getCookies()[0].getValue() + "  -  updateEnsemble  -- OK.");
+                jsonObjectResponse.append("status", "200").append("message", "Данные участника ансамбля успешно обновлены в БД.");
+            }
+
+
+
+
+            resp.getWriter().write(String.valueOf(jsonObjectResponse));
+            resp.flushBuffer();
+
         } else {
-            System.out.println("Access to page AdminAddNewMember (POST) is denided. Authorization error.");
-            resp.setContentType("application/json; charset=UTF-8");
+            //   System.out.println("Access to page AdminAddNewMember (POST) is denided. Authorization error.");
+
+            Authentication.log(req.getCookies()[0].getValue() + "  -  Access to page AdminAddNewMember (POST) is denided. Authorization error.");
             jsonObjectResponse.append("status", "300");
             jsonObjectResponse.append("message", "Доступ запрещен. Нужна авторизация.");
             resp.getWriter().write(String.valueOf(jsonObjectResponse));
-
             resp.flushBuffer();
-
         }
-
     }
 
     private String messageIsJsonCorrect(JSONObject json) {
@@ -113,18 +133,11 @@ public class AddNewMember extends HttpServlet {
         String resultMessage = "OK";
         for (String element : json.keySet()
         ) {
-
-
             if (json.getString(element).equals(""))
                 resultMessage = "Не заполнено " + (++countNotFilledFields) + " обязательных полей.";
         }
-
         if (json.getString("category").equals("Категория"))
             resultMessage = "Не заполнено " + (++countNotFilledFields) + " обязательных полей.";
-
-
         return resultMessage;
-
-
     }
 }
