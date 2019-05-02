@@ -1,6 +1,6 @@
 <application>
   <component name="libraryTable">
-    <library name="javafx-swt">
+    <library name="javafx11">
       <CLASSES>
         <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx-swt.jar!/" />
         <root url="jar://C:/Program Files/Java/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
