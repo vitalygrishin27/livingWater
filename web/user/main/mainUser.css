@@ -222,13 +222,13 @@ hr.style {
   font-family:Impact;
   font-weight: 100%;
   color: transparent;
-  font-size: 30px;
+  font-size: 60px;
   background: url("/user/main/83.jpg") repeat;
   background-position: 40% 50%;
   -webkit-background-clip: text;
   
   text-align: center;
-  line-height: 40px;
+  line-height: 60px;
   letter-spacing: 0 px;
 }
 
@@ -310,8 +310,8 @@ font-family:Impact;
 
 
 .btn-circle.btn-xl {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   padding: 10px 16px;
   font-size: 24px;
   line-height: 1.33;
