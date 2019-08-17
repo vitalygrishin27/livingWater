@@ -16,25 +16,25 @@
 <div class="container" >
 
 
-   <center><button id="butToFullScreen" onclick="fullScreenOn()">ЗАПУСК</button></center>
+   <center><button id="butToFullScreen" onclick="fullScreenOn()">CТАРТ</button></center>
     <!-- START -->
     <div class="price-box">
         <section class="title banner py-4 bg-success text-white" id="title-banner">
             <center>
                 <h2><div style="background-color:red" id="messageAboutOnline">OFF-line</div></h2>
                 <!--	<button onClick={getInfo()}>Присоединиться к серверу</button> -->
-                <button id="connect" onClick={getInfo()} class="btn btn-primary btn-lg btn-block">Присоединиться к серверу </button>
+                <button id="connect" onClick={getInfo()} class="btn btn-primary btn-lg btn-block">Приєднатися до сервера </button>
             </center>
         </section>
 
 
         <div class="container1">
-            <div id="member" class="title1">Нет данных с сервера</div>
-            <div id="office" class="office_title">Нет данных об учреждении</div>
-            <div id="songName" class="subtitle1">Нет данных о названии песни</div>
-            <div id="songId" hidden>ID песни</div>
+            <div id="member" class="title1">Дані з сервера відсутні</div>
+            <div id="office" class="office_title">Дані з сервера відсутні</div>
+            <div id="songName" class="subtitle1">Дані з сервера відсутні</div>
+            <div id="songId" hidden>ID пісні</div>
             <div class="sub-entry-left">
-                <div id="category" class="subtitle1">Категория: undefined</div>
+                <div id="category" class="subtitle1">Категорія: undefined</div>
             </div>
 
             <div class="sub-entry-right">
@@ -70,7 +70,7 @@
                        </div>
                    </div>
                    <div align="left" class="price-slider">
-                       <h4  id="greatArtistic" class="great">Артистичность</h4>
+                       <h4  id="greatArtistic" class="great">Артистичність</h4>
 
                               <div class="col-sm-12">
                                   <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(3,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -81,7 +81,7 @@
                               </div>
                           </div>
                           <div align="left" class="price-slider">
-                                   <h4  id="greatIndividualy" class="great">Индивидуальность</h4>
+                                   <h4  id="greatIndividualy" class="great">Індивідуальність</h4>
                                    <span></span>
                                    <div class="col-sm-12">
                                        <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(4,1)">1<i class="glyphicon glyphicon-list"></i></button>
@@ -91,7 +91,7 @@
                                        <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="update(4,5)">5<i class="glyphicon glyphicon-list"></i></button>
                                    </div>
                                </div>
-                <button id="push" onClick={validateForm()} class="btn btn-primary btn-lg btn-block">Отправить <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button>
+                <button id="push" onClick={validateForm()} class="btn btn-primary btn-lg btn-block">Відправити оцінку <span class="glyphicon glyphicon-chevron-right pull-right" style="padding-right: 10px;"></span></button>
                            </div>
 
                            <div class="sub-entry-right">
@@ -135,7 +135,7 @@
                                       </div>
                                    <hr class="style">
                                    <div class="form-group total">
-                                       <center>  <label for="total" class="col-sm-6 control-label"><strong>Общий балл: </strong></label> </center>
+                                      <label for="total" class="col-sm-6 control-label"><strong>Загальний бал: </strong></label>
 
                                        <span class="help-text"></span>
                                        <center>  <div class="col-sm-6">

@@ -39,7 +39,7 @@ function getInfo(){
                 document.getElementById("office").innerHTML=data.office;
                 document.getElementById("songId").innerHTML=data.songId;
                 document.getElementById("songName").innerHTML=data.songName;
-                document.getElementById("category").innerHTML="КАТЕГОРИЯ: "+data.category;
+                document.getElementById("category").innerHTML="КАТЕГОРІЯ: "+data.category;
 
 			/*	if(data.messageBox="ONLINE"){
 					document.getElementById("messageAboutOnline").style.backgroundColor="green";
